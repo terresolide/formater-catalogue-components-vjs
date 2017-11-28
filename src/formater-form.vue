@@ -28,8 +28,8 @@
 		<formater-search-box header-icon-class="fa fa-calendar" :title="$t('time_slot')" >	
 			 <formater-temporal-search :lang="lang"></formater-temporal-search>
 		</formater-search-box>
-			<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" >	
-			@todo
+		<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" >	
+			<formater-spatial-search :lang="lang"></formater-spatial-search>
 		</formater-search-box>
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
 	    <div class= "formater-buttons" >
@@ -133,9 +133,7 @@ export default {
 </script>
 
 <style>
-
-
-.formater-container input[type="button"]{
+.formater-container .formater-buttons input[type="button"]{
 /*	font-family:  "Dejavu serif";*/
 	margin: 0px 0px 3px 7px;
   padding: 3px 12px;

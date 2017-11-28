@@ -12,8 +12,10 @@ Vue.use(VueI18n);
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
+import FormaterSpatialSearch from './formater-spatial-search.vue';
 import FormaterForm from './formater-form.vue';
-
+import FormaterMap from './formater-map.vue';
+import FormaterCatalogue from './formater-catalogue.vue';
 //@todo use aeris-mixins instead of isgi-tools.js
 /*import IsgiTools from './isgi-tools.js';
 Vue.use(IsgiTools);*/
@@ -50,8 +52,8 @@ ljs.addAliases({
 	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
 
 	    //formater commons components from build
-	    'http://localhost:8082/dist/build.js',
-	    //'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
+	    //'http://localhost:8082/dist/build.js',
+	    'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
 	  //  'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
 		   
 	    
@@ -85,9 +87,10 @@ ljs.load('dep', function() {
         }
      }, 100);
      function load(){
-      
+         registerElement('formater-spatial-search', FormaterSpatialSearch);
          registerElement('formater-form', FormaterForm);
-         
+         registerElement('formater-map', FormaterMap);
+         registerElement('formater-catalogue', FormaterCatalogue);
          
 
    
