@@ -9,10 +9,7 @@
 <template>
 <span>
 <formater-layout >
-		<header>
-	<h2>Catalogue des données</h2>
-
-	</header>
+	
   
 	<div class="formater-wrapper">
 	
