@@ -43,10 +43,21 @@ ljs.addAliases({
 	  //  'https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js',
 	  //  'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
 	  
+	    //icon marker with font awesome
 	    //'https://rawgit.com/lvoogdt/Leaflet.awesome-markers/master/dist/leaflet.awesome-markers.css',
-	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
+	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
 	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
 	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js',
+	    // test leaflet areaselect
+	    'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.css',
+	    'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.js',
+	    
+	    //test location filter (select area)
+	  //   'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.css',
+	    // 'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.js',
+	    
+	    //w8r leaflet-aera-select
+	  //  'https://rawgit.com/w8r/leaflet-area-select/master/dist/Map.SelectArea.min.js',
 	    //awesome marker old version...
 	   // 'https://rawgit.com/lvoogdt/Leaflet.awesome-markers/master/dist/leaflet.awesome-markers.min.js',
 	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',

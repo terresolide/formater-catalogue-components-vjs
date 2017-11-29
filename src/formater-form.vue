@@ -21,7 +21,7 @@
 
 <template>	
 	<div class="formater-container">
-	<form id="formater-form" >
+	<div id="formater-form" >
 		<formater-search-box header-icon-class="fa fa-bars" :title="$t('data_type')" deployed="true">
 			<formater-select type="associative" name="DataType" :options="dataType" multiple="true" width="260px"></formater-select>
 		</formater-search-box>
@@ -35,7 +35,7 @@
 	    <div class= "formater-buttons" >
 	    <input class="formater-search-button" type="button" :value="$t('search')" @click="search"/>
 	    </div>
-	</form>
+	</div>
 	</div>
 </template>
 
@@ -71,12 +71,8 @@ export default {
   },
   data(){
       return {
-                  
-	              format:'IAGA2002',
-	              user:null,
-	            
-	              aerisThemeListener:null,
-	              theme:null
+           aerisThemeListener:null,
+           theme:null
       }
   },
   methods: {
@@ -85,8 +81,8 @@ export default {
 		  
 		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
 			document.dispatchEvent(e);
-
-
+             console.log(e);
+           return;
 		    
 		},
 		
