@@ -80,6 +80,8 @@ export default {
   methods: {
       	
 		search(){
+		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
+			document.dispatchEvent(e);
 		    var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
 	
 		    document.dispatchEvent(event);
