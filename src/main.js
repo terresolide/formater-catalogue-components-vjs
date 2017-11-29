@@ -49,9 +49,14 @@ ljs.addAliases({
 	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
 	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js',
 	    // test leaflet areaselect
-	    'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.css',
-	    'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.js',
-	    
+	    //------------
+	    //'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.css',
+	    //'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.js',
+	    //local leaflet area-select
+	    //------------------------
+	    'https://rawgit.com/terresolide/formater/src/leaflet-areaselect/leaflet-areaselect.css',
+	    'https://rawgit.com/terresolide/formater/src/leaflet-areaselect/leaflet-areaselect.js',
+	   // '/src/leaflet-areaselect/leaflet-areaselect.js',
 	    //test location filter (select area)
 	  //   'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.css',
 	    // 'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.js',

@@ -43,25 +43,40 @@ export default {
       }
   },
   methods: {
-       enableSelectArea(bbox){
-           if(bbox){
+       enableSelectArea( e ){
+           console.log(e);
+           if(e.detail.north){
+               var bbox = e.detail;
                // @todo centre la pour que les bornes soit dedans
                // @todo calcul la taille de la zone à l'écran
            		//this.areaSelect.addTo(this.map);
               // this.map.fitBounds( bounds);
+              console.log("ici - avec bbox");
+              var ne = L.latLng([bbox.north, bbox.east]);
+              var sw = L.latLng([bbox.south, bbox.west] );
+              var bounds = [ne, sw];
+              this.map.fitBounds(bounds);
+              var topright = this.map.project(ne, this.map.getZoom());
+              var diff = this.map.project(sw, this.map.getZoom()).subtract( topright);
+
+              //compute size width and height
               
+               var width = Math.abs( diff.x);
+               var height = Math.abs( diff.y);
            }else{
                //this.areaSelect.addTo(this.map);
+               var width = 400;
+               var height = 300;
            }
-           this.areaSelect = L.areaSelect({width:200, height:300});
+           this.areaSelect = L.areaSelect({width:width, height:height});
      	  
     	   this.areaSelect.on( "change", function(){
     	       var bounds = this.getBounds();
     	       var bbox = {
-    	               north: bounds.getNorthEast().lat,
-    	               east: bounds.getNorthEast().lng,
-    	               south: bounds.getSouthWest().lat,
-    	               west: bounds.getSouthWest().lng
+    	               north: bounds.getNorthEast().lat%90,
+    	               east: bounds.getNorthEast().lng%180,
+    	               south: bounds.getSouthWest().lat%90,
+    	               west: bounds.getSouthWest().lng%180
     	       }
     	       var event = new CustomEvent('selectAreaChange', {detail:{ box : bbox}});
     	       document.dispatchEvent(event);
@@ -72,6 +87,7 @@ export default {
        disableSelectArea(){
            console.log("disable area");
            this.areaSelect.remove();
+           this.areaSelect = null;
          
        },
        

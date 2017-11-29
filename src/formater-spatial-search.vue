@@ -121,13 +121,9 @@ export default {
     	   
           	   
     	   }else{
-    	       console.log("start");
     	    var event = new CustomEvent( 'selectAreaDrawStart', {detail: this.bbox()});
-    	 
-    	    
     	   }  
     	   this.areaSelect = !this.areaSelect;
-    	   console.log( this.areaSelect);
     	   document.dispatchEvent( event);
     	 
     	    return;
@@ -140,7 +136,6 @@ export default {
 			 this.west = "";
 			 this.south = "";
 			 if(this.areaSelect){
-	  	       console.log("end");
 	  	       this.areaSelect = false;
 		       var event = new CustomEvent( 'selectAreaDrawEnd', {});
 		       document.dispatchEvent( event);
