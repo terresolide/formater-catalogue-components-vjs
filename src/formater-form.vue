@@ -6,7 +6,8 @@
        "spatial_extents": "spatial extents",
        "output_format": "Output Format",
        "search": "Search",
-       "magnetisme": "magnetism"
+       "magnetisme": "magnetism",
+       "service_closed": "The service is closed"
    },
    "fr":{
    		"data_type": "type de données",
@@ -14,7 +15,8 @@
         "spatial_extents": "zone géographique",
         "output_format": "Format de sortie",
         "search": "rechercher",
-      "magnetisme": "magnétisme"
+      "magnetisme": "magnétisme",
+      "service_closed": "Le service est fermé"
    }
 }
 </i18n>
@@ -78,10 +80,12 @@ export default {
   methods: {
       	
 		search(){
-		  
-		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
-			document.dispatchEvent(e);
-             console.log(e);
+		    var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
+	
+		    document.dispatchEvent(event);
+		   // var e = new CustomEvent("aerisSearchEvent", { detail: {}});
+			//document.dispatchEvent(e);
+           //  console.log(e);
            return;
 		    
 		},

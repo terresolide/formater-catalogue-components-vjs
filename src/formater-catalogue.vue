@@ -8,6 +8,7 @@
 </i18n>
 <template>
 <span>
+<aeris-notifier></aeris-notifier>
 <formater-layout >
 	
   

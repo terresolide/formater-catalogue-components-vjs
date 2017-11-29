@@ -54,8 +54,8 @@ ljs.addAliases({
 	    //'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.js',
 	    //local leaflet area-select
 	    //------------------------
-	    'https://rawgit.com/terresolide/formater/src/leaflet-areaselect/leaflet-areaselect.css',
-	    'https://rawgit.com/terresolide/formater/src/leaflet-areaselect/leaflet-areaselect.js',
+	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.css',
+	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.js',
 	   // '/src/leaflet-areaselect/leaflet-areaselect.js',
 	    //test location filter (select area)
 	  //   'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.css',
@@ -90,7 +90,7 @@ ljs.load('dep', function() {
         }
     }
     var componentUsed = [];
-    var componentUsed = new Array('formater-select','formater-layout', 'aeris-datepicker');
+    var componentUsed = new Array('formater-select','formater-layout', 'aeris-datepicker', 'aeris-notifier');
    // var componentUsed = new Array( 'aeris-datepicker');
     var loaded = setInterval(function() {
         var result = componentUsed.filter( function( cpt){
