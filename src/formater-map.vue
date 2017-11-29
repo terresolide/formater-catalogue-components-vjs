@@ -51,11 +51,13 @@ export default {
                // @todo calcul la taille de la zone à l'écran
            		//this.areaSelect.addTo(this.map);
               // this.map.fitBounds( bounds);
-              console.log("ici - avec bbox");
+              if(bbox.east < bbox.west){
+            	  bbox.west -=180;
+              }
               var ne = L.latLng([bbox.north, bbox.east]);
               var sw = L.latLng([bbox.south, bbox.west] );
               var bounds = [ne, sw];
-              this.map.fitBounds(bounds);
+              this.map.fitBounds(bounds, [0,0]);
               var topright = this.map.project(ne, this.map.getZoom());
               var diff = this.map.project(sw, this.map.getZoom()).subtract( topright);
 

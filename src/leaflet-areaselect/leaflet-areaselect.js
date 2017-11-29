@@ -15,6 +15,7 @@ L.AreaSelect = L.Class.extend({
     },
     
     addTo: function(map) {
+    	this.shutdown = false;
         this.map = map;
         this._createElements();
         this._render();

@@ -56,7 +56,8 @@ ljs.addAliases({
 	    //------------------------
 	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.css',
 	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.js',
-	   // '/src/leaflet-areaselect/leaflet-areaselect.js',
+	   // '/src/leaflet-areaselect/leaflet-areaselect.css',
+	     //'/src/leaflet-areaselect/leaflet-areaselect.js',
 	    //test location filter (select area)
 	  //   'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.css',
 	    // 'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.js',
