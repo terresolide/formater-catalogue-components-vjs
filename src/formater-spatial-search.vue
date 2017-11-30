@@ -134,10 +134,10 @@ export default {
 			 this.south = "";
 			 if(this.areaSelect){
 	  	       this.areaSelect = false;
-		       var event = new CustomEvent( 'selectAreaDrawEnd', {});
-		       document.dispatchEvent( event);
+		      
 			 }
-	   
+			 var event = new CustomEvent( 'selectAreaDrawEnd', { detail: this.bbox()});
+		       document.dispatchEvent( event);
 
 			  
 		},

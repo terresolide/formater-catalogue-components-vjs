@@ -48,6 +48,7 @@ ljs.addAliases({
 	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
 	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
 	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js',
+	   // '/src/leaflet-src.js',
 	    // test leaflet areaselect
 	    //------------
 	    //'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.css',
