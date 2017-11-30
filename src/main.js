@@ -55,9 +55,9 @@ ljs.addAliases({
 	    //local leaflet area-select
 	    //------------------------
 	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.css',
-	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.js',
-	   // '/src/leaflet-areaselect/leaflet-areaselect.css',
-	     //'/src/leaflet-areaselect/leaflet-areaselect.js',
+	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.1.0.js',
+	    //'/src/leaflet-areaselect/leaflet-areaselect.css',
+	    //'/src/leaflet-areaselect/leaflet-areaselect.1.0.js',
 	    //test location filter (select area)
 	  //   'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.css',
 	    // 'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.js',
@@ -69,7 +69,7 @@ ljs.addAliases({
 	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
 
 	    //formater commons components from build
-	    //'http://localhost:8082/dist/build.js',
+	    //'http://localhost:8081/dist/build.js',
 	    'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
 	  //  'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
 		   

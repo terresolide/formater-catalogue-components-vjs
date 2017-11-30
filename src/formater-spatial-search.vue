@@ -106,7 +106,7 @@ export default {
         handleChange: function(e){
            if(this.areaSelect){
               this.areaSelect = false;
-               var event = new CustomEvent( 'selectAreaDrawEnd', {});
+               var event = new CustomEvent( 'selectAreaDrawEnd', { detail:this.bbox()});
        	    document.dispatchEvent( event);
        	  
           }
@@ -114,11 +114,8 @@ export default {
             return;
     	},
     	handleDraw:function(){ 
-    	    console.log("before "+this.areaSelect);
     	   if(this.areaSelect){
-    	       console.log("end");
-    	       var event = new CustomEvent( 'selectAreaDrawEnd', {});
-    	   
+    	       var event = new CustomEvent( 'selectAreaDrawEnd', {detail: this.bbox()});
           	   
     	   }else{
     	    var event = new CustomEvent( 'selectAreaDrawStart', {detail: this.bbox()});
