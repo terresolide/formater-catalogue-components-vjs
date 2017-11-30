@@ -1,3 +1,4 @@
+
 L.AreaSelect = L.Class.extend({
     includes: L.Mixin.Events,
    // includes: L.Evented,
@@ -39,6 +40,7 @@ L.AreaSelect = L.Class.extend({
             this._render();
     	}
     	this._container.style.display = "block";
+    	this.fire("change");
         return this;
     },
     
@@ -46,7 +48,7 @@ L.AreaSelect = L.Class.extend({
         var size = this.map.getSize();
         var topRight = new L.Point();
         var bottomLeft = new L.Point();
-        
+        size.x = this.map._container.offsetWidth;
         bottomLeft.x = Math.round((size.x - this._width) / 2);
         topRight.y = Math.round((size.y - this._height) / 2);
         topRight.x = size.x - bottomLeft.x;
@@ -68,8 +70,8 @@ L.AreaSelect = L.Class.extend({
         if (!dimensions)
             return;
 
-        this._height = parseInt(dimensions.height) || this._height;
-        this._width = parseInt(dimensions.width) || this._width;
+       // this._height = parseInt(dimensions.height) || this._height;
+      //  this._width = parseInt(dimensions.width) || this._width;
         this._render();
         this.fire("change");
     },
@@ -84,29 +86,31 @@ L.AreaSelect = L.Class.extend({
            var ne = L.latLng([bbox.north, bbox.east]);
            var sw = L.latLng([bbox.south, bbox.west] );
            var bounds = [ne, sw];
-          
+        
            this.map.fitBounds(bounds, { maxZoom:18});
-           
            var topright = this.map.project(ne, this.map.getZoom());
            var diff = this.map.project(sw, this.map.getZoom()).subtract( topright);
-
+           
            //compute size width and height
            
-           this.width = Math.abs( diff.x);
-           this.height = Math.abs( diff.y);
+           this._width = Math.abs( diff.x);
+           this._height = Math.abs( diff.y);
         }else{
             //this.areaSelect.addTo(this.map);
-            var width = 400;
-            var height = 300;
+            this._width = 400;
+            this._height = 300;
+           
         }
+       
         if(this.area){
-            this.area.remove();
-        }
-      //  this.areaSelect = L.areaSelect({width:width, height:height});
-       
-       
-        this.display();
+            // this.area.setBounds([]);
+             this.area.remove();
+         }
+        // this.setDimensions({width:width, height:height})
+       //  this.areaSelect = L.areaSelect({width:width, height:height});
         
+        
+         this.display();
         
     },
     _disableSelectArea(e){
@@ -125,7 +129,12 @@ L.AreaSelect = L.Class.extend({
                 this.area = L.rectangle(bounds, {color: "#ff7800", weight: 1});
             }
             this.area.addTo(this.map);
+        }else{
+            if(this.area){
+                this.area.remove();
+            }
         }
+        
         this.remove();
     },
     _createElements: function() {
@@ -152,7 +161,7 @@ L.AreaSelect = L.Class.extend({
         this.map.on("zoomend", this._onMapChange, this);
         this.map.on("resize", this._onMapResize, this);
         
-        this.fire("change");
+        
     },
     
     _setUpHandlerEvents: function(handle, xMod, yMod) {
@@ -168,7 +177,7 @@ L.AreaSelect = L.Class.extend({
             var curY = event.pageY;
             var ratio = self._width / self._height;
             var size = self.map.getSize();
-            
+            size.x = self.map._container.offsetWidth;
             function onMouseMove(event) {
                 if (self.options.keepAspectRatio) {
                     var maxHeight = (self._height >= self._width ? size.y : size.y * (1/ratio) ) - 30;
@@ -220,10 +229,14 @@ L.AreaSelect = L.Class.extend({
     
     _render: function() {
         var size = this.map.getSize();
+        console.log("size = "+size.x);
+        console.log(this.map._container.offsetWidth);
+        size.x = this.map._container.offsetWidth;
         var handleOffset = Math.round(this._nwHandle.offsetWidth/2);
-        
+        console.log("nwHandle =" + this._nwHandle.offsetWidth);
         var topBottomHeight = Math.round((size.y-this._height)/2);
         var leftRightWidth = Math.round((size.x-this._width)/2);
+        console.log("width = " + this._width);
         
         function setDimensions(element, dimension) {
             element.style.width = dimension.width + "px";
