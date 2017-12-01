@@ -1,5 +1,5 @@
 require("exports-loader?!./l.min.js")
-
+//test git name
 import Vue from 'vue';
 
 import vueCustomElement from 'vue-custom-element';
