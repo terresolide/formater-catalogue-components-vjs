@@ -1,4 +1,4 @@
-/** git test what name is used global git config??*/
+/** git test what name is used global git config???*/
 L.AreaSelect = L.Class.extend({
     includes: L.Mixin.Events,
    // includes: L.Evented,
