@@ -83,7 +83,7 @@ export default {
 	      maxZoom: 18
 	  }).addTo( this.map );
 	  //plugin areaselect
-	  this.areaSelect = L.areaSelect(this.map, {width:400, height:300});
+	  this.areaSelect = L.selectArea(this.map, {width:400, height:300, color:"red"});
 	  
 	  /* this.areaSelect.on( "change", function(){
 	       var bounds = this.getBounds();

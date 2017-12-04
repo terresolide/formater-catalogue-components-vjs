@@ -7,9 +7,14 @@ L.AreaSelect = L.Class.extend({
         height: 300,
         keepAspectRatio: false,
     },
-
+    bounds:null,
+    latLngBounds: null,
+    zoom: null,
+    center: null,
     initialize: function(map,options) {
         this.map = map;
+        this.center = this.map.getCenter();
+        this.zoom = this.map.getZoom();
         L.Util.setOptions(this, options);
         
         this._width = this.options.width;
@@ -19,6 +24,7 @@ L.AreaSelect = L.Class.extend({
         this._areaSelectDrawEndListener = this._disableSelectArea.bind(this) 
         document.addEventListener('selectAreaDrawEnd', this._areaSelectDrawEndListener);
         this.on( "change", function(){
+            console.log("change");
             var bounds = this.getBounds();
             var bbox = {
                     north: bounds.getNorthEast().lat%90,
@@ -26,6 +32,11 @@ L.AreaSelect = L.Class.extend({
                     south: bounds.getSouthWest().lat%90,
                     west: bounds.getSouthWest().lng%180
             }
+            if( !this.shutdown ){
+            	this.center = this.map.getCenter();
+                this.zoom = this.map.getZoom();
+            }
+            
             var event = new CustomEvent('selectAreaChange', {detail:{ box : bbox}});
             document.dispatchEvent(event);
         });
@@ -37,10 +48,11 @@ L.AreaSelect = L.Class.extend({
         //this.map = map;
     	if(!this._container){
             this._createElements();
-            this._render();
+             this._render();
     	}
+ this._render();
     	this._container.style.display = "block";
-    	this.fire("change");
+    	//this.fire("change");
         return this;
     },
     
@@ -53,10 +65,10 @@ L.AreaSelect = L.Class.extend({
         topRight.y = Math.round((size.y - this._height) / 2);
         topRight.x = size.x - bottomLeft.x;
         bottomLeft.y = size.y - topRight.y;
-        
+       
         var sw = this.map.containerPointToLatLng(bottomLeft);
         var ne = this.map.containerPointToLatLng(topRight);
-        
+         
         return new L.LatLngBounds(sw, ne);
     },
     
@@ -86,35 +98,35 @@ L.AreaSelect = L.Class.extend({
            var ne = L.latLng([bbox.north, bbox.east]);
            var sw = L.latLng([bbox.south, bbox.west] );
            var bounds = [ne, sw];
-          this.latLngBounds = bounds;
+           this.latLngBounds = bounds;
 	
-	if(this.diffBounds){
-           this.map.fitBounds(bounds, { maxZoom:18});
-	}else{
-	   this._onFitBounds();
-	}
-          /* var topright = this.map.project(ne, this.map.getZoom());
-           var diff = this.map.project(sw, this.map.getZoom()).subtract( topright);
-           
-           //compute size width and height
-           
-           this._width = Math.abs( diff.x);
-           this._height = Math.abs( diff.y);*/
+			if(this.diffBounds){
+		           this.map.fitBounds( bounds);
+			}else{
+			   this._onFitBounds();
+			}
+	          /* var topright = this.map.project(ne, this.map.getZoom());
+	           var diff = this.map.project(sw, this.map.getZoom()).subtract( topright);
+	           
+	           //compute size width and height
+	           
+	           this._width = Math.abs( diff.x);
+	           this._height = Math.abs( diff.y);*/
         }else{
             //this.areaSelect.addTo(this.map);
             this._width = 400;
             this._height = 300;
- if(this.area){
-            // this.area.setBounds([]);
-             this.area.remove();
-         }
-        // this.setDimensions({width:width, height:height})
-       //  this.areaSelect = L.areaSelect({width:width, height:height});
-        
-        
-         this.display();
-           
-        }
+			if(this.area){
+	            // this.area.setBounds([]);
+	             this.area.remove();
+			}
+			        // this.setDimensions({width:width, height:height})
+			       //  this.areaSelect = L.areaSelect({width:width, height:height});
+			        
+			        
+			  this.display();
+			           
+		 }
        
        
         
@@ -129,6 +141,8 @@ L.AreaSelect = L.Class.extend({
             var ne = L.latLng([bbox.north, bbox.east]);
             var sw = L.latLng([bbox.south, bbox.west] );
             var bounds = [ne, sw];
+            this.center = this.map.getCenter();
+            this.zoom = this.map.getZoom();
             if( this.area){
                 this.area.setBounds(bounds);
             }else{
@@ -249,7 +263,7 @@ L.AreaSelect = L.Class.extend({
     
     _onMapChange: function() {
         if(this.shutdown){
-this.diffBounds = true;
+	    this.diffBounds = true;
             return;
         }
         this.fire("change");
@@ -294,7 +308,9 @@ this.diffBounds = true;
         setDimensions(this._neHandle, {right:leftRightWidth-handleOffset, top:topBottomHeight-7});
         setDimensions(this._swHandle, {left:leftRightWidth-handleOffset, bottom:topBottomHeight-7});
         setDimensions(this._seHandle, {right:leftRightWidth-handleOffset, bottom:topBottomHeight-7});
+
     }
+
 });
 
 L.areaSelect = function(options) {

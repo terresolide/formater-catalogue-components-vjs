@@ -55,10 +55,10 @@ ljs.addAliases({
 	    //'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.js',
 	    //local leaflet area-select
 	    //------------------------
-	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.css',
-	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.1.0.js',
+	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.css',
+	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.1.0.js',
 	    //'/src/leaflet-areaselect/leaflet-areaselect.css',
-	    //'/src/leaflet-areaselect/leaflet-areaselect.1.0.js',
+	   '/src/leaflet.select-area.js',
 	    //test location filter (select area)
 	  //   'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.css',
 	    // 'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.js',
@@ -97,8 +97,9 @@ ljs.load('dep', function() {
     var loaded = setInterval(function() {
         var result = componentUsed.filter( function( cpt){
             return window.registredAerisElements.indexOf(cpt)>-1;
-        })
-        if ( result.length == componentUsed.length) {
+        });
+        
+        if ( result.length == componentUsed.length ) {
            console.log("Formater Catalogue:  before components loaded");
            load();
            clearInterval(loaded);
