@@ -154,6 +154,9 @@ L.SelectArea =  L.Class.extend({
 			this._mode = "hideMarkers";
 			
 		}
+		var bounds = this._createBounds(evt.detail);
+		this.setBounds(bounds);
+		
 		if( !evt.detail.north ){
 			this.rectangle.remove();
 			this._mode = "hidden";

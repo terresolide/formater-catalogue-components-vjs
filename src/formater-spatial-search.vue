@@ -101,16 +101,12 @@ export default {
 	            south: this.south,
 	            east: this.east,
 	            west: this.west
-	    }
+	            }
     	},
         handleChange: function(e){
-           if(this.areaSelect){
-              this.areaSelect = false;
-               var event = new CustomEvent( 'selectAreaDrawEnd', { detail:this.bbox()});
+        	this.areaSelect = false;
+             var event = new CustomEvent( 'selectAreaDrawEnd', { detail:this.bbox()});
        	    document.dispatchEvent( event);
-       	  
-          }
-           
             return;
     	},
     	handleDraw:function(){ 
@@ -118,7 +114,7 @@ export default {
     	       var event = new CustomEvent( 'selectAreaDrawEnd', {detail: this.bbox()});
           	   
     	   }else{
-    	    var event = new CustomEvent( 'selectAreaDrawStart', {detail: this.bbox()});
+    		   var event = new CustomEvent( 'selectAreaDrawStart', {detail: this.bbox()});
     	   }  
     	   this.areaSelect = !this.areaSelect;
     	   document.dispatchEvent( event);

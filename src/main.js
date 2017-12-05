@@ -38,41 +38,29 @@ Vue.use( formaterPlugin);
 
 ljs.addAliases({
 	dep: [//'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 
-	  //  'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js',
-	  // 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js',
-	  //  'https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js',
-	  //  'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
-	 // 'https://github.com/karol-f/vue-element/blob/wip/master/vue_2_element/dist/vue-element.js',
-	    //icon marker with font awesome
-	    //'https://rawgit.com/lvoogdt/Leaflet.awesome-markers/master/dist/leaflet.awesome-markers.css',
-	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
-	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
+		//'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js',
+		//'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js',
+		//'https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js',
+		//'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
+	    //icon marker with font awesome CSS
+		//-----------------------------
+	    //'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
+	    //leaflet
+		//------------
+		'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
 	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js',
-	   // '/src/leaflet-src.js',
-	    // test leaflet areaselect
-	    //------------
-	    //'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.css',
-	    //'https://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.js',
-	    //local leaflet area-select
-	    //------------------------
-	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.css',
-	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet-areaselect/leaflet-areaselect.1.0.js',
-	    //'/src/leaflet-areaselect/leaflet-areaselect.css',
-	   '/src/leaflet.select-area.js',
-	    //test location filter (select area)
-	  //   'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.css',
-	    // 'https://rawgit.com/kajic/leaflet-locationfilter/master/src/locationfilter.js',
-	    
-	    //w8r leaflet-aera-select
-	  //  'https://rawgit.com/w8r/leaflet-area-select/master/dist/Map.SelectArea.min.js',
-	    //awesome marker old version...
-	   // 'https://rawgit.com/lvoogdt/Leaflet.awesome-markers/master/dist/leaflet.awesome-markers.min.js',
-	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
+	    //leaflet.select-area
+	    //-------------------
+	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.js',
+	    //'src/leaflet.select-area.js',
+	    //awesome marker old version... JS
+	    //-----------------------------------
+	    // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
 
 	    //formater commons components from build
 	    //'http://localhost:8081/dist/build.js',
 	    'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
-	  //  'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
+	    //'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
 		   
 	    
 	    ]
