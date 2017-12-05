@@ -1,3 +1,28 @@
+L.isValidBbox = function( bbox){
+	if( bbox.north && bbox.east && bbox.west && bbox.south){
+		bbox.north = bbox.north%90;
+		bbox.south = bbox.south%90;
+		bbox.east = bbox.east%180;
+		bbox.west = bbox.west%180;
+		if(bbox.east < bbox.west){
+            bbox.west -=180;
+		}
+		if( bbox.north < bbox.south){
+			bbox.south -=90;
+		}
+		return bbox;
+	}else{
+		return false;
+	}
+}
+
+L.bbox2bounds = function( bbox ){
+   bbox = L.isValidBbox (bbox);
+
+	var ne = [ bbox.north, bbox.east];
+	var sw = [ bbox.south, bbox.west];
+	return [ne, sw];
+}
 L.SelectArea =  L.Class.extend({
 	 includes: L.Mixin.Events,
 	ne: null,
@@ -20,16 +45,70 @@ L.SelectArea =  L.Class.extend({
 	},
 	initialize: function(map, options){
 		this.map = map;
-		this._setOptions( options );
+		this.setOptions( options );
 		this._initListeners();
+		this.on("change", function(){
+            var bounds = this.rectangle.getBounds();
+            var bbox = {
+                    north: bounds.getNorthEast().lat%90,
+                    east: bounds.getNorthEast().lng%180,
+                    south: bounds.getSouthWest().lat%90,
+                    west: bounds.getSouthWest().lng%180
+            }
+            
+            var event = new CustomEvent('selectAreaChange', {detail:{ box : bbox}});
+            document.dispatchEvent(event);
+        });
 	    
 	},
-	_setOptions: function( options ){
+	setBounds: function( bounds){
+		
+		var ne = bounds[0];
+		var sw = bounds[1];
+		this.ne.setLatLng(ne);
+		this.sw.setLatLng(sw);
+		this.rectangle.setBounds( bounds);
+		
+	},
+	setOptions: function( options ){
 		L.Util.setOptions(this, options);
 		this.options.markerOptions.color = this.options.color;
 		this.options.markerOptions.fill = this.options.color;
 		this.options.rectangleOptions.color = this.options.color;
 		this.options.rectangleOptions.fill = this.options.color;
+	},
+	setColor( color ){
+		if( this.rectangle){
+			//this.rectangle.options.stroke = color;
+			//this.rectangle.options.fill = color;
+			this.rectangle.setStyle({color:color, fill:color});
+		}
+		if( this.ne){
+			this.ne.setStyle({color:color, fill:color});
+		}
+		if( this.sw){
+			this.sw.setStyle({color:color, fill:color});
+		}
+	},
+	initColor(){
+		if( this.rectangle){
+			this.rectangle.setStyle({
+				color: this.options.rectangleOptions.color, 
+				fill:this.options.rectangleOptions.fill
+				});
+		}
+		if( this.ne){
+			this.ne.setStyle({
+				color: this.options.markerOptions.color, 
+				fill: this.options.markerOptions.fill
+			});
+		}
+		if( this.sw){
+			this.sw.setStyle({
+				color: this.options.markerOptions.color, 
+				fill: this.options.markerOptions.fill
+			});
+		}
 	},
 	_initListeners(){
 		this._areaSelectDrawListener = this._enableSelectArea.bind(this) 
@@ -38,16 +117,22 @@ L.SelectArea =  L.Class.extend({
 	    document.addEventListener('selectAreaDrawEnd', this._areaSelectDrawEndListener);
 	},
 	_enableSelectArea: function(e){
-		this._showMarkers();
+		this._showMarkers( e );
 	},
 	_disableSelectArea: function(e){
-		this._hideMarkers();
+		this._hideMarkers(e );
 	},
-	_showMarkers: function(){
+	_showMarkers: function(e){
+		
+		var bounds = this._createBounds(e.detail)
 		if( !this.rectangle){
 			//create rectangle and markers
-			this._createGeometries();
+			this._createGeometries( bounds);
+		}else{
+		
+			this.setBounds( bounds);
 		}
+		this.fire("change");
 		switch( this._mode){
 		case "hidden":
 			this.rectangle.addTo( this.map );
@@ -59,50 +144,91 @@ L.SelectArea =  L.Class.extend({
 		this._mode = "show";
 		
 	},
-	_hideMarkers: function(){
+	_hideMarkers: function(evt){
+		
 		if(this._mode == "show"){
 			this.ne.remove();
 			this.sw.remove();
+			//if dragging marker
+			this.map.fire("click");
 			this._mode = "hideMarkers";
+			
+		}
+		if( !evt.detail.north ){
+			this.rectangle.remove();
+			this._mode = "hidden";
 		}
 	},
-	_createGeometries: function(){
-		var size = this.map.getSize();
-        var topRight = new L.Point();
-        var bottomLeft = new L.Point();
-        size.x = this.map._container.offsetWidth;
-        bottomLeft.x = Math.round((size.x - this.options.width) / 2);
-        topRight.y = Math.round((size.y - this.options.height) / 2);
-        topRight.x = size.x - bottomLeft.x;
-        bottomLeft.y = size.y - topRight.y;
-        
-        var sw = this.map.containerPointToLatLng(bottomLeft);
-        var ne = this.map.containerPointToLatLng(topRight);
-        
+	_createBounds: function(bbox){
+		bbox = L.isValidBbox( bbox);
+		if( bbox ){
+			var bounds = L.bbox2bounds( bbox);
+		}else{
+			
+			var size = this.map.getSize();
+	        var topRight = new L.Point();
+	        var bottomLeft = new L.Point();
+	        size.x = this.map._container.offsetWidth;
+	        bottomLeft.x = Math.round((size.x - this.options.width) / 2);
+	        topRight.y = Math.round((size.y - this.options.height) / 2);
+	        topRight.x = size.x - bottomLeft.x;
+	        bottomLeft.y = size.y - topRight.y;
+	        
+	        var sw = this.map.containerPointToLatLng(bottomLeft);
+	        var ne = this.map.containerPointToLatLng(topRight);
+	        var bounds = [ne, sw];
+		}
+		
+		return bounds;
+	},
+	_createGeometries: function( bounds){
+		var ne = bounds[0];
+		var sw = bounds[1];
 		this.ne = L.circleMarker( ne, this.options.markerOptions);
 		this.sw = L.circleMarker( sw, this.options.markerOptions);
-		this.rectangle = L.rectangle([ne, sw], this.options.rectangleOptions);
+		this.rectangle = L.rectangle( bounds , this.options.rectangleOptions);
 		this._initEventsOnMarkers();
+		this.fire("change");
 	},
-	_dragNE: function(e){
-		this.ne.setLatLng(e.latlng);
-	},
-	_initEventsOnMarkers: function(){
-	
+
+	_initEventOnMarker: function( marker , callback ){
 		var _map = this.map;
 		var _self = this;
-		this.ne.on( 'mousedown', function () {
-			        var _ne = this;
-					function dragNE(e){
-						_ne.setLatLng(e.latlng);
-						 L.DomEvent.stopPropagation(e);
-					    return false;     
-					}
-				    _map.on('mousemove', dragNE);
-				    _map.on("click", function(){
-				    	this.off('mousemove', dragNE);
-				    });
-				});
+		marker.on( 'mousedown', function () {
+	        
+	        _map.dragging.disable();
+			_self.setColor( "#ff0000");
+		    _map.on('mousemove', callback);
+		    _map.on("click", function(){
+		    	this.off('mousemove', callback);
+		    	this.dragging.enable();
+		    	_self.initColor();
+		    });
+		});
+	},
+	_initEventsOnMarkers: function(){
+		var _ne = this.ne;
+		var _sw = this.sw;
+		var _area = this.rectangle;
+		var _self = this;
+		function dragNE(e){
+			_self.ne.setLatLng(e.latlng);   
+			_self.rectangle.setBounds([
+				_self.ne.getLatLng(),
+				_self.sw.getLatLng()]);
+			_self.fire("change");
+		}
+		function dragSW(e){
+			_self.sw.setLatLng(e.latlng);   
+			_self.rectangle.setBounds([
+				_self.ne.getLatLng(),
+				_self.sw.getLatLng()]);
+			_self.fire("change");
+		}
+		
+		this._initEventOnMarker( _ne, dragNE);
+		this._initEventOnMarker( _sw, dragSW)
+		
 	}
 });
 L.selectArea = function(options) {
