@@ -1,3 +1,15 @@
+/**
+ * select area layer using leaflet
+ * @author epointal
+ * @licence gnu
+ * 
+ */
+
+/**
+ * compute if bbox is valid
+ * @param {object} bbox ie {north, east, south, west}
+ * @return bbox| false
+ */
 L.isValidBbox = function( bbox){
 	if( bbox.north && bbox.east && bbox.west && bbox.south){
 		bbox.north = bbox.north%90;
@@ -23,13 +35,24 @@ L.bbox2bounds = function( bbox ){
 	var sw = [ bbox.south, bbox.west];
 	return [ne, sw];
 }
-L.SelectArea =  L.Class.extend({
-	 includes: L.Mixin.Events,
+/**
+ * Select area layer
+ * @class
+ * @property {L.CircleMarker} ne North East Marker
+ * @property {L.CircleMarker} sw South West Marker
+ * @property {L.Rectangle} rectangle the geometric area
+ * @property {L.Map} map the map where is draw the rectangle...
+ * @property {object} options color, width, opacity....
+ * 
+ * @listen "selectAreaDrawStart" then display markers NE and SW with positions in bbox event.detail
+ * @listen "selectAreaDrawEnd" then hide markers NE and SW and change position with position in bbox event.detail
+ * @emit "selectAreaChange" when select area change with event.detail equal bbox
+ */
+L.SelectArea =   L.Evented.extend({
 	ne: null,
 	sw: null,
 	rectangle:null,
 	map:null,
-	_mode: "hidden",
 	options:{
 		width:400,
 		height:300,
@@ -43,9 +66,22 @@ L.SelectArea =  L.Class.extend({
 			fillOpacity: 0.2
 		}
 	},
-	initialize: function(map, options){
-		this.map = map;
-		this.setOptions( options );
+	_mode: "hidden",
+	/**
+	 * @constructor
+	 * @param {object} prop essentially the map
+	 *   example :{ map: a_map,
+	 *   			options:{
+	 *   				width:400,
+	 *   				height:300,
+	 *   				color: "blue"
+	 *   			}
+	 *   		  }
+
+	 */
+	initialize: function(prop){
+		this.map = prop.map;
+		this.setOptions( prop.options );
 		this._initListeners();
 		this.on("change", function(){
             var bounds = this.rectangle.getBounds();
@@ -56,11 +92,15 @@ L.SelectArea =  L.Class.extend({
                     west: bounds.getSouthWest().lng%180
             }
             
-            var event = new CustomEvent('selectAreaChange', {detail:{ box : bbox}});
+            var event = new CustomEvent('selectAreaChange', {detail:bbox});
             document.dispatchEvent(event);
         });
 	    
 	},
+	/**
+	 * change select area position with values in array bounds
+	 * @param {Array} bounds array of latlng bounds [ne, sw]
+	 */
 	setBounds: function( bounds){
 		
 		var ne = bounds[0];
@@ -70,6 +110,7 @@ L.SelectArea =  L.Class.extend({
 		this.rectangle.setBounds( bounds);
 		
 	},
+	
 	setOptions: function( options ){
 		L.Util.setOptions(this, options);
 		this.options.markerOptions.color = this.options.color;
@@ -79,8 +120,6 @@ L.SelectArea =  L.Class.extend({
 	},
 	setColor( color ){
 		if( this.rectangle){
-			//this.rectangle.options.stroke = color;
-			//this.rectangle.options.fill = color;
 			this.rectangle.setStyle({color:color, fill:color});
 		}
 		if( this.ne){

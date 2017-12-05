@@ -138,10 +138,10 @@ export default {
 			  
 		},
 		handleBounds: function(e){
-		    this.north = e.detail.box.north;
-		    this.south = e.detail.box.south;
-		    this.east = e.detail.box.east;
-		    this.west = e.detail.box.west;
+		    this.north = e.detail.north;
+		    this.south = e.detail.south;
+		    this.east = e.detail.east;
+		    this.west = e.detail.west;
 		},
 	
 		handleSearch: function(e) {
