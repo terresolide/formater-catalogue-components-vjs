@@ -1,0 +1,326 @@
+{ "type": "FeatureCollection",
+  "features":[
+	{
+	    "type": "Feature",
+	    "geometry": {
+	       "type": "Point",
+	       "coordinates":[37.766, 9.035, 2441]
+	    },
+	    "properties":{
+    	    "code": "AAE",
+    		"name":{
+    		    "en": "Addis Ababa",
+    		    "fr": "Addis Abeba"
+    		},
+    		"country":{
+    			"en": "Ethiopia",
+    		    "fr": "Ethiopie"
+    		},
+    		"organism": "bcmt",
+    		"temporal":{
+                "start": "1997-09-01",
+                "end": "now"
+            },
+    		"url": "http://www.bcmt.fr/aae.html"
+		}
+	},
+	{
+	   "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[77.570, -37.08, 50]
+        },
+        "properties":{
+    	    "code": "AMS",
+    		"name":{
+    		    "en": "Amsterdam Island - French Southern and Antarctic Lands",
+    		    "fr": "Île Amsterdam - Terres Autrales et Antarctiques françaises"
+    		},
+    		"country":{
+    			"en": "France",
+    		    "fr": "France"
+    		},
+    		"organism": "INTERMAGNET",
+    		"temporal":{
+                "start": "1981-04-01",
+                "end": "now"
+            },
+    		"url": "http://www.bcmt.fr/ams.html"
+		}
+	},
+	{
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[18.566, 4.333, 395]
+        },
+        "properties":{
+            "code": "BNG",
+            "name":{
+                "en": "Bangui",
+                "fr": "Bangui"
+            },
+            "country":{
+                "en": "Central African Republic",
+                "fr": "République Centrafricaine"
+            },
+            "organism": "BCMT",
+            "temporal":{
+                "start": "1955-01-01",
+                "end": "2011-06-01"
+            },
+            "url": "http://www.bcmt.fr/bng.html"
+        }
+    },
+	{
+	   "type": "Feature",
+       "geometry": {
+           "type": "Point",
+           "coordinates":[38.230, 58.07, 115]
+        },
+        "properties":{
+    	    "code": "BOX",
+    		"name":{
+    		    "en": "Borok, Yaroslavl",
+    		    "fr": "Borok, Yaroslavl"
+    		},
+    		"country":{
+    			"en": "Russia",
+    		    "fr": "Russie"
+    		},
+    		"organism": "BCMT",
+    		"temporal":{
+                "start": "2004-04-01",
+                "end": "now"
+            },
+    		"url": "http://www.bcmt.fr/box.html"
+    	}
+	},
+	{
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[2.260, 48.025, 145]
+        },
+        "properties":{
+
+    	    "code": "CLF",
+    		"name":{
+    		    "en": "Chambon-la-Foret",
+    		    "fr": "Chambon-la-Forêt"
+    		},
+    		"country":{
+    			"en": "France",
+    		    "fr": "France"
+    		},
+    		"organism":"BCMT",
+    		"location":{
+    			"lat": 48.025,
+    			"lng": 2.260
+    		},
+    		"temporal":{
+                "start": "1936-01-01",
+                "end": "now"
+            },
+    		"url": "http://www.bcmt.fr/clf.html"
+    	}
+	},
+	{
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[-109.41, -27.171, 83]
+        },
+        "properties":{
+            "organism": "BCMT",
+    	    "code": "IPM",
+    		"name":{
+    		    "en": "Isla de Pascua",
+    		    "fr": "Île de Pâques"
+    		},
+    		"country":{
+    		    "en": "Chile",
+    		    "fr": "Chili"
+    		},
+    		"temporal":{
+                "start": "2010-01-01",
+                "end": "now"
+            },
+    		"url": "http://www.bcmt.fr/ipm.html"
+    	}
+	},
+	{
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[-52.731, 5.021, 10]
+        },
+        "properties":{
+            "organism": "BCMT",
+            "code": "KOU",
+            "name":{
+                "en": "Kourou, French Guiana",
+                "fr": "Kourou, Guyane française"
+            },
+            "country":{
+                "en": "France",
+                "fr": "France"
+            },
+            "temporal":{
+                "start": "1996-01-01",
+                "end": "now"
+            },
+            "url": "http://www.bcmt.fr/kou.html"
+        }
+    },
+   {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[103.845, 36.087, 1560]
+        },
+        "properties":{
+            "organism": "BCMT",
+            "code": "LZH",
+            "name":{
+                "en": "Lanzhou",
+                "fr": "Lanzhou"
+            },
+            "country":{
+                "en": "China",
+                "fr": "Chine"
+            },
+            "temporal":{
+                "start": "2001-04-01",
+                "end": "now"
+            },
+            "url": "http://www.bcmt.fr/lzh.html"
+        }
+    },
+   {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[-16.958, 14.392,7]
+        },
+        "properties":{
+            "organism": "BCMT",
+            "code": "MBO",
+            "name":{
+                "en": "Mbour",
+                "fr": "Mbour"
+            },
+            "country":{
+                "en": "Senegal",
+                "fr": "Sénégal"
+            },
+            "temporal":{
+                "start": "1952-03-01",
+                "end": "now"
+            },
+            "url": "http://www.bcmt.fr/mbo.html"
+        }
+    },
+    {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[105.959, 21.029, 5]
+        },
+        "properties":{
+            "organism": "BCMT",
+            "code": "PHU",
+            "name":{
+                "en": "Phu Thuy",
+                "fr": "Phu Thuy"
+            },
+            "country":{
+                "en": "Vietnam",
+                "fr": "Viêtnam"
+            },
+            "temporal":{
+                "start": "1996-01-01",
+                "end": "now"
+            },
+            "url": "http://www.bcmt.fr/phu.html"
+        }
+    },
+    {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[108.482, 11.945, 1583]
+        },
+        "properties":{
+            "organism": "BCMT",
+            "code": "DLT",
+            "name":{
+                "en": "Dalat",
+                "fr": "Dalat"
+            },
+            "country":{
+                "en": "Vietnam",
+                "fr": "Viêtnam"
+            },
+            "temporal":{
+                "start": "2011-04-01",
+                "end": "now"
+            },
+            "url": "http://www.bcmt.fr/dlt.html"
+        }
+    },
+    {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[-149.574, -17.567, 357]
+        },
+        "properties":{
+            "organism": "BCMT",
+            "code": "PPT",
+            "name":{
+                "en": "Pamatai, Tahiti Island",
+                "fr": "Pamatai, Tahiti"
+            },
+            "country":{
+                "en": "French Polynesia, France",
+                "fr": "Polynésie française, France"
+            },
+            "location":{
+                "lat": -17.567,
+                "lng": -149.574
+            },
+            "temporal":{
+                "start": "1968-01-01",
+                "end": "now"
+            },
+            "url": "http://www.bcmt.fr/phu.html"
+         }
+    },
+    {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[5.530, 22.792, 1373]
+        },
+        "properties":{
+            "organism": "BCMT",
+            "code": "TAM",
+            "name":{
+                "en": "Tamanrasset",
+                "fr": "Tamanrasset"
+            },
+            "country":{
+                "en": "Algeria",
+                "fr": "Algerie"
+            },
+            "temporal":{
+                "start": "1993-01-01",
+                "end": "now"
+            },
+            "url": "http://www.bcmt.fr/tam.html"
+        }
+    }  
+  ]
+                               		
+}

@@ -27,13 +27,18 @@ export default {
       lang: {
           type: String,
           default: 'fr'
+      },
+      obsurl:{
+    	  type: String,
+    	  default: 'data/geojson_observatories.json'
       }
     
   },
   data(){
       return {
           map:null,
-          selectArea:null
+          selectArea:null,
+          observatories:null
       }
   },
   methods:{
@@ -45,7 +50,33 @@ export default {
 	      this.map._container.style.height = height +"px";
 	      this.$el.querySelector("#formatermap").style.height = Math.round(height) + "px";
 	      this.map.invalidateSize()
-	  }
+	  },
+	/*  getObservatories(){
+		if( !this.observatories){
+	            this.$http.get( this.obsurl).then( 
+	                    response => {this.addObservatories( response)},
+	                    response => {this.noObservatories( response)});
+		}
+	     
+	  },
+	  addObservatories( response ){
+		  console.log("observatories");
+		  try{
+			  console.log("try");
+              this.observatories = JSON.parse(response.bodyText);
+              console.log("success");
+              console.log(response);
+              L.geoJSON(this.observatories).addTo( this.map );
+             // this.observatoriesRequest();
+              //event observatories for map
+          }catch(e){
+              this.observatories = null;
+              
+          }
+	  },
+	  noObservatories( response){
+		  console.log( "no observatories");
+	  }*/
   },
   created(){
       this.$i18n.locale = this.lang;
@@ -71,7 +102,8 @@ export default {
 					  height:300, 
 					  color:"#DD9946"
 				  }});
-	  
+	  //var observatoriesMarker = new L.MarkersCollection( "observatories", this.map , {iconMarker:{icon:"binoculars"}, iconSelected:{icon:'binoculars'}});
+	 // this.getObservatories();
   },
   destroyed(){
    

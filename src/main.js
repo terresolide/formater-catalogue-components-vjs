@@ -55,8 +55,11 @@ ljs.addAliases({
 	    //'src/leaflet.select-area.1.1.js',
 	    //awesome marker old version... JS
 	    //-----------------------------------
-	    // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
+	    //'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
 
+	    //Markers collection
+	    //-----------------
+	    //'src/leaflet.markers-collection.js',
 	    //formater commons components from build
 	    //'http://localhost:8081/dist/build.js',
 	    'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
