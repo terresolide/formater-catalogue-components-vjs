@@ -51,8 +51,8 @@ ljs.addAliases({
 	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js',
 	    //leaflet.select-area
 	    //-------------------
-	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.0.js',
-	    //'src/leaflet.select-area.1.0.js',
+	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.1.js',
+	    //'src/leaflet.select-area.1.1.js',
 	    //awesome marker old version... JS
 	    //-----------------------------------
 	    // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',

@@ -19,13 +19,13 @@ L.isValidBbox = function( bbox){
 		bbox.east = L.modLng(bbox.east);
 		bbox.west = L.modLng(bbox.west);
 		if(bbox.east < bbox.west){
-			
-            bbox.west -=360;
+			if(bbox.east > 0){
+				bbox.west -=360;
+			}else{
+				bbox.east +=360;
+			}
 		}
-		if( bbox.north < bbox.south){
-			bbox.south -=180;
-		}
-
+		
 		return bbox;
 	}else{
 		return false;
