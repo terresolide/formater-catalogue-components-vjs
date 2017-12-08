@@ -11,8 +11,8 @@
 
 <template>	
 	<div class="formater-map">
-    <div id="formatermap" ></div>
-
+	    <div id="formatermap" ></div>
+	    <formater-sheet></formater-sheet>
 	</div>
 </template>
 
@@ -58,7 +58,9 @@ export default {
 		  this.handleReset();
 		  
           var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'red'};
-          var iconMarker = new L.AwesomeMarkers.icon( iconOptions);
+          var iconMarkerIntermagnet= new L.AwesomeMarkers.icon( iconOptions);
+          var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'orange'};
+          var iconMarkerBCMT= new L.AwesomeMarkers.icon( iconOptions);
           var lang = this.lang;
           this.observatories = L.geoJSON(event.detail, {
               /*style: function (feature) {
@@ -69,6 +71,11 @@ export default {
 
               pointToLayer: function (feature, latlng) {
                   console.log(feature.properties.name[lang]);
+                  if( feature.properties.organism == "INTERMAGNET"){
+                	  var iconMarker = iconMarkerIntermagnet;
+                  }else{
+                	  var iconMarker = iconMarkerBCMT;
+                  }
                   var marker = new L.Marker(
                           latlng,
                           {icon: iconMarker,
@@ -76,7 +83,7 @@ export default {
                            title: feature.properties.name[lang]
                           });
                   marker.on('click', function(e ){
-                	  var event = new CustomEvent("", { detail:this});
+                	  var event = new CustomEvent("displayInfo", { detail:this});
                 	  document.dispatchEvent(event);
                       console.log( this.options.name);
                   })
@@ -133,6 +140,9 @@ export default {
 </script>
 
 <style>
+.formater-map{
+    position:relative;
+}
 [id="formatermap"]{
   width:100%;
   min-height:461px;
