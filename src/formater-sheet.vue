@@ -55,11 +55,12 @@ export default {
 <style>
 .formater-sheet-container{
     position:absolute;
-    top:0;
+    top:20px;
     right:0;
     background-color:#fff;
     width:300px;
     min-height:100px;
+    transform: translate(300px, 0);
     z-index:450;
 }
 </style>

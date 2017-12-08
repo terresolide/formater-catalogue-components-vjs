@@ -142,6 +142,7 @@ export default {
 <style>
 .formater-map{
     position:relative;
+    overflow:hidden;
 }
 [id="formatermap"]{
   width:100%;
