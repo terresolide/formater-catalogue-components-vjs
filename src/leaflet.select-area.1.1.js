@@ -2,6 +2,7 @@
  * select area layer using leaflet
  * @author epointal
  * @licence gnu
+ * @version 1.1
  * 
  */
 

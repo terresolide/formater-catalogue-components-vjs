@@ -44,7 +44,7 @@ ljs.addAliases({
 		//'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
 	    //icon marker with font awesome CSS
 		//-----------------------------
-	    //'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
+	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
 	    //leaflet
 		//------------
 		'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
@@ -55,7 +55,7 @@ ljs.addAliases({
 	    //'src/leaflet.select-area.1.1.js',
 	    //awesome marker old version... JS
 	    //-----------------------------------
-	    //'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
+	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
 
 	    //Markers collection
 	    //-----------------

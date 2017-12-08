@@ -51,7 +51,7 @@ export default {
 	      this.$el.querySelector("#formatermap").style.height = Math.round(height) + "px";
 	      this.map.invalidateSize()
 	  },
-	/*  getObservatories(){
+	  getObservatories(){
 		if( !this.observatories){
 	            this.$http.get( this.obsurl).then( 
 	                    response => {this.addObservatories( response)},
@@ -66,7 +66,30 @@ export default {
               this.observatories = JSON.parse(response.bodyText);
               console.log("success");
               console.log(response);
-              L.geoJSON(this.observatories).addTo( this.map );
+              var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'orange'};
+              var iconMarker = new L.AwesomeMarkers.icon( iconOptions);
+              var lang = this.lang;
+              L.geoJSON(this.observatories, {
+            	  /*style: function (feature) {
+                      return feature.properties && feature.properties.style;
+                  },
+
+                  onEachFeature: onEachFeature,*/
+
+                  pointToLayer: function (feature, latlng) {
+                	  console.log(feature.properties.name[lang]);
+                      var marker = new L.Marker(
+                              latlng,
+                              {icon: iconMarker,
+                               name: feature.properties.code,
+                               title: feature.properties.name[lang]
+                              });
+                      marker.on('click', function(e ){
+                    	  console.log( this.options.name);
+                      })
+                      return marker;
+                  }
+              }).addTo( this.map );
              // this.observatoriesRequest();
               //event observatories for map
           }catch(e){
@@ -76,7 +99,7 @@ export default {
 	  },
 	  noObservatories( response){
 		  console.log( "no observatories");
-	  }*/
+	  }
   },
   created(){
       this.$i18n.locale = this.lang;
@@ -94,6 +117,7 @@ export default {
 	  }).addTo( this.map );
 	  this.map.on( "resize", this.resize);
 	  this.resize();
+	  
 	  this.selectArea = L.selectArea(
 			  {
 				  map:this.map, 
@@ -103,7 +127,7 @@ export default {
 					  color:"#DD9946"
 				  }});
 	  //var observatoriesMarker = new L.MarkersCollection( "observatories", this.map , {iconMarker:{icon:"binoculars"}, iconSelected:{icon:'binoculars'}});
-	 // this.getObservatories();
+	  this.getObservatories();
   },
   destroyed(){
    
