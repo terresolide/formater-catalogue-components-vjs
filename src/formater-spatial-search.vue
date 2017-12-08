@@ -145,7 +145,9 @@ export default {
 		},
 	
 		handleSearch: function(e) {
+			
 		    e.detail.box = this.bbox();
+		    this.handleChange();
 	    },
         handleTheme: function(theme) {
 	  		this.theme = theme.detail;

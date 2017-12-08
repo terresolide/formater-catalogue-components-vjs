@@ -59,7 +59,7 @@ export default {
       },
       url:{
           type: String,
-          default: 'http://service.test/bcmt.php'
+          default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
       }
       
   },
@@ -82,29 +82,105 @@ export default {
 		search(){
 		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
 			document.dispatchEvent(e);
-		    var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
-	
+			if( e.detail.error){
+				var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('error')}});
+				document.dispatchEvent(event);
+				return;
+			}else{
+
+				var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
+                document.dispatchEvent(event);
+                var result = this.callApi(e);
+                return;
+			}
+		},
+		callApi(e){
+			  var _this = this;
+			  var data = e.detail;
+			  this.$http.get( this.url).then( 
+                      response => {_this.handleSuccess( response, data)},
+                      response => {_this.handleError( response , data)});
+			  
+  
+		},
+		handleSuccess(rep, data){
+		    console.log( data);
+		    //DataType = magnetisme
+		    //StartTime
+		    //EndTime
+		    //box
+		    
+		    
+		    var result = {  
+		    		type: "FeatureCollection",
+		    		features:[] };
+		    //do selection here, no service api for the moment
+		    if(!data.box.north){
+		    	data.box.north=90;
+		    }
+		    if(!data.box.south){
+		    	data.box.south = -90;
+		    }
+		    if(!data.box.east) data.box.east = 180;
+		    if(!data.box.west) data.box.west = -180;
+		    
+		    var add = 0;
+		    if( data.box.west > data.box.east){
+		    	data.box.east +=360;
+		    	add = 360;
+		    	
+		    }
+		    console.log(data.box);
+		    //search date
+		   var obj = rep.body;
+		    obj.features.forEach( function(feature){
+		       var latlng = {
+		    		   lat:feature.geometry.coordinates[1],
+		    		   lng:feature.geometry.coordinates[0]
+		       }
+		       console.log(feature.properties);
+		       if( feature.properties.temporal.end.toLowerCase() == "now"){
+		    	   var endTime = moment();
+		       }else{
+		    	   var endTime = moment(feature.properties.temporal.end, 'YYYY-MM-DD');
+		       }
+		      
+		       var startTime = moment(feature.properties.temporal.start, 'YYYY-MM-DD');
+		       console.log("date de départ = " +data.StartTime);
+		       console.log( "form start = " + moment(data.StartTime, "YYYY-MM-DD") );
+		       console.log( feature.properties.name.fr);
+		       
+		       if(( !data.StartTime || (data.StartTime && moment(data.StartTime, 'YYYY-MM-DD')<= endTime))
+		    	  && !data.EndTime || (data.EndTime && moment(data.EndTime, 'YYYY-MM-DD') >= startTime)){
+                   
+			       if( latlng.lat >= data.box.south && latlng.lat <= data.box.north ){
+			    	   if( latlng.lng >= data.box.west && latlng.lng <= data.box.east){
+			    		   
+			    		      result.features.push( feature);
+			    		   
+			    	   }else if( add && latlng.lng + add >= data.box.west && latlng.lng +add <= data.box.east){
+			    	        feature.geometry.coordinates[0] = latlng.lng + add;	 
+			    	        result.features.push( feature);
+			    	   }
+			       }
+		       }
+		       
+		    } );
+		    console.log(result);
+		    var event = new CustomEvent("findObservatoriesEvent", {detail: result});
 		    document.dispatchEvent(event);
-		   // var e = new CustomEvent("aerisSearchEvent", { detail: {}});
-			//document.dispatchEvent(e);
-           //  console.log(e);
-           return;
-		    
-		},
-		
 	
-		handelSuccess: function(rep){
+		   
+		},
+		handleError(rep, data){
 		    
 		},
-		handleError: function(rep){
-		    
-		},
-		handleTheme: function(theme) {
+		handleTheme(theme) {
 		  		this.theme = theme.detail
 				this.ensureTheme()
 		},
 		  	
-		 ensureTheme: function() {
+		 ensureTheme() {
 		  	if ((this.$el) && (this.$el.querySelector)) {
 		  		this.$el.querySelector(".formater-search-button").style.background= this.theme.primary;
 		  		var color1 = this.$shadeColor( this.theme.primary, 0.1); //lightcolor
@@ -114,19 +190,19 @@ export default {
 		 },
 	},
 	
-  created: function(){
+  created(){
       this.$i18n.locale = this.lang;
  
       this.aerisThemeListener = this.handleTheme.bind(this) 
       document.addEventListener('aerisTheme', this.aerisThemeListener);
  
   },
-  mounted: function(){
+  mounted(){
    
      var event = new CustomEvent('aerisThemeRequest', {});
-    	document.dispatchEvent(event);
+     document.dispatchEvent(event);
   },
-  destroyed: function(){
+  destroyed(){
       document.removeEventListener('aerisTheme', this.aerisThemeListener);
       this.aerisThemeListener = null;
   }

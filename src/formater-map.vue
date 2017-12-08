@@ -27,10 +27,6 @@ export default {
       lang: {
           type: String,
           default: 'fr'
-      },
-      obsurl:{
-    	  type: String,
-    	  default: 'data/geojson_observatories.json'
       }
     
   },
@@ -38,7 +34,8 @@ export default {
       return {
           map:null,
           selectArea:null,
-          observatories:null
+          observatories:null,
+          findObservatoriesListener:null,
       }
   },
   methods:{
@@ -51,59 +48,54 @@ export default {
 	      this.$el.querySelector("#formatermap").style.height = Math.round(height) + "px";
 	      this.map.invalidateSize()
 	  },
-	  getObservatories(){
-		if( !this.observatories){
-	            this.$http.get( this.obsurl).then( 
-	                    response => {this.addObservatories( response)},
-	                    response => {this.noObservatories( response)});
-		}
-	     
-	  },
-	  addObservatories( response ){
-		  console.log("observatories");
-		  try{
-			  console.log("try");
-              this.observatories = JSON.parse(response.bodyText);
-              console.log("success");
-              console.log(response);
-              var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'orange'};
-              var iconMarker = new L.AwesomeMarkers.icon( iconOptions);
-              var lang = this.lang;
-              L.geoJSON(this.observatories, {
-            	  /*style: function (feature) {
-                      return feature.properties && feature.properties.style;
-                  },
-
-                  onEachFeature: onEachFeature,*/
-
-                  pointToLayer: function (feature, latlng) {
-                	  console.log(feature.properties.name[lang]);
-                      var marker = new L.Marker(
-                              latlng,
-                              {icon: iconMarker,
-                               name: feature.properties.code,
-                               title: feature.properties.name[lang]
-                              });
-                      marker.on('click', function(e ){
-                    	  console.log( this.options.name);
-                      })
-                      return marker;
-                  }
-              }).addTo( this.map );
-             // this.observatoriesRequest();
-              //event observatories for map
-          }catch(e){
-              this.observatories = null;
+	  handleReset(){
+		  if( this.observatories){
+              this.observatories.remove();
               
           }
 	  },
-	  noObservatories( response){
-		  console.log( "no observatories");
-	  }
+	  displayResults( event ){
+		  this.handleReset();
+		  
+          var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'red'};
+          var iconMarker = new L.AwesomeMarkers.icon( iconOptions);
+          var lang = this.lang;
+          this.observatories = L.geoJSON(event.detail, {
+              /*style: function (feature) {
+                  return feature.properties && feature.properties.style;
+              },
+
+              onEachFeature: onEachFeature,*/
+
+              pointToLayer: function (feature, latlng) {
+                  console.log(feature.properties.name[lang]);
+                  var marker = new L.Marker(
+                          latlng,
+                          {icon: iconMarker,
+                           name: feature.properties.code,
+                           title: feature.properties.name[lang]
+                          });
+                  marker.on('click', function(e ){
+                	  var event = new CustomEvent("", { detail:this});
+                	  document.dispatchEvent(event);
+                      console.log( this.options.name);
+                  })
+                  return marker;
+              }
+          });
+          this.observatories.addTo( this.map);
+         // this.observatoriesRequest();
+          //event observatories for map
+         
+      }
   },
   created(){
       this.$i18n.locale = this.lang;
-        
+      this.findObservatoriesListener = this.displayResults.bind(this) 
+      document.addEventListener('findObservatoriesEvent', this.findObservatoriesListener);
+      this.aerisResetListener = this.handleReset.bind(this) 
+      document.addEventListener('aerisResetEvent', this.fhandleReset);
+         
   }, 
  
   mounted(){
@@ -127,10 +119,13 @@ export default {
 					  color:"#DD9946"
 				  }});
 	  //var observatoriesMarker = new L.MarkersCollection( "observatories", this.map , {iconMarker:{icon:"binoculars"}, iconSelected:{icon:'binoculars'}});
-	  this.getObservatories();
+	  //this.getObservatories();
   },
   destroyed(){
-   
+	  document.removeEventListener('findObservatoriesEvent', this.findObservatoriesListener);
+      this.findObservatoriesListener = null;
+      document.removeEventListener('aerisResetEvent', this.handleReset);
+      this.handleReset = null;
   }
 
 }
