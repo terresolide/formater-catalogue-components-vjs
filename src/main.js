@@ -57,7 +57,6 @@ ljs.addAliases({
 	    //awesome marker old version... JS
 	    //-----------------------------------
 	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
-
 	    //Markers collection
 	    //-----------------
 	    //'src/leaflet.markers-collection.js',

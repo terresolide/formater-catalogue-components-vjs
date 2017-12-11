@@ -12,7 +12,7 @@
 <template>	
 	<div class="formater-map">
 	    <div id="formatermap" ></div>
-	    <formater-sheet></formater-sheet>
+	    <formater-sheet :lang="lang"></formater-sheet>
 	</div>
 </template>
 
@@ -80,7 +80,8 @@ export default {
                           latlng,
                           {icon: iconMarker,
                            name: feature.properties.code,
-                           title: feature.properties.name[lang]
+                           title: feature.properties.name[lang],
+                           data: feature.properties
                           });
                   marker.on('click', function(e ){
                 	  var event = new CustomEvent("displayInfo", { detail:this});
@@ -101,7 +102,7 @@ export default {
       this.findObservatoriesListener = this.displayResults.bind(this) 
       document.addEventListener('findObservatoriesEvent', this.findObservatoriesListener);
       this.aerisResetListener = this.handleReset.bind(this) 
-      document.addEventListener('aerisResetEvent', this.fhandleReset);
+      document.addEventListener('selectAreaDrawEnd', this.handleReset);
          
   }, 
  
@@ -131,7 +132,7 @@ export default {
   destroyed(){
 	  document.removeEventListener('findObservatoriesEvent', this.findObservatoriesListener);
       this.findObservatoriesListener = null;
-      document.removeEventListener('aerisResetEvent', this.handleReset);
+      document.removeEventListener('selectAreaDrawEnd', this.handleReset);
       this.handleReset = null;
   }
 

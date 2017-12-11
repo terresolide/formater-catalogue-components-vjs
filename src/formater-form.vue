@@ -138,7 +138,7 @@ export default {
 		    		   lat:feature.geometry.coordinates[1],
 		    		   lng:feature.geometry.coordinates[0]
 		       }
-		       console.log(feature.properties);
+	
 		       if( feature.properties.temporal.end.toLowerCase() == "now"){
 		    	   var endTime = moment();
 		       }else{
@@ -146,12 +146,9 @@ export default {
 		       }
 		      
 		       var startTime = moment(feature.properties.temporal.start, 'YYYY-MM-DD');
-		       console.log("date de départ = " +data.StartTime);
-		       console.log( "form start = " + moment(data.StartTime, "YYYY-MM-DD") );
-		       console.log( feature.properties.name.fr);
-		       
+		      
 		       if(( !data.StartTime || (data.StartTime && moment(data.StartTime, 'YYYY-MM-DD')<= endTime))
-		    	  && !data.EndTime || (data.EndTime && moment(data.EndTime, 'YYYY-MM-DD') >= startTime)){
+		    	  && (!data.EndTime || (data.EndTime && moment(data.EndTime, 'YYYY-MM-DD') >= startTime))){
                    
 			       if( latlng.lat >= data.box.south && latlng.lat <= data.box.north ){
 			    	   if( latlng.lng >= data.box.west && latlng.lng <= data.box.east){

@@ -132,6 +132,9 @@ L.SelectArea =   L.Evented.extend({
 		
 		var ne = bounds[0];
 		var sw = bounds[1];
+		if( !this.ne){
+			return;
+		}
 		this.ne.setLatLng(ne);
 		this.sw.setLatLng(sw);
 		this.rectangle.setBounds( bounds);
