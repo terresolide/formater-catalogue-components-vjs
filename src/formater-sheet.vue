@@ -70,6 +70,18 @@ export default {
 	     open(){
 	    	 this.hidden = false;
 	     },
+	     createTextNode( key, text){
+	    	 switch(key){
+	    	 case "url":
+	    		 var node = document.createElement("a");
+	    		 node.setAttribute("href", text);
+	    		 node.appendChild( document.createTextNode(text));
+	    		 break;
+	         default:
+	        	 var node =  document.createTextNode(text);
+	    	 }
+	    	 return node;
+	     },
 	     object2dom( data ){
 	    	 this.title = data.title;
 	    	 var node = this.$el.querySelector("main");
@@ -84,15 +96,20 @@ export default {
 	    		 switch(typeof data.data[key]){
 	    		 case "string":
 	    			 var span = document.createElement("span");
-	    			 span.appendChild( document.createTextNode(data.data[key]));
+	    			 var textNode = this.createTextNode( key, data.data[key]);
+	    			 
+	    			 span.appendChild( textNode);
 	    			 div.appendChild( span);
 	    			 break;	 
 	    		 
 	    		 case "object":
 	    			 if(data.data[key][this.lang]){
 	    				 var span = document.createElement("span");
-	                     span.appendChild( document.createTextNode(data.data[key][this.lang]));
+	    				 var textNode = this.createTextNode( key, data.data[key][this.lang]);
+	                     span.appendChild( textNode);
 	                     div.appendChild( span);
+	    			 }else{
+	    				 
 	    			 }
 	    			 default:
 	    				 
@@ -219,6 +236,10 @@ export default {
     .formater-sheet-container main h4{
         color:#000;
         display:inline-block;
+        margin: 3px;
+    }
+    .formater-sheet-container main h4::after{
+        content:" :";
     }
     .formater-sheet-container main h4::first-letter{
         text-transform:uppercase;
