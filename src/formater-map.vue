@@ -92,6 +92,8 @@ export default {
                   marker.on('click', function(e ){
                 	  console.log(query);
                 	  this.searchData( url, query);
+                	  
+                	  
                 	  var event = new CustomEvent("displayInfo", { detail:{marker:this, query:query}});
                 	  document.dispatchEvent(event);
                 	  console.log( event);

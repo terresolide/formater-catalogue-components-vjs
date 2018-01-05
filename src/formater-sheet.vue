@@ -104,7 +104,7 @@ export default {
 	    	 return node;
 	     },
 	     handleCreateChart(event){
-	    	 if(this.$el.querySelector("#container")){
+	    	 if(this.$el.querySelector("#chartContainer")){
                  return;
              }
 	    	 var data0 = event.detail.marker.options.data.data;
@@ -116,29 +116,35 @@ export default {
 	    		 if( typeof Highcharts.charts[i] != "undefined")
 	    		 Highcharts.charts[i].destroy();
 	    	 }
-	    	 //Highcharts.charts = new Array();
+	    	
 	    	 //remove container
-	    	 var el = this.$el.querySelector("#container");
+	    	 var el = this.$el.querySelector("#chartContainer");
 	    	 if(el)  el.parentNode.removeChild( el );
 	     },
 	     createChart(data0){
+	    	 console.log("createChart");
 	    	
-	    	 var container = this.$el.querySelector("#container");
+	    	 var container = this.$el.querySelector("#chartContainer");
 	    	 if(!container){
 		    	 var node = this.$el.querySelector("main");
 		    	 var container = document.createElement("div");
 		    	 node.appendChild( container );
-		    	 container.setAttribute("id", "container");
+		    	 container.setAttribute("id", "chartContainer");
 		  
 		         
 		    	 
 		    	 container.onmousemove = handle_global;
 		    	 container.ontouchstart = handle_global;
 		    	 container.ontouchmove = handle_global;
+	    	 }else{
+	    		 return;
 	    	 }
 	    	   // function createChart( data0) { 
 	    	       // console.log(data0);
-	    	
+	    	var code = data0.meta.get("IAGA Code");
+	    	if(this.code != code){
+	    		return;
+	    	}
 	    	       
 	    	        var data = new Array();
 	    	        data["D"] = new Array();
@@ -414,6 +420,10 @@ export default {
     color:#fff;
     background-color:#DD9946;
 }
+.formater-sheet-container #chartContainer{
+    width:95%;
+    margin:auto;
+}
 .formater-sheet-container header h3{
     display:inline-block;
     margin:0;
@@ -426,6 +436,7 @@ export default {
     .formater-sheet-container main{
     margin: 0 5px;
     overflow-y:auto;
+    max-height:300px;
     }
     .formater-sheet-container main h4{
         color:#000;

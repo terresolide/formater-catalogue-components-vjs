@@ -103,3 +103,15 @@ function syncExtremes(e) {
         });
     }
 }
+
+Array.prototype.get= function( name ){
+	var i=0;
+	find = false;
+	while( !find && i< this.length){
+		if( this[i].name == name){
+			find = this[i].content;
+		}
+		i++;
+	}
+	return find;
+}
