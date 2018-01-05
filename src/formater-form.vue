@@ -164,7 +164,7 @@ export default {
 		       
 		    } );
 		    console.log(result);
-		    var event = new CustomEvent("findObservatoriesEvent", {detail: result});
+		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:result , query:{ start: data.StartTime, end:data.EndTime}}});
 		    document.dispatchEvent(event);
 	
 		   

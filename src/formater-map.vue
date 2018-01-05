@@ -12,13 +12,17 @@
 <template>	
 	<div class="formater-map">
 	    <div id="formatermap" ></div>
-	    <formater-sheet :lang="lang"></formater-sheet>
+	    <formater-sheet :lang="lang" :maxheight="height"></formater-sheet>
 	</div>
 </template>
 
 
 
 <script>
+/*const L.Marker.DONE = 1;
+const L.Marker.WAITING = 2;
+const L.Marker.TODO = 0;
+const L.Marker.ERROR = 3;*/
 
 export default {
 
@@ -36,16 +40,15 @@ export default {
           selectArea:null,
           observatories:null,
           findObservatoriesListener:null,
+          height: 600
       }
   },
   methods:{
 	  resize(){
-	      var width = this.$el.querySelector("#formatermap").offsetWidth;
-	 
-	      var height = width/2;
-	  
-	      this.map._container.style.height = height +"px";
-	      this.$el.querySelector("#formatermap").style.height = Math.round(height) + "px";
+	      var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight; 
+	      this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
+	      this.map._container.style.height = this.height +"px";
+	      this.$el.querySelector("#formatermap").style.height = Math.round(this.height) + "px";
 	      this.map.invalidateSize()
 	  },
 	  handleReset(){
@@ -62,7 +65,8 @@ export default {
           var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'orange'};
           var iconMarkerBCMT= new L.AwesomeMarkers.icon( iconOptions);
           var lang = this.lang;
-          this.observatories = L.geoJSON(event.detail, {
+          var query = event.detail.query;
+          this.observatories = L.geoJSON(event.detail.result, {
               /*style: function (feature) {
                   return feature.properties && feature.properties.style;
               },
@@ -83,9 +87,14 @@ export default {
                            title: feature.properties.name[lang],
                            data: feature.properties
                           });
+                  //search data??
+                  var url = "http://formater.art-sciences.fr";
                   marker.on('click', function(e ){
-                	  var event = new CustomEvent("displayInfo", { detail:this});
+                	  console.log(query);
+                	  this.searchData( url, query);
+                	  var event = new CustomEvent("displayInfo", { detail:{marker:this, query:query}});
                 	  document.dispatchEvent(event);
+                	  console.log( event);
                       console.log( this.options.name);
                   })
                   return marker;
@@ -107,8 +116,8 @@ export default {
   }, 
  
   mounted(){
-	  //compute size of map
-	
+
+	  
       this.map = L.map(this.$el.querySelector(".formater-map > div"), {selectArea:true}).setView([51.505, -0.09], 3);
 	  L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
 	      attribution: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
@@ -147,6 +156,6 @@ export default {
 }
 [id="formatermap"]{
   width:100%;
-  min-height:461px;
+  min-height:300px;
 }
 </style>

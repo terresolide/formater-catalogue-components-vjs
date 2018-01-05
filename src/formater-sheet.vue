@@ -18,22 +18,36 @@
    }
 }
 </i18n><template>
-	<span class="formater-sheet-container" :class="hidden ? 'hidden' : ''">
+	<span class="formater-sheet-container" :class="hidden ? 'hidden' : ''" >
 		<header>
 		  <h3>{{ title }}</h3>
 		  <span class="fa fa-close" @click="close"></span>
 		</header>
-		<main>
+		<main >
 		</main>
 	</span>
 </template>
 <script>
+
 export default {
 	props: {
 		 lang: {
 	          type: String,
 	          default: 'fr'
+	      },
+	      maxHeight: {
+	    	  type: Number,
+	    	 // default: 600
 	      }
+	},
+	watch: {
+		maxHeight(newVal, oldVal){
+			if(this.$el.querySelector && this.$el.querySelector(".formater-sheet-container")){
+				var header = this.$el.querySelector(".formater-sheet-container header").offsetHeight;
+				this.$el.querySelector(".formater-sheet-container main").style.maxHeight = (newVal -90)+"px";
+			}
+			return newVal;
+		}
 	},
 	data(){
 		return {
@@ -41,12 +55,18 @@ export default {
 			theme: '',
 			aerisThemeListener:null,
 			displayInfoListener:null,
+			findDataListener:null,
 			hidden: true,
-			code: null
+			code: null,
+			data:null,
+			searched:false,
+			charts:null,
+			code:null
 			
 		}
 	},
 	methods:{
+		   
 		   handleTheme( theme ) {
 	            this.theme = theme.detail;
 	            this.ensureTheme();
@@ -64,6 +84,7 @@ export default {
 	        }
 	     },
 	     close(){
+	    	 this.destroyCharts();
 	    	 this.hidden = true;
 	    	 this.code ="";
 	     },
@@ -81,6 +102,150 @@ export default {
 	        	 var node =  document.createTextNode(text);
 	    	 }
 	    	 return node;
+	     },
+	     handleCreateChart(event){
+	    	 if(this.$el.querySelector("#container")){
+                 return;
+             }
+	    	 var data0 = event.detail.marker.options.data.data;
+	    	 this.createChart( data0);
+	     },
+	     destroyCharts(){
+	    	console.log( Highcharts.charts); 
+	    	 for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
+	    		 if( typeof Highcharts.charts[i] != "undefined")
+	    		 Highcharts.charts[i].destroy();
+	    	 }
+	    	 //Highcharts.charts = new Array();
+	    	 //remove container
+	    	 var el = this.$el.querySelector("#container");
+	    	 if(el)  el.parentNode.removeChild( el );
+	     },
+	     createChart(data0){
+	    	
+	    	 var container = this.$el.querySelector("#container");
+	    	 if(!container){
+		    	 var node = this.$el.querySelector("main");
+		    	 var container = document.createElement("div");
+		    	 node.appendChild( container );
+		    	 container.setAttribute("id", "container");
+		  
+		         
+		    	 
+		    	 container.onmousemove = handle_global;
+		    	 container.ontouchstart = handle_global;
+		    	 container.ontouchmove = handle_global;
+	    	 }
+	    	   // function createChart( data0) { 
+	    	       // console.log(data0);
+	    	
+	    	       
+	    	        var data = new Array();
+	    	        data["D"] = new Array();
+	    	        data["H"] = new Array();
+	    	        data["Z"] = new Array();
+	    	        data["F"]= new Array();
+	    	        //traitement des collections
+	    	
+	    	        data0.collection.forEach( function( item){
+	    	            var date = Date.parse(item.DATE+" "+item.TIME);
+	    	            data["D"].push( [date , item.D]);
+	    	            data["H"].push( [date , item.H]);
+	    	            data["Z"].push( [date , item.Z]);
+	    	            data["F"].push([date , item.F]);
+	    	        });
+	
+	    	        ["D", "H", "Z", "F"].forEach( function(value, key){
+	    	            console.log(value);
+	    	        var divchart = document.createElement("div");
+	    	        divchart.classname = "chart";
+	    	        container.appendChild(divchart);
+	    	   
+	    	        var mychart = Highcharts.chart(divchart, {
+	    	            /*chart: {
+	    	                type: 'linear'
+	    	            },*/
+	    	            chart:{
+	    	            height:130,
+	    	            marginBottom: (value==="F")? 45 : 15
+	    	            },
+	    	            title: {
+	    	                text: '<div style="background:#fff;padding:5px;font-size:10px"><div style="background:'+Highcharts.getOptions().colors[key]+';width:10px;height:10px;display:inline-block;margin:0 3px;"></div>'+value+'</div>',
+	    	                align: 'right',
+	    	                margin: 10,
+	    	                useHTML: true,
+	    	              //  x: 70,
+	    	                floating:true
+	    	            },
+	    	            xAxis: {
+	    	                type: 'datetime',
+	    	                lineColor:'#666',
+	    	                tickLength: 5,
+	    	                dateTimeLabelFormats: { // don't display the dummy year
+	    	                   millisecond: '%H:%M:%S.%L',
+	    	                    second: '%H:%M:%S',
+	    	                    minute: '%H:%M',
+	    	                    hour: '%H:%M',
+	    	                    day: '%e %b %Y',
+	    	                    week: '%e. %b',
+	    	                    month: '%b %y',
+	    	                    year: '%Y'
+	    	                },
+	    	                events: {
+	    	                    setExtremes: syncExtremes
+	    	                },
+	    	                crosshair: true,
+	    	                labels:{
+	    	                    enabled:value==="F"
+	    	                }
+	    	            },
+	    	            yAxis: [{
+	    	                title: {
+	    	                    text: "",
+	    	                    margin:10,
+	    	                    lineColor:'#666'
+	    	                },
+	    	                labels:{
+	    	                    style:{
+	    	                        color:'#333',
+	    	                        fontSize:'10px'
+	    	                    }
+	    	                }}
+	    	                /*{title: {
+	    	                    text:'F'
+	    	                }},
+	    	                {title:{
+	    	                    text: 'H',
+	    	                }},
+	    	                {title:{
+	    	                    text: 'Z',
+	    	                },
+	    	                opposite:true}*/
+	    	            ],
+	    	            tooltip: {
+	    	                headerFormat: '<b>{series.name}</b><br>',
+	    	                pointFormat: '{point.x:%e. %b %Y}: {point.y:,.0f}'
+	    	            },
+	    	            series: [{
+	    	                name: value,
+	    	                showInLegend:false,
+	    	                color: Highcharts.getOptions().colors[key],
+	    	                data: data[value] //[1, 0, 4]
+	    	            }]/*,{
+	    	                 name: "1",
+	    	                 data: yaxis1 
+	    	            },{
+	    	                 name: "2",
+	    	                 data: yaxis2 
+	    	            },{
+	    	                 name: "3",
+	    	                 data: yaxis3 
+	    	            }]*/
+	    	        });
+	    	    });
+	    	       // Highcharts.charts.push( mychart);
+	    	  //  }
+	    	 
 	     },
 	     object2dom( data ){
 	    	 this.title = data.title;
@@ -108,7 +273,8 @@ export default {
 	    				 var textNode = this.createTextNode( key, data.data[key][this.lang]);
 	                     span.appendChild( textNode);
 	                     div.appendChild( span);
-	    			 }else{
+	    			 }else if(data.data.data){
+	    				 this.createChart(data.data.data);
 	    				 
 	    			 }
 	    			 default:
@@ -119,28 +285,29 @@ export default {
 	    	 
 	     },
 	     displayInfo( event){
-	    	 console.log(event.detail.options.title);
-	    	 if( this.code == event.detail.options.name){
+	    	 console.log(event.detail.marker.options.title);
+	    	 var options = event.detail.marker.options;
+	    	 if( this.code == options.name){
 	    		 this.close();
 	    		 return;
 	    	 }
 	    	 this.close();
 	    	 if(this.code = ""){
-	    		 this.code = event.detail.options.name;
+	    		 this.code = options.name;
 	    		 var _self = this;
                 // var next = function(){ 
-                     _self.object2dom(event.detail.options);
-                     _self.title = event.detail.options.title;
+                     _self.object2dom(options);
+                     _self.title = options.title;
                      _self.hidden = false;//}
                //  setTimeout( next, 0);
-	    	 }else if( this.code != event.detail.options.name){
+	    	 }else if( this.code != options.name){
 	    		 //this.title = event.detail.options.title;
 	            // this.hidden = false;
-	            this.code = event.detail.options.name;
+	            this.code = options.name;
 	            var _self = this;
 	             var next = function(){ 
-	            	 _self.object2dom(event.detail.options);
-	            	 _self.title = event.detail.options.title;
+	            	 _self.object2dom(options);
+	            	 _self.title = options.title;
 	            	 _self.hidden = false;}
 	             setTimeout( next, 300);
 	    	 }
@@ -157,8 +324,32 @@ export default {
         document.addEventListener('aerisTheme', this.aerisThemeListener);
 		this.displayInfoListener = this.displayInfo.bind(this) 
         document.addEventListener('displayInfo', this.displayInfoListener);
+		this.findDataListener = this.handleCreateChart.bind(this) 
+        document.addEventListener('findData', this.findDataListener);
 	},
 	mounted(){
+		   
+        if(this.lang == "fr"){
+           Highcharts.setOptions({
+               lang: {
+                   months: [
+                       'Janvier', 'Février', 'Mars', 'Avril',
+                       'Mai', 'Juin', 'Juillet', 'Août',
+                       'Septembre', 'Octobre', 'Novembre', 'Décembre'
+                   ],
+                   weekdays: [
+                       'Dimanche', 'Lundi', 'Mardi', 'Mercredi',
+                       'Jeudi', 'Vendredi', 'Samedi'
+                   ],
+                   shortMonths: ["Jan" , "Fév" , "Mar" , "Apr" , "Mai" , "Jun" , "Jul" , "Aut" , "Sep" , "Oct" , "Nov" , "Déc"]
+               }
+           });
+        }
+		this.$el.style.maxHeight = this.maxHeight -50+"px";
+		if(this.$el.querySelector && this.$el.querySelector(".formater-sheet-container")){
+            var header = this.$el.querySelector(".formater-sheet-container header").offsetHeight;
+            this.$el.querySelector(".formater-sheet-container main").style.maxHeight = (newVal -90)+"px";
+        }
 		var event = new CustomEvent('aerisThemeRequest', {});
 	     document.dispatchEvent(event);
 	},
@@ -167,6 +358,8 @@ export default {
          this.aerisThemeListener = null;
          document.removeEventListener('displayInfo', this.displayInfoListener);
          this.displayInfoListener = null;
+         document.removeEventListener('findData', this.findDataListener);
+         this.findDataListener = null;
 	}
 }
 </script>
@@ -176,7 +369,7 @@ export default {
     top:20px;
     right:0;
     background-color:#fff;
-    width:300px;
+    width:600px;
     min-height:100px;
     -ms-transform: translateX(0);
     -webkit-transform: translateX(0);
@@ -198,11 +391,11 @@ export default {
     transition-timing-function: ease-in-out;
 }
 .formater-sheet-container.hidden{
-    -ms-transform: translateX(310px);
-    -webkit-transform: translateX(310px);
-    -moz-transform: translateX(310px);
-    -o-transform: translateX(310px);
-    transform: translate(310px);
+    -ms-transform: translateX(610px);
+    -webkit-transform: translateX(610px);
+    -moz-transform: translateX(610px);
+    -o-transform: translateX(610px);
+    transform: translate(610px);
 	 -ms-transition: -ms-transform  .3s;
 	-webkit-transition: -webkit-transform  .3s;
 	-moz-transition: -moz-transform .3s;
@@ -232,6 +425,7 @@ export default {
     }
     .formater-sheet-container main{
     margin: 0 5px;
+    overflow-y:auto;
     }
     .formater-sheet-container main h4{
         color:#000;

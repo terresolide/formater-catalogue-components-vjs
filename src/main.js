@@ -43,7 +43,11 @@ ljs.addAliases({
 		//'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js',
 		//'https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js',
 		//'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
-	    //icon marker with font awesome CSS
+	    // lib for highchart
+		//------------------
+		'https://code.highcharts.com/highcharts.src.js',
+		
+		//icon marker with font awesome CSS
 		//-----------------------------
 	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
 	    //leaflet
@@ -57,6 +61,9 @@ ljs.addAliases({
 	    //awesome marker old version... JS
 	    //-----------------------------------
 	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
+	    //Marker
+	    //-----------
+	    'src/leaflet.marker.js',
 	    //Markers collection
 	    //-----------------
 	    //'src/leaflet.markers-collection.js',
