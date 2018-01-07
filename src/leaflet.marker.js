@@ -104,6 +104,24 @@ function syncExtremes(e) {
     }
 }
 
+L.Marker.prototype.toggle = function( layer){
+	
+	var iconOptions = this.options.icon.options;
+	console.log(iconOptions);
+
+	if( layer == this){
+		
+		iconOptions.markerColor = this.options.color;
+		var icon= new L.AwesomeMarkers.icon( iconOptions);
+		this.setIcon( icon );
+		return null;
+	}else{
+		iconOptions.markerColor = "red";
+		var icon= new L.AwesomeMarkers.icon( iconOptions);
+		this.setIcon( icon );
+		return this;
+	}
+}
 Array.prototype.get= function( name ){
 	var i=0;
 	find = false;

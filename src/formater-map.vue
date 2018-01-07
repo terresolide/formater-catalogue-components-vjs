@@ -23,7 +23,7 @@
 const L.Marker.WAITING = 2;
 const L.Marker.TODO = 0;
 const L.Marker.ERROR = 3;*/
-
+var _selected = null;
 export default {
 
   props:{
@@ -40,7 +40,9 @@ export default {
           selectArea:null,
           observatories:null,
           findObservatoriesListener:null,
-          height: 600
+          closeSheetListener: null,
+          height: 600,
+          selected: null
       }
   },
   methods:{
@@ -57,15 +59,21 @@ export default {
               
           }
 	  },
+	  unselectLayer(){
+		  console.log("unselect");
+		  if( _selected)
+		  _selected.fire('click');
+	  },
 	  displayResults( event ){
 		  this.handleReset();
 		  
-          var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'red'};
+          var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'blue'};
           var iconMarkerIntermagnet= new L.AwesomeMarkers.icon( iconOptions);
           var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'orange'};
           var iconMarkerBCMT= new L.AwesomeMarkers.icon( iconOptions);
           var lang = this.lang;
           var query = event.detail.query;
+          
           this.observatories = L.geoJSON(event.detail.result, {
               /*style: function (feature) {
                   return feature.properties && feature.properties.style;
@@ -77,27 +85,37 @@ export default {
                   console.log(feature.properties.name[lang]);
                   if( feature.properties.organism == "INTERMAGNET"){
                 	  var iconMarker = iconMarkerIntermagnet;
+                	  var color = "blue";
                   }else{
                 	  var iconMarker = iconMarkerBCMT;
+                	  var color = "orange";
                   }
                   var marker = new L.Marker(
                           latlng,
                           {icon: iconMarker,
                            name: feature.properties.code,
                            title: feature.properties.name[lang],
-                           data: feature.properties
+                           data: feature.properties,
+                           color: color
                           });
                   //search data??
                   var url = "http://formater.art-sciences.fr";
+                 // 
                   marker.on('click', function(e ){
-                	  console.log(query);
-                	  this.searchData( url, query);
+                	  
+                	  if(_selected == this){
+                		  var event = new CustomEvent("unselectLayer", { detail:{}});
+                    	  document.dispatchEvent(event);
+                	  }else{
+                	   	this.searchData( url, query);
                 	  
                 	  
                 	  var event = new CustomEvent("displayInfo", { detail:{marker:this, query:query}});
                 	  document.dispatchEvent(event);
-                	  console.log( event);
-                      console.log( this.options.name);
+                	  }
+                	  _selected = this.toggle( _selected );
+                	 // console.log( event);
+                      //console.log( this.options.name);
                   })
                   return marker;
               }
@@ -114,6 +132,8 @@ export default {
       document.addEventListener('findObservatoriesEvent', this.findObservatoriesListener);
       this.aerisResetListener = this.handleReset.bind(this) 
       document.addEventListener('selectAreaDrawEnd', this.handleReset);
+      this.closeSheetListener = this.unselectLayer.bind(this) 
+      document.addEventListener('closeSheet', this.closeSheetListener);
          
   }, 
  
@@ -143,8 +163,10 @@ export default {
   destroyed(){
 	  document.removeEventListener('findObservatoriesEvent', this.findObservatoriesListener);
       this.findObservatoriesListener = null;
-      document.removeEventListener('selectAreaDrawEnd', this.handleReset);
-      this.handleReset = null;
+      document.removeEventListener('selectAreaDrawEnd', this.aeraResetListener);
+      this.areaResetListener = null;
+      document.removeEventListener('closeSheet', this.closeSheetListener);
+      this.closeSheetListener = null;
   }
 
 }

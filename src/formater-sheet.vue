@@ -56,6 +56,7 @@ export default {
 			aerisThemeListener:null,
 			displayInfoListener:null,
 			findDataListener:null,
+			unselectLayerListener:null,
 			hidden: true,
 			code: null,
 			data:null,
@@ -84,6 +85,11 @@ export default {
 	        }
 	     },
 	     close(){
+	  
+	    	 var event = new CustomEvent("closeSheet", { detail:{}});
+       	  document.dispatchEvent(event);
+	     },
+	     hide(){
 	    	 this.destroyCharts();
 	    	 this.hidden = true;
 	    	 this.code ="";
@@ -294,7 +300,7 @@ export default {
 	    	 console.log(event.detail.marker.options.title);
 	    	 var options = event.detail.marker.options;
 	    	 if( this.code == options.name){
-	    		 this.close();
+	    		 this.hide();
 	    		 return;
 	    	 }
 	    	 this.close();
@@ -332,6 +338,8 @@ export default {
         document.addEventListener('displayInfo', this.displayInfoListener);
 		this.findDataListener = this.handleCreateChart.bind(this) 
         document.addEventListener('findData', this.findDataListener);
+		this.unselectLayerListener = this.hide.bind(this);
+		document.addEventListener('unselectLayer', this.unselectLayerListener);
 	},
 	mounted(){
 		   

@@ -88,8 +88,8 @@ export default {
 				return;
 			}else{
 
-				var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
-                document.dispatchEvent(event);
+				//var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
+              //  document.dispatchEvent(event);
                 var result = this.callApi(e);
                 return;
 			}
