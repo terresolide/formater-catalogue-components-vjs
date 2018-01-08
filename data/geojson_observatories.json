@@ -7,22 +7,71 @@
 	       "coordinates":[37.766, 9.035, 2441]
 	    },
 	    "properties":{
+    	    "identifier":null, 
+    	    "lastModification" : null,
+    	    "license":null,
     	    "code": "AAE",
-    		"name":{
-    		    "en": "Addis Ababa",
-    		    "fr": "Addis Abeba"
+    	   
+    		"title":{
+    		    "en": "BCMT - Addis Ababa",
+    		    "fr": "BCMT - Addis Abeba"
     		},
-    		"country":{
-    			"en": "Ethiopia",
-    		    "fr": "Ethiopie"
-    		},
+    		 "description":{
+               "en": "Created in 1958 and modernised in 1998 under a convention between the Institut National des Sciences de l’Univers (INSU) and the University of Addis Ababa. Now operated by the Institute of Geophysics, Space Science and Astronomy (IGSSA). A 17-kilometre light train line opened on 20 September 2015. Large distubances are, since then, present on recordings",
+                "fr": "Created in 1958 and modernised in 1998 under a convention between the Institut National des Sciences de l’Univers (INSU) and the University of Addis Ababa. Now operated by the Institute of Geophysics, Space Science and Astronomy (IGSSA). A 17-kilometre light train line opened on 20 September 2015. Large distubances are, since then, present on recordings"
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/aaenormal.jpg",
+                "description": ""}],
+    		"formaterDataCenter":"bcmt",
+    		"format": "IAGA2",
     		"organism": "bcmt",
-    		"temporal":{
+    		"temporalExtents":{
                 "start": "1997-09-01",
                 "end": "now"
             },
-    		"url": "http://www.bcmt.fr/aae.html"
-		}
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/aae.html",
+                "name" : "Global Emissions InitiAtive",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "ECCAD Database",
+             "description" : null
+            }],
+            "contacts" : [ {
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }, {
+              "name" : "Getnet Mewa",
+                "email" : "getmewa@gmail.com",
+                "organisation" : "Institute of Geophysics,Space Science and Astronomy (IGSSA)",
+                "telephone": "251 911 42 86 75",
+                "address" : {
+                    "streetAddress":["Addis Ababa University", "Faculty of Sciences"],
+                    "postOfficeBoxNumber": "1176",
+                    "addressLocality":"Addis Ababa",
+                    "addressCountry":"ETHIOPIA"
+                },
+                "roles" : [ "alternate contact" ],
+                "orcId" : ""
+                		
+            		}]
+            }
 	},
 	{
 	   "type": "Feature",
@@ -31,8 +80,9 @@
            "coordinates":[77.570, -37.08, 50]
         },
         "properties":{
+    	    "identifier":null, 
     	    "code": "AMS",
-    		"name":{
+    		"title":{
     		    "en": "Amsterdam Island - French Southern and Antarctic Lands",
     		    "fr": "Île Amsterdam - Terres Autrales et Antarctiques françaises"
     		},
@@ -41,7 +91,7 @@
     		    "fr": "France"
     		},
     		"organism": "INTERMAGNET",
-    		"temporal":{
+    		"temporalExtents":{
                 "start": "1981-04-01",
                 "end": "now"
             },
@@ -55,8 +105,9 @@
            "coordinates":[18.566, 4.333, 395]
         },
         "properties":{
+            "identifier":null, 
             "code": "BNG",
-            "name":{
+            "title":{
                 "en": "Bangui",
                 "fr": "Bangui"
             },
@@ -65,7 +116,7 @@
                 "fr": "République Centrafricaine"
             },
             "organism": "BCMT",
-            "temporal":{
+            "temporalExtents":{
                 "start": "1955-01-01",
                 "end": "2011-06-01"
             },
@@ -79,8 +130,9 @@
            "coordinates":[38.230, 58.07, 115]
         },
         "properties":{
+    	    "identifier":null, 
     	    "code": "BOX",
-    		"name":{
+    		"title":{
     		    "en": "Borok, Yaroslavl",
     		    "fr": "Borok, Yaroslavl"
     		},
@@ -89,7 +141,7 @@
     		    "fr": "Russie"
     		},
     		"organism": "BCMT",
-    		"temporal":{
+    		"temporalExtents":{
                 "start": "2004-04-01",
                 "end": "now"
             },
@@ -104,8 +156,9 @@
         },
         "properties":{
 
+    	    "identifier":null, 
     	    "code": "CLF",
-    		"name":{
+    		"title":{
     		    "en": "Chambon-la-Foret",
     		    "fr": "Chambon-la-Forêt"
     		},
@@ -118,7 +171,7 @@
     			"lat": 48.025,
     			"lng": 2.260
     		},
-    		"temporal":{
+    		"temporalExtents":{
                 "start": "1936-01-01",
                 "end": "now"
             },
@@ -133,8 +186,9 @@
         },
         "properties":{
             "organism": "BCMT",
+    	    "identifier":null, 
     	    "code": "IPM",
-    		"name":{
+    		"title":{
     		    "en": "Isla de Pascua",
     		    "fr": "Île de Pâques"
     		},
@@ -142,7 +196,7 @@
     		    "en": "Chile",
     		    "fr": "Chili"
     		},
-    		"temporal":{
+    		"temporalExtents":{
                 "start": "2010-01-01",
                 "end": "now"
             },
@@ -157,8 +211,9 @@
         },
         "properties":{
             "organism": "BCMT",
+            "identifier":null, 
             "code": "KOU",
-            "name":{
+            "title":{
                 "en": "Kourou, French Guiana",
                 "fr": "Kourou, Guyane française"
             },
@@ -166,7 +221,7 @@
                 "en": "France",
                 "fr": "France"
             },
-            "temporal":{
+            "temporalExtents":{
                 "start": "1996-01-01",
                 "end": "now"
             },
@@ -181,8 +236,9 @@
         },
         "properties":{
             "organism": "BCMT",
+            "identifier":null, 
             "code": "LZH",
-            "name":{
+            "title":{
                 "en": "Lanzhou",
                 "fr": "Lanzhou"
             },
@@ -190,7 +246,7 @@
                 "en": "China",
                 "fr": "Chine"
             },
-            "temporal":{
+            "temporalExtents":{
                 "start": "2001-04-01",
                 "end": "now"
             },
@@ -205,8 +261,9 @@
         },
         "properties":{
             "organism": "BCMT",
+            "identifier":null, 
             "code": "MBO",
-            "name":{
+            "title":{
                 "en": "Mbour",
                 "fr": "Mbour"
             },
@@ -214,7 +271,7 @@
                 "en": "Senegal",
                 "fr": "Sénégal"
             },
-            "temporal":{
+            "temporalExtents":{
                 "start": "1952-03-01",
                 "end": "now"
             },
@@ -229,8 +286,9 @@
         },
         "properties":{
             "organism": "BCMT",
+            "identifier":null, 
             "code": "PHU",
-            "name":{
+            "title":{
                 "en": "Phu Thuy",
                 "fr": "Phu Thuy"
             },
@@ -238,7 +296,7 @@
                 "en": "Vietnam",
                 "fr": "Viêtnam"
             },
-            "temporal":{
+            "temporalExtents":{
                 "start": "1996-01-01",
                 "end": "now"
             },
@@ -253,8 +311,9 @@
         },
         "properties":{
             "organism": "BCMT",
-            "code": "DLT",
-            "name":{
+            "identifier":null,
+             "code": "DLT",
+            "title":{
                 "en": "Dalat",
                 "fr": "Dalat"
             },
@@ -262,7 +321,7 @@
                 "en": "Vietnam",
                 "fr": "Viêtnam"
             },
-            "temporal":{
+            "temporalExtents":{
                 "start": "2011-04-01",
                 "end": "now"
             },
@@ -277,8 +336,9 @@
         },
         "properties":{
             "organism": "BCMT",
+            "identifier":null, 
             "code": "PPT",
-            "name":{
+            "title":{
                 "en": "Pamatai, Tahiti Island",
                 "fr": "Pamatai, Tahiti"
             },
@@ -290,7 +350,7 @@
                 "lat": -17.567,
                 "lng": -149.574
             },
-            "temporal":{
+            "temporalExtents":{
                 "start": "1968-01-01",
                 "end": "now"
             },
@@ -305,8 +365,9 @@
         },
         "properties":{
             "organism": "BCMT",
+            "identifier":null, 
             "code": "TAM",
-            "name":{
+            "title":{
                 "en": "Tamanrasset",
                 "fr": "Tamanrasset"
             },
@@ -314,7 +375,7 @@
                 "en": "Algeria",
                 "fr": "Algerie"
             },
-            "temporal":{
+            "temporalExtents":{
                 "start": "1993-01-01",
                 "end": "now"
             },

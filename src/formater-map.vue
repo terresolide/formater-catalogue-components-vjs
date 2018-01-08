@@ -12,7 +12,7 @@
 <template>	
 	<div class="formater-map">
 	    <div id="formatermap" ></div>
-	    <formater-sheet :lang="lang" :maxheight="height"></formater-sheet>
+	    <formater-sheet :lang="lang" :maxheight="height-60"></formater-sheet>
 	</div>
 </template>
 
@@ -82,7 +82,7 @@ export default {
               onEachFeature: onEachFeature,*/
 
               pointToLayer: function (feature, latlng) {
-                  console.log(feature.properties.name[lang]);
+                  console.log(feature.properties.title[lang]);
                   if( feature.properties.organism == "INTERMAGNET"){
                 	  var iconMarker = iconMarkerIntermagnet;
                 	  var color = "blue";
@@ -94,7 +94,7 @@ export default {
                           latlng,
                           {icon: iconMarker,
                            name: feature.properties.code,
-                           title: feature.properties.name[lang],
+                           title: feature.properties.title[lang],
                            data: feature.properties,
                            color: color
                           });

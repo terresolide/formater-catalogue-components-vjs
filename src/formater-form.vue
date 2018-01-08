@@ -59,7 +59,8 @@ export default {
       },
       url:{
           type: String,
-          default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
+          default: '/data/geojson_observatories.json'
+         // default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
       }
       
   },
@@ -139,13 +140,13 @@ export default {
 		    		   lng:feature.geometry.coordinates[0]
 		       }
 	
-		       if( feature.properties.temporal.end.toLowerCase() == "now"){
+		       if( feature.properties.temporalExtents.end.toLowerCase() == "now"){
 		    	   var endTime = moment();
 		       }else{
-		    	   var endTime = moment(feature.properties.temporal.end, 'YYYY-MM-DD');
+		    	   var endTime = moment(feature.properties.temporalExtents.end, 'YYYY-MM-DD');
 		       }
 		      
-		       var startTime = moment(feature.properties.temporal.start, 'YYYY-MM-DD');
+		       var startTime = moment(feature.properties.temporalExtents.start, 'YYYY-MM-DD');
 		      
 		       if(( !data.StartTime || (data.StartTime && moment(data.StartTime, 'YYYY-MM-DD')<= endTime))
 		    	  && (!data.EndTime || (data.EndTime && moment(data.EndTime, 'YYYY-MM-DD') >= startTime))){

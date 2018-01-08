@@ -4,26 +4,69 @@
         "organism":    "organism",
         "code": "code",
         "name": "name",
+        "description": "Description",
+        "contacts": "Contacts",
         "country": "country",
         "temporal": "temporal",
-        "url": "url"
+        "url": "url",
+        "main contact": "Main Contact",
+        "alternate contact": "Alternate Contact"
    },
    "fr":{
          "organism":    "organisme",
          "code": "code",
         "name": "nom",
+        "description": "Description",
+        "contacts": "Contacts",
         "country": "pays",
         "temporal": "intervalle de temps",
-        "url": "url"
+        "url": "url",
+         "main contact": "Contact",
+        "alternate contact": "Autre Contact"
    }
 }
 </i18n><template>
 	<span class="formater-sheet-container" :class="hidden ? 'hidden' : ''" >
-		<header>
+		<header class="formater-sheet-header" >
 		  <h3>{{ title }}</h3>
 		  <span class="fa fa-close" @click="close"></span>
 		</header>
-		<main >
+		<main class="formater-sheet-main">
+		<div class="formater-sheet-data-metablock" v-if="data && data.data.description">
+			<h4>
+			<i class="fa fa-comment-o"></i>
+			{{ $t("description")}}
+			</h4>
+			<main>
+			{{data.data.description[lang]}}
+			</main>
+		</div>
+		<div class="formater-sheet-data-metablock-50" style="float:right;" v-if="data && data.data.quicklook">
+           
+            <main>
+            <div v-for="image in data.data.quicklook">
+             <img :src="image.url" alt=":image.description" />
+            </div>
+            
+            </main>
+        </div>
+		<div class="formater-sheet-data-metablock-50" v-if="data && data.data.contacts">
+            <h4>
+            <i class="fa fa-users"></i>
+            {{ $t("contacts")}}
+            </h4>
+            <main>
+           
+            <div v-for="contact in data.data.contacts">
+                <div class="formater-function">{{ $t(contact.roles[0])}}</div>
+                <i class="fa fa-user"></i>
+                {{ $t(contact.name)}}
+            </div>
+            <div id="container"></div>
+     
+            </main>
+        </div>
+		
 		</main>
 	</span>
 </template>
@@ -35,16 +78,17 @@ export default {
 	          type: String,
 	          default: 'fr'
 	      },
-	      maxHeight: {
+	      maxheight: {
 	    	  type: Number,
 	    	 // default: 600
 	      }
 	},
 	watch: {
-		maxHeight(newVal, oldVal){
-			if(this.$el.querySelector && this.$el.querySelector(".formater-sheet-container")){
-				var header = this.$el.querySelector(".formater-sheet-container header").offsetHeight;
-				this.$el.querySelector(".formater-sheet-container main").style.maxHeight = (newVal -90)+"px";
+		maxheight(newVal, oldVal){
+			console.log("watch");
+			if(this.$el && this.$el.querySelector ){
+				var header = this.$el.querySelector(".formater-sheet-header").offsetHeight;
+				this.$el.querySelector(".formater-sheet-main").style.maxHeight = newVal +"px";
 			}
 			return newVal;
 		}
@@ -67,7 +111,6 @@ export default {
 		}
 	},
 	methods:{
-		   
 		   handleTheme( theme ) {
 	            this.theme = theme.detail;
 	            this.ensureTheme();
@@ -94,6 +137,7 @@ export default {
 	    	 this.hidden = true;
 	    	 this.code ="";
 	     },
+	    
 	     open(){
 	    	 this.hidden = false;
 	     },
@@ -110,7 +154,7 @@ export default {
 	    	 return node;
 	     },
 	     handleCreateChart(event){
-	    	 if(this.$el.querySelector("#chartContainer")){
+	    	 if(this.$el.querySelector && this.$el.querySelector("#chartContainer")){
                  return;
              }
 	    	 var data0 = event.detail.marker.options.data.data;
@@ -128,6 +172,7 @@ export default {
 	    	 if(el)  el.parentNode.removeChild( el );
 	     },
 	     createChart(data0){
+	    	 console.log(data0)
 	    	 console.log("createChart");
 	    	
 	    	 var container = this.$el.querySelector("#chartContainer");
@@ -297,8 +342,9 @@ export default {
 	    	 
 	     },
 	     displayInfo( event){
-	    	 console.log(event.detail.marker.options.title);
+	    	 
 	    	 var options = event.detail.marker.options;
+	    	 console.log(options);
 	    	 if( this.code == options.name){
 	    		 this.hide();
 	    		 return;
@@ -308,19 +354,26 @@ export default {
 	    		 this.code = options.name;
 	    		 var _self = this;
                 // var next = function(){ 
-                     _self.object2dom(options);
+                    // _self.object2dom(options);
                      _self.title = options.title;
-                     _self.hidden = false;//}
+                     _self.data = options;
+                     _self.hidden = false;
+                     if(options.data.data)
+                     this.createChart(options.data.data);//}
                //  setTimeout( next, 0);
 	    	 }else if( this.code != options.name){
 	    		 //this.title = event.detail.options.title;
 	            // this.hidden = false;
 	            this.code = options.name;
+	            this.data = options;
 	            var _self = this;
-	             var next = function(){ 
-	            	 _self.object2dom(options);
+	           var next = function(){ 
+	        	   console.log(options.data);
+	            	// _self.object2dom(options);
 	            	 _self.title = options.title;
-	            	 _self.hidden = false;}
+	            	 _self.hidden = false;
+	            	 if(options.data.data)
+	            	 _self.createChart(options.data.data);}
 	             setTimeout( next, 300);
 	    	 }
 	    	
@@ -359,7 +412,7 @@ export default {
                }
            });
         }
-		this.$el.style.maxHeight = this.maxHeight -50+"px";
+		this.$el.style.maxHeight = this.maxHeight +"px";
 		if(this.$el.querySelector && this.$el.querySelector(".formater-sheet-container")){
             var header = this.$el.querySelector(".formater-sheet-container header").offsetHeight;
             this.$el.querySelector(".formater-sheet-container main").style.maxHeight = (newVal -90)+"px";
@@ -444,12 +497,21 @@ export default {
     .formater-sheet-container main{
     margin: 0 5px;
     overflow-y:auto;
-    max-height:300px;
+   /* max-height:300px;*/
     }
     .formater-sheet-container main h4{
+        
         color:#000;
         display:inline-block;
         margin: 3px;
+    }
+  
+    .formater-sheet-data-metablock-50{
+        width:289px;
+        float:left;
+        padding:3px;
+        border-radius:2px;
+        box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
     }
     .formater-sheet-container main h4::after{
         content:" :";
