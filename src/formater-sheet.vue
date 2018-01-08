@@ -37,8 +37,8 @@
 			<i class="fa fa-comment-o"></i>
 			{{ $t("description")}}
 			</h4>
-			<main>
-			{{data.data.description[lang]}}
+			<main v-html="data.data.description[lang]">
+			
 			</main>
 		</div>
 		<div class="formater-sheet-data-metablock-50" style="float:right;" v-if="data && data.data.quicklook">
@@ -436,7 +436,7 @@ export default {
     top:20px;
     right:0;
     background-color:#fff;
-    width:600px;
+    width:620px;
     min-height:100px;
     -ms-transform: translateX(0);
     -webkit-transform: translateX(0);
@@ -458,11 +458,11 @@ export default {
     transition-timing-function: ease-in-out;
 }
 .formater-sheet-container.hidden{
-    -ms-transform: translateX(610px);
-    -webkit-transform: translateX(610px);
-    -moz-transform: translateX(610px);
-    -o-transform: translateX(610px);
-    transform: translate(610px);
+    -ms-transform: translateX(640px);
+    -webkit-transform: translateX(640px);
+    -moz-transform: translateX(640px);
+    -o-transform: translateX(640px);
+    transform: translate(640px);
 	 -ms-transition: -ms-transform  .3s;
 	-webkit-transition: -webkit-transform  .3s;
 	-moz-transition: -moz-transform .3s;
@@ -488,7 +488,7 @@ export default {
 .formater-sheet-container header h3{
     display:inline-block;
     margin:0;
-    max-width:275px;
+    max-width:575px;
    }
     .formater-sheet-container header span.fa-close{
         float:right;

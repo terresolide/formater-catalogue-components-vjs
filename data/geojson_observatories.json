@@ -10,11 +10,12 @@
     	    "identifier":null, 
     	    "lastModification" : null,
     	    "license":null,
+            "formaterDataCenter":"bcmt", 
     	    "code": "AAE",
-    	   
+    	    "organism": "BCMT",
     		"title":{
-    		    "en": "BCMT - Addis Ababa",
-    		    "fr": "BCMT - Addis Abeba"
+    		    "en": "Addis Ababa",
+    		    "fr": "Addis Abeba"
     		},
     		 "description":{
                "en": "Created in 1958 and modernised in 1998 under a convention between the Institut National des Sciences de l’Univers (INSU) and the University of Addis Ababa. Now operated by the Institute of Geophysics, Space Science and Astronomy (IGSSA). A 17-kilometre light train line opened on 20 September 2015. Large distubances are, since then, present on recordings",
@@ -24,9 +25,8 @@
             "quicklook":[{
                 "url":"http://www.bcmt.fr/images/aaenormal.jpg",
                 "description": ""}],
-    		"formaterDataCenter":"bcmt",
+
     		"format": "IAGA2",
-    		"organism": "bcmt",
     		"temporalExtents":{
                 "start": "1997-09-01",
                 "end": "now"
@@ -34,12 +34,12 @@
             "links":[{
                 "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/aae.html",
-                "name" : "Global Emissions InitiAtive",
+                "name" : "AAE",
                 "description" : null
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
-              "name" : "ECCAD Database",
+              "name" : "BCMT Download Page",
              "description" : null
             }],
             "contacts" : [ {
@@ -80,23 +80,55 @@
            "coordinates":[77.570, -37.08, 50]
         },
         "properties":{
-    	    "identifier":null, 
+    	    "identifier":null,   
+    	    "lastModification" : null,
+    	    "license":null,
+    	    "formaterDataCenter":"bcmt",
     	    "code": "AMS",
     		"title":{
     		    "en": "Amsterdam Island - French Southern and Antarctic Lands",
     		    "fr": "Île Amsterdam - Terres Autrales et Antarctiques françaises"
-    		},
-    		"country":{
-    			"en": "France",
-    		    "fr": "France"
     		},
     		"organism": "INTERMAGNET",
     		"temporalExtents":{
                 "start": "1981-04-01",
                 "end": "now"
             },
-    		"url": "http://www.bcmt.fr/ams.html"
-		}
+    		 "description":{
+               "en": "Continuous recording are made since 1981. AMS joined INTERMAGNET in 1992. The observatory is conducted by the Ecole et Observatoire des Sciences de la Terre (EOST) with the logistic support from the <a href='http://www.institut-polaire.fr'>Institut Polaire Francais</a> (IPEV).",
+               "fr": "Continuous recording are made since 1981. AMS joined INTERMAGNET in 1992. The observatory is conducted by the Ecole et Observatoire des Sciences de la Terre (EOST) with the logistic support from the <a href='http://www.institut-polaire.fr'>Institut Polaire Francais</a> (IPEV)."
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/amsnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/ams.html",
+                "name" : "AMS",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [ {
+                "name" : "Aude Chambodut",
+                "email" : "aude.chambodut@unistra.fr",
+                "organisation" : "Ecole et Observatoire de la Terre",
+         
+                "address" : {
+                    "streetAddress": ["Service des observatoires magnétiques","5, rue René Descartes" ],
+                    "postalCode":"67000",
+                    "addressLocality":"Strasbourg",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)3 68 85 01 25",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
+            }
 	},
 	{
        "type": "Feature",
@@ -105,7 +137,10 @@
            "coordinates":[18.566, 4.333, 395]
         },
         "properties":{
-            "identifier":null, 
+            "identifier":null,   
+    	    "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
             "code": "BNG",
             "title":{
                 "en": "Bangui",
@@ -120,7 +155,41 @@
                 "start": "1955-01-01",
                 "end": "2011-06-01"
             },
-            "url": "http://www.bcmt.fr/bng.html"
+    		 "description":{
+               "en": "Created in 1955 by the Office pour la recherche scientifique outre-mer (ORSTOM). Since 1992, it is under a convention between the Institut de Recherche et de Developement (IRD) and the Institut de Physique du Globe de Paris (IPGP).",
+               "fr": "Created in 1955 by the Office pour la recherche scientifique outre-mer (ORSTOM). Since 1992, it is under a convention between the Institut de Recherche et de Developement (IRD) and the Institut de Physique du Globe de Paris (IPGP)."
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/bngnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/bng.html",
+                "name" : "BNG",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
+        
         }
     },
 	{
@@ -131,6 +200,9 @@
         },
         "properties":{
     	    "identifier":null, 
+    	     "lastModification" : null,
+    	    "license":null,
+    	    "formaterDataCenter":"bcmt",
     	    "code": "BOX",
     		"title":{
     		    "en": "Borok, Yaroslavl",
@@ -145,7 +217,39 @@
                 "start": "2004-04-01",
                 "end": "now"
             },
-    		"url": "http://www.bcmt.fr/box.html"
+    		 "description":{
+               "en": "Created in 1957 and modernised in 2002 under a convention between the Institut de physique du globe de Paris and the Russian Academy of Science(RAS). ",
+               "fr": "Created in 1957 and modernised in 2002 under a convention between the Institut de physique du globe de Paris and the Russian Academy of Science(RAS). "
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/boxnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/box.html",
+                "name" : "BOX",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Sergey ANISIMOV",
+                "email" : "svan@borok.yar.ru",
+                "organisation" : "Borok Geophysical Observatory",
+         
+                "address" : {
+                    "streetAddress": ["Borok 152742"],
+                    "addressLocality":"Yaroslav",
+                    "addressCountry":"RUSSIA"
+                },
+                "telephone":"+7(08547)24485 ",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
     	}
 	},
 	{
@@ -157,6 +261,9 @@
         "properties":{
 
     	    "identifier":null, 
+    	    "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
     	    "code": "CLF",
     		"title":{
     		    "en": "Chambon-la-Foret",
@@ -175,7 +282,40 @@
                 "start": "1936-01-01",
                 "end": "now"
             },
-    		"url": "http://www.bcmt.fr/clf.html"
+    		 "description":{
+               "en": "Succeeded in 1936 to the Saint Maur des Fossés (Val de Marne 1883-1902) and Val Joyeux (Yvelines 1903-1935) observatories.",
+               "fr": "Succeeded in 1936 to the Saint Maur des Fossés (Val de Marne 1883-1902) and Val Joyeux (Yvelines 1903-1935) observatories."
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/clfnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/clf.html",
+                "name" : "CLF",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
     	}
 	},
 	{
@@ -187,6 +327,9 @@
         "properties":{
             "organism": "BCMT",
     	    "identifier":null, 
+    	    "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
     	    "code": "IPM",
     		"title":{
     		    "en": "Isla de Pascua",
@@ -200,7 +343,52 @@
                 "start": "2010-01-01",
                 "end": "now"
             },
-    		"url": "http://www.bcmt.fr/ipm.html"
+    		 "description":{
+               "en": "Created in 2008 by the Institut de physique du globe de Paris under a convention with the chilean Meteorology (DMC) with the contribution of the National Aeronautics and Space Administration (NASA). ",
+               "fr": "Created in 2008 by the Institut de physique du globe de Paris under a convention with the chilean Meteorology (DMC) with the contribution of the National Aeronautics and Space Administration (NASA). "
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/ipmnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/ipm.html",
+                "name" : "IPM",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              },{
+              "name" : "Gonzalo Silva González",
+                "email" : "gsilva@dgac.cl",
+                "organisation" : "Centro Meteorológico Regional Pacifico",
+                "telephone": "+56-2-4392048",
+                "address" : {
+                    "addressLocality":"Isla de Pascua",
+                    "addressCountry":"CHILE"
+                },
+                "roles" : [ "alternate contact" ],
+                "orcId" : ""
+                		
+            		}]
     	}
 	},
 	{
@@ -212,6 +400,9 @@
         "properties":{
             "organism": "BCMT",
             "identifier":null, 
+    	    "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
             "code": "KOU",
             "title":{
                 "en": "Kourou, French Guiana",
@@ -225,7 +416,40 @@
                 "start": "1996-01-01",
                 "end": "now"
             },
-            "url": "http://www.bcmt.fr/kou.html"
+    		 "description":{
+               "en": "Created in 1995 by the Institut de physique du globe de Paris on the French Space Centre with the contribution of the Centre National d’Etudes Spatiales (CNES). ",
+               "fr": "Created in 1995 by the Institut de physique du globe de Paris on the French Space Centre with the contribution of the Centre National d’Etudes Spatiales (CNES). "
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/kounormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/kou.html",
+                "name" : "KOU",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
         }
     },
    {
@@ -237,6 +461,9 @@
         "properties":{
             "organism": "BCMT",
             "identifier":null, 
+    	    "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
             "code": "LZH",
             "title":{
                 "en": "Lanzhou",
@@ -250,7 +477,53 @@
                 "start": "2001-04-01",
                 "end": "now"
             },
-            "url": "http://www.bcmt.fr/lzh.html"
+    		 "description":{
+               "en": "Created in 1959 and modernised in 1998 by the Institut de physique du globe de Paris under a convention with the Center for Earthquake Administration of the Chinese Science Academy. ",
+               "fr": "Created in 1959 and modernised in 1998 by the Institut de physique du globe de Paris under a convention with the Center for Earthquake Administration of the Chinese Science Academy. "
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/lzhnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/lzh.html",
+                "name" : "LZH",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              },{
+                "name" : "Pr. Wang Lanmin",
+                "email" : "wanglm@gssb.gov.cn",
+                "organisation" : "Lanzhou Institute of Seismology",
+         
+                "address" : {
+                    "streetAddress": ["China Seismological Bureau", "410 Donggangxilu"],
+                    "addressLocality":"Lanzhou, Gansu 730000",
+                    "addressCountry":"CHINA"
+                },
+                "telephone":"086-0931-8276660",
+                "roles" : [ "alternate contact" ],
+                "orcId" : ""
+              }]
         }
     },
    {
@@ -262,6 +535,9 @@
         "properties":{
             "organism": "BCMT",
             "identifier":null, 
+            "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
             "code": "MBO",
             "title":{
                 "en": "Mbour",
@@ -275,7 +551,40 @@
                 "start": "1952-03-01",
                 "end": "now"
             },
-            "url": "http://www.bcmt.fr/mbo.html"
+    		 "description":{
+               "en": "Created in 1952 by the Office pour la recherche scientifique outre-mer (ORSTOM). Modernised in 1992 by the Institut de physique du globe de Paris and managed in collaboration with the Institut pour la recherche et de développement (IRD). ",
+               "fr": "Created in 1952 by the Office pour la recherche scientifique outre-mer (ORSTOM). Modernised in 1992 by the Institut de physique du globe de Paris and managed in collaboration with the Institut pour la recherche et de développement (IRD). "
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/mbonormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/mbo.html",
+                "name" : "LZH",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
         }
     },
     {
@@ -287,6 +596,9 @@
         "properties":{
             "organism": "BCMT",
             "identifier":null, 
+            "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
             "code": "PHU",
             "title":{
                 "en": "Phu Thuy",
@@ -300,7 +612,52 @@
                 "start": "1996-01-01",
                 "end": "now"
             },
-            "url": "http://www.bcmt.fr/phu.html"
+    		 "description":{
+               "en": "Created in 1957 and modernised in 1992 by the Institut de physique du globe de Paris and managed in collaboration with the Institute of Geophysics in Hanoi of the Academy of Sciences and Technology (VAST). ",
+               "fr": "Created in 1957 and modernised in 1992 by the Institut de physique du globe de Paris and managed in collaboration with the Institute of Geophysics in Hanoi of the Academy of Sciences and Technology (VAST). "
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/phunormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/phu.html",
+                "name" : "PHU",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              },{
+                "name" : "Ha Duyen Chau",
+                "email" : "chau@ipg.ncst.ac.vn",
+                "organisation" : "Institute of Geophysics",
+         
+                "address" : {
+                    "streetAddress": ["Vietnamese Academy of Science and Technology", "18 Hoang Quoc Viet"],
+                    "addressCountry":"VIETNAM"
+                },
+                "telephone":"84 (4) 7566893",
+                "roles" : [ "alternate contact" ],
+                "orcId" : ""
+              }]
         }
     },
     {
@@ -312,6 +669,9 @@
         "properties":{
             "organism": "BCMT",
             "identifier":null,
+            "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
              "code": "DLT",
             "title":{
                 "en": "Dalat",
@@ -325,7 +685,52 @@
                 "start": "2011-04-01",
                 "end": "now"
             },
-            "url": "http://www.bcmt.fr/dlt.html"
+    		 "description":{
+               "en": "Created in 1978 and modernised in 2010 by the Institut de physique du globe de Paris under a convention between the Institute of Geophysics in Hanoi of the Academy of Sciences and Technology (VAST). ",
+               "fr": "Created in 1978 and modernised in 2010 by the Institut de physique du globe de Paris under a convention between the Institute of Geophysics in Hanoi of the Academy of Sciences and Technology (VAST). "
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/dltnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/dlt.html",
+                "name" : "DLT",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              },{
+                "name" : "Ha Duyen Chau",
+                "email" : "chau@ipg.ncst.ac.vn",
+                "organisation" : "Institute of Geophysics",
+         
+                "address" : {
+                    "streetAddress": ["Vietnamese Academy of Science and Technology", "18 Hoang Quoc Viet"],
+                    "addressCountry":"VIETNAM"
+                },
+                "telephone":"84 (4) 7566893",
+                "roles" : [ "alternate contact" ],
+                "orcId" : ""
+              }]
         }
     },
     {
@@ -337,6 +742,9 @@
         "properties":{
             "organism": "BCMT",
             "identifier":null, 
+            "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt",
             "code": "PPT",
             "title":{
                 "en": "Pamatai, Tahiti Island",
@@ -354,7 +762,40 @@
                 "start": "1968-01-01",
                 "end": "now"
             },
-            "url": "http://www.bcmt.fr/phu.html"
+    		 "description":{
+               "en": "Created in 1968 by the Office pour la recherche scientifique outre-mer (ORSTOM). Transfered en 1995 to the Institut de physique du globe de Paris, it is now operated with the Geophysics Laboratory of the Commissariat à l’énergie atomique (CEA).",
+               "fr": "Created in 1968 by the Office pour la recherche scientifique outre-mer (ORSTOM). Transfered en 1995 to the Institut de physique du globe de Paris, it is now operated with the Geophysics Laboratory of the Commissariat à l’énergie atomique (CEA)."
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/pptnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/ppt.html",
+                "name" : "PPT",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
          }
     },
     {
@@ -365,7 +806,10 @@
         },
         "properties":{
             "organism": "BCMT",
-            "identifier":null, 
+            "identifier":null,
+            "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt", 
             "code": "TAM",
             "title":{
                 "en": "Tamanrasset",
@@ -379,9 +823,244 @@
                 "start": "1993-01-01",
                 "end": "now"
             },
-            "url": "http://www.bcmt.fr/tam.html"
+    		 "description":{
+               "en": "Created in 1935 by the Institut de physique du globe d''Alger and modernised in 1992, it is managed in collaboration with the Centre de recherche en astronomie, astrophysique et géophysique (CRAAG). ",
+               "fr": "Created in 1935 by the Institut de physique du globe d''Alger and modernised in 1992, it is managed in collaboration with the Centre de recherche en astronomie, astrophysique et géophysique (CRAAG). "
+        
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/tamnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/tam.html",
+                "name" : "TAM",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Benoit Heumez",
+                "email" : "heumez@ipgp.fr",
+                "organisation" : "Observatoire Magnetique National",
+         
+                "address" : {
+                    "streetAddress": ["Carrefour des 8 routes"],
+                    "postalCode":"45340",
+                    "addressLocality":"Chambon La Forêt",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)2 38 33 95 01",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              },{
+                "name" : "Abdelhamid Bendekken",
+                "email" : "a_bendekken@yahoo.fr",
+                "organisation" : "Observatoire de Tamanrasset",
+         		"address" : {
+                    "streetAddress": ["BP32"],
+                    "postalCode":"11000",
+                    "addressLocality":"Tamanrasset",
+                    "addressCountry":"ALGERIA"
+                },
+                "telephone":"+213 29 344 123",
+                "roles" : [ "alternate contact" ],
+                "orcId" : ""
+              }]
         }
-    }  
+    },  {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[51.87, -46.43, 160]
+        },
+        "properties":{
+            "organism": "INTERMAGNET",
+            "identifier":null,
+            "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt", 
+            "code": "CZT",
+            "title":{
+                "en":"Crozet Archipelago, Possession Island, Terres Australes et Antarctiques Françaises",
+                "fr": "Archipel de Crozet, Île de la Possession, Terres Australes et Antarctiques Françaises"
+            },
+            "country":{
+                "en": "France",
+                "fr": "France"
+            },
+            "temporalExtents":{
+                "start": "1974-01-01",
+                "end": "now"
+            },
+    		 "description":{
+              "en": "Created in 1964, the CZT observatory started continuous recordings in 1974 and joined INTERMAGNET in 1991. It is conducted by the Ecole et Observatoire des Sciences de la Terre (EOST) with the logistic support from the <a href='http://www.institut-polaire.fr/' target='_blank'>Institut Polaire Francais</a>  (IPEV).",
+              "fr": "Created in 1964, the CZT observatory started continuous recordings in 1974 and joined INTERMAGNET in 1991. It is conducted by the Ecole et Observatoire des Sciences de la Terre (EOST) with the logistic support from the <a href='http://www.institut-polaire.fr/' target='_blank'>Institut Polaire Francais</a>  (IPEV)."
+           
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/cztnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/czt.html",
+                "name" : "TAM",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Aude Chambodut",
+                "email" : "aude.chambodut@unistra.fr",
+                "organisation" : "Ecole et Observatoire de la Terre",
+         
+                "address" : {
+                    "streetAddress": ["Service des observatoires magnétiques","5, rue René Descartes" ],
+                    "postalCode":"67000",
+                    "addressLocality":"Strasbourg",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)3 68 85 01 25",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
+        }
+    } , {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[124.167, -75.25, 3250]
+        },
+        "properties":{
+            "organism": "INTERMAGNET",
+            "identifier":null,
+            "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt", 
+            "code": "DMC",
+            "title":{
+                "en":"Base of Concordia Dome C High Antarctic Plateau",
+                "fr": "Base de Concordia Dome C Haut Plateau Antarctique"
+            },
+            "country":{
+                "en": "France",
+                "fr": "France"
+            },
+            "temporalExtents":{
+                "start": "1974-01-01",
+                "end": "now"
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/dmcnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/dmc.html",
+                "name" : "DMC",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Aude Chambodut",
+                "email" : "aude.chambodut@unistra.fr",
+                "organisation" : "Ecole et Observatoire de la Terre",
+         
+                "address" : {
+                    "streetAddress": ["Service des observatoires magnétiques","5, rue René Descartes" ],
+                    "postalCode":"67000",
+                    "addressLocality":"Strasbourg",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)3 68 85 01 25",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              },{
+                "name" : "Domenico Di Mauro",
+                "email" : "domenico.dimauro@ingv.it",
+                "organisation" : "Istituto Nazionale di Geofisica e Vulcanologia",
+         
+                "address" : {
+                    "streetAddress": ["Unità funzionale Geomagnetismo","via di Vigna Murata, 605" ],
+                    "postalCode":"00143",
+                    "addressLocality":"Rome",
+                    "addressCountry":"ITALY"
+                },
+                "telephone":"+39 06 51 86 03 28",
+                "roles" : [ "alternate contact" ],
+                "orcId" : ""
+              }]
+        }
+     }, {
+       "type": "Feature",
+        "geometry": {
+           "type": "Point",
+           "coordinates":[140.01, -66.67, 30]
+        },
+        "properties":{
+            "organism": "INTERMAGNET",
+            "identifier":null,
+            "lastModification" : null,
+    	    "license":null,
+            "formaterDataCenter":"bcmt", 
+            "code": "DRV",
+            "title":{
+                "en":"Dumont d'Urville, Adelie Land, Antartica",
+                "fr": "Dumont d'Urville, Terres Adélie,  Antarctique"
+            },
+            "country":{
+                "en": "France",
+                "fr": "France"
+            },
+            "temporalExtents":{
+                "start": "1974-01-01",
+                "end": "now"
+            },
+            "description":{
+              "en": "The DRV observatory opened in 1957, it is conducted by the Ecole et Observatoire des Sciences de la Terre (EOST) with the logistic support from the <a href='http://www.institut-polaire.fr/' target='_blank'>Institut Polaire Francais</a> (IPEV). ",
+              "fr": "The DRV observatory opened in 1957, it is conducted by the Ecole et Observatoire des Sciences de la Terre (EOST) with the logistic support from the <a href='http://www.institut-polaire.fr/' target='_blank'>Institut Polaire Francais</a> (IPEV). "
+           
+            },
+            "quicklook":[{
+                "url":"http://www.bcmt.fr/images/drvnormal.jpg",
+                "description": ""}],
+            "links":[{
+                "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr/drv.html",
+                "name" : "DRV",
+                "description" : null
+            },{
+             "type" : "HTTP_DOWNLOAD_LINK",
+              "url" : "http://www.bcmt.fr/data_download.php",
+              "name" : "BCMT Download Page",
+             "description" : null
+            }],
+            "contacts" : [{
+                "name" : "Aude Chambodut",
+                "email" : "aude.chambodut@unistra.fr",
+                "organisation" : "Ecole et Observatoire de la Terre",
+         
+                "address" : {
+                    "streetAddress": ["Service des observatoires magnétiques","5, rue René Descartes" ],
+                    "postalCode":"67000",
+                    "addressLocality":"Strasbourg",
+                    "addressCountry":"FRANCE"
+                },
+                "telephone":"33 (0)3 68 85 01 25",
+                "roles" : [ "main contact" ],
+                "orcId" : ""
+              }]
+        }
+      }
   ]
                                		
 }
