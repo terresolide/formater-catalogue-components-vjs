@@ -10,30 +10,41 @@
         "temporal": "temporal",
         "url": "url",
         "main contact": "Main Contact",
-        "alternate contact": "Alternate Contact"
+        "alternate contact": "Alternate Contact",
+        "information_links": "Information links",
+        "data_access": "Data Access",
+        "other_information": "Other information",
+        "data_center": "Data Center",
+        "HTTP_DOWNLOAD_LINK": "Http download link"
    },
    "fr":{
          "organism":    "organisme",
          "code": "code",
-        "name": "nom",
-        "description": "Description",
-        "contacts": "Contacts",
-        "country": "pays",
-        "temporal": "intervalle de temps",
-        "url": "url",
+         "name": "nom",
+         "description": "Description",
+         "contacts": "Contacts",
+         "country": "pays",
+         "temporal": "intervalle de temps",
+         "url": "url",
          "main contact": "Contact",
-        "alternate contact": "Autre Contact"
+         "alternate contact": "Autre Contact",
+         "information_links": "Liens d'information",
+         "data_access": "Accès aux données",
+         "other_information": "Autre information",
+         "data_center": "Centre de données",
+         "HTTP_DOWNLOAD_LINK": "Lien de téléchargement http"
    }
 }
-</i18n><template>
+</i18n>
+<template>
 	<span class="formater-sheet-container" :class="hidden ? 'hidden' : ''" >
-		<header class="formater-sheet-header" >
+		<header class="formater-sheet-header">
 		  <h3>{{ title }}</h3>
 		  <span class="fa fa-close" @click="close"></span>
 		</header>
 		<main class="formater-sheet-main">
 		<div class="formater-sheet-data-metablock" v-if="data && data.data.description">
-			<h4>
+			<h4 :style="styleTitle">
 			<i class="fa fa-comment-o"></i>
 			{{ $t("description")}}
 			</h4>
@@ -41,37 +52,106 @@
 			
 			</main>
 		</div>
-		<div class="formater-sheet-data-metablock-50" style="float:right;" v-if="data && data.data.quicklook">
+		<div id="container"></div>
+		<div class="formater-information-container">
+		  <div class="formater-column">
+		                                     
+		      <div class="formater-sheet-data-metablock-50" v-if="data && data.data && data.data.contacts" >
+	            <h4 :style="styleTitle">
+	            <i class="fa fa-users"></i>
+	            {{ $t("contacts")}}
+	            </h4>
+	            <main>
+	            <div class="formater-list" v-for="contact in data.data.contacts" >
+	              <div class="formater-function" :style="styleTitle">{{ $t(contact.roles[0])}}</div>
+	                <div style="font-weight:600;"><i class="fa fa-user"></i> {{ contact.name}}</div>
+	                <div class="formater-address" >
+		                <a :href="'mailto:'+contact.email" :style="styleTitle">{{contact.email}}</a>
+		                <div v-if="contact.organisation" class="formater-organisation" >{{contact.organisation}}</div>
+		                <div v-if="contact.address">
+			                <div v-for="item in contact.address.streetAddress">{{item}}</div>
+			                <div v-if="contact.address.postOfficeBoxNumber">P.O. box {{contact.address.postOfficeBoxNumber}}</div>
+			                <div v-if="contact.address.addressLocality"><span v-if="contact.address.postalCode">{{contact.address.postalCode}}</span>
+			                {{contact.address.addressLocality}}</div>
+			                <div v-if="contact.address.addressCountry">{{contact.address.addressCountry}}</div>
+			                <div v-if="contact.telephone">Tel: {{contact.telephone}}</div>
+		                </div>
+	                </div>
+	            </div>
+	            </main>
+	          </div>
            
-            <main>
-            <div v-for="image in data.data.quicklook">
-             <img :src="image.url" alt=":image.description" />
-            </div>
+	          <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.links && data.data.links.existType('INFORMATION_LINK')">
+		           <h4 :style="styleTitle">
+		            <i class="fa fa-link"></i>
+		            {{ $t("information_links")}}
+		            </h4>
+		            <main>
+		             <div class="formater-list" v-for="link in data.data.links" v-if="link['type'] == 'INFORMATION_LINK'">
+		                <a :href="link.url" >{{ link.url}}</a>
+		                <div class="formater-address" v-if="link.description">{{link.description[lang]}}</div>
+		             </div>
+		            </main>
+	           
+	          </div>
+	          
+            </div><!-- end column -->
+            <div class="formater-column"> 
             
-            </main>
-        </div>
-		<div class="formater-sheet-data-metablock-50" v-if="data && data.data.contacts">
-            <h4>
-            <i class="fa fa-users"></i>
-            {{ $t("contacts")}}
-            </h4>
-            <main>
-           
-            <div v-for="contact in data.data.contacts">
-                <div class="formater-function">{{ $t(contact.roles[0])}}</div>
-                <i class="fa fa-user"></i>
-                {{ $t(contact.name)}}
-            </div>
-            <div id="container"></div>
-     
-            </main>
-        </div>
-		
+	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.quicklook">
+		            <main>
+		            <div v-for="image in data.data.quicklook" style="text-align:center;">
+		             <img :src="image.url" :alt="image.description" />
+		            </div>
+		            </main>
+	            </div>
+	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.links && data.data.links.existType('HTTP_DOWNLOAD_LINK')">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-database"></i>
+                    {{ $t("data_access")}}
+                    </h4>
+                    
+                    <main>
+                    <span :style="styleTitle">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
+                     <div class="formater-list" v-for="link in data.data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
+                        <a :href="link.url" >{{ link.url}}</a>
+                        <div class="formater-address" v-if="link.description">{{link.description[lang]}}</div>
+                     </div>
+                    </main>
+               
+              </div>
+	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.data">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-info"></i>
+                    {{ $t("other_information")}}
+                    </h4>
+                    <main>
+                     <ul>
+                     <li v-if="data.data.formaterDataCenter">
+                        <span :style="styleTitle">{{$t("data_center")}} ForM@Ter :</span>
+                        {{data.data.formaterDataCenter}}
+                     </li>
+                     </ul>
+                    </main>
+               
+              </div>
+	        </div><!-- end column 2 -->
+		</div><!-- end information -->
 		</main>
 	</span>
 </template>
 <script>
-
+Array.prototype.existType = function( type){
+	var i=0;
+    find = false;
+    while( !find && i< this.length){
+        if( this[i].type == type){
+            find = true;
+        }
+        i++;
+    }
+    return find;
+}
 export default {
 	props: {
 		 lang: {
@@ -93,6 +173,11 @@ export default {
 			return newVal;
 		}
 	},
+	computed:{
+		styleTitle(){
+            return 'color:'+this.color+';';
+        }
+	},
 	data(){
 		return {
 			title: 'le titre',
@@ -102,7 +187,7 @@ export default {
 			findDataListener:null,
 			unselectLayerListener:null,
 			hidden: true,
-			code: null,
+			color: "#000",
 			data:null,
 			searched:false,
 			charts:null,
@@ -110,23 +195,30 @@ export default {
 			
 		}
 	},
+
 	methods:{
+		 
 		   handleTheme( theme ) {
 	            this.theme = theme.detail;
 	            this.ensureTheme();
+	   
 	      },
 	        
 	     ensureTheme() {
+	    	  this.color =  this.$shadeColor( this.theme.primary, -0.2);
 	        if ((this.$el) && (this.$el.querySelector)) {
 	        	var color = this.theme.primary;
-	            var color3 =  this.$shadeColor( this.theme.primary, 0.8);
-	            var nodes= this.$el.querySelectorAll("header");
+	            
+	           
+	            var nodes= this.$el.querySelectorAll(".formater-sheet-header");
 	            [].forEach.call(nodes, function(node){
 	                node.style.backgroundColor = color;
 	            })
+	           
 	            
 	        }
 	     },
+	     
 	     close(){
 	  
 	    	 var event = new CustomEvent("closeSheet", { detail:{}});
@@ -138,20 +230,14 @@ export default {
 	    	 this.code ="";
 	     },
 	    
-	     open(){
-	    	 this.hidden = false;
-	     },
-	     createTextNode( key, text){
-	    	 switch(key){
-	    	 case "url":
-	    		 var node = document.createElement("a");
-	    		 node.setAttribute("href", text);
-	    		 node.appendChild( document.createTextNode(text));
-	    		 break;
-	         default:
-	        	 var node =  document.createTextNode(text);
-	    	 }
-	    	 return node;
+	     open( options){
+	    	   this.title = options.title;
+               this.data = options;
+               
+               if(options.data.data)
+               this.createChart(options.data.data);
+               //}
+               this.hidden = false;
 	     },
 	     handleCreateChart(event){
 	    	 if(this.$el.querySelector && this.$el.querySelector("#chartContainer")){
@@ -177,7 +263,7 @@ export default {
 	    	
 	    	 var container = this.$el.querySelector("#chartContainer");
 	    	 if(!container){
-		    	 var node = this.$el.querySelector("main");
+		    	 var node = this.$el.querySelector("#container");
 		    	 var container = document.createElement("div");
 		    	 node.appendChild( container );
 		    	 container.setAttribute("id", "chartContainer");
@@ -304,43 +390,6 @@ export default {
 	    	  //  }
 	    	 
 	     },
-	     object2dom( data ){
-	    	 this.title = data.title;
-	    	 var node = this.$el.querySelector("main");
-	    	 node.innerHTML = "";
-	    	 for(var key in data.data){
-	    		 var div = document.createElement("div");
-	    		 node.appendChild(div);
-	    		 var title = document.createElement("h4");
-	    		 title.appendChild( document.createTextNode(this.$i18n.t(key)));
-	    		 div.appendChild(title);
-	    		 console.log(typeof data.data[key]);
-	    		 switch(typeof data.data[key]){
-	    		 case "string":
-	    			 var span = document.createElement("span");
-	    			 var textNode = this.createTextNode( key, data.data[key]);
-	    			 
-	    			 span.appendChild( textNode);
-	    			 div.appendChild( span);
-	    			 break;	 
-	    		 
-	    		 case "object":
-	    			 if(data.data[key][this.lang]){
-	    				 var span = document.createElement("span");
-	    				 var textNode = this.createTextNode( key, data.data[key][this.lang]);
-	                     span.appendChild( textNode);
-	                     div.appendChild( span);
-	    			 }else if(data.data.data){
-	    				 this.createChart(data.data.data);
-	    				 
-	    			 }
-	    			 default:
-	    				 
-	    		 }
-	    	 }
-	    	 
-	    	 
-	     },
 	     displayInfo( event){
 	    	 
 	    	 var options = event.detail.marker.options;
@@ -352,28 +401,16 @@ export default {
 	    	 this.close();
 	    	 if(this.code = ""){
 	    		 this.code = options.name;
-	    		 var _self = this;
-                // var next = function(){ 
-                    // _self.object2dom(options);
-                     _self.title = options.title;
-                     _self.data = options;
-                     _self.hidden = false;
-                     if(options.data.data)
-                     this.createChart(options.data.data);//}
+	    		 this.open(options);
+               
                //  setTimeout( next, 0);
 	    	 }else if( this.code != options.name){
-	    		 //this.title = event.detail.options.title;
-	            // this.hidden = false;
 	            this.code = options.name;
-	            this.data = options;
+	            
 	            var _self = this;
 	           var next = function(){ 
-	        	   console.log(options.data);
-	            	// _self.object2dom(options);
-	            	 _self.title = options.title;
-	            	 _self.hidden = false;
-	            	 if(options.data.data)
-	            	 _self.createChart(options.data.data);}
+	        	   _self.open(options);
+	                 }
 	             setTimeout( next, 300);
 	    	 }
 	    	
@@ -481,11 +518,17 @@ export default {
     color:#fff;
     background-color:#DD9946;
 }
-.formater-sheet-container #chartContainer{
-    width:95%;
-    margin:auto;
+.formater-sheet-container #container{
+    max-width:595px;
+    margin:5px 0 0 5px;
+    padding:3px;
+    box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
+
 }
-.formater-sheet-container header h3{
+.formater-layout .formater-sheet-container main  h4{
+    color:#000;
+}
+ .formater-sheet-container header h3{
     display:inline-block;
     margin:0;
     max-width:575px;
@@ -494,29 +537,74 @@ export default {
         float:right;
         cursor:pointer;
     }
-    .formater-sheet-container main{
-    margin: 0 5px;
+    .formater-sheet-container .formater-sheet-main{
+    margin: 0 ;
     overflow-y:auto;
+    background:#f1f1f1;
    /* max-height:300px;*/
     }
     .formater-sheet-container main h4{
-        
-        color:#000;
+
         display:inline-block;
         margin: 3px;
     }
-  
+   .formater-sheet-container .formater-information-container{
+        display:flex;
+    }
+    .formater-sheet-container .formater-column{
+        max-width:300px;
+        margin-left:5px;
+    }
+    .formater-sheet-data-metablock{
+        background:white;
+        margin:5px 0 0 5px;
+        padding:3px;
+        box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
+    }
+    .formater-sheet-data-metablock{
+        max-width:595px;
+    }
+    .formater-sheet-data-metablock main,
+    .formater-sheet-data-metablock-50 main
+    {
+        margin-left:15px;
+        padding-bottom:5px;
+       
+    }
     .formater-sheet-data-metablock-50{
         width:289px;
         float:left;
         padding:3px;
+        margin-top:5px;
         border-radius:2px;
         box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
+        background:white;
     }
     .formater-sheet-container main h4::after{
         content:" :";
     }
     .formater-sheet-container main h4::first-letter{
         text-transform:uppercase;
+    }
+    .formater-sheet-container .formater-address{
+       border-left:1px solid #999;
+       padding-left:10px;
+       margin-left:5px;
+       font-size:0.9rem;
+    }
+    .formater-sheet-container .formater-function{
+        margin-bottom:5px;
+    }
+    .formater-sheet-container .formater-list{
+        margin-left:0px;
+        margin-top:8px;
+    }
+    .formater-sheet-container .formater-organisation{
+        font-weight:600;
+        margin-top:6px;
+    }
+    .formater-sheet-container ul{
+        list-style-type:none;
+        padding-left:5px;
     }
 </style>

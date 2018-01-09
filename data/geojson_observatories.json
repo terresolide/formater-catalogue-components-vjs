@@ -33,9 +33,18 @@
             },
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/aae.html",
-                "name" : "AAE",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -104,9 +113,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/ams.html",
-                "name" : "AMS",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -165,9 +183,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/bng.html",
-                "name" : "BNG",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -227,9 +254,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/box.html",
-                "name" : "BOX",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -292,9 +328,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/clf.html",
-                "name" : "CLF",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -353,9 +398,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/ipm.html",
-                "name" : "IPM",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -426,9 +480,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/kou.html",
-                "name" : "KOU",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -487,9 +550,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/lzh.html",
-                "name" : "LZH",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -561,9 +633,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/mbo.html",
-                "name" : "LZH",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -622,9 +703,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/phu.html",
-                "name" : "PHU",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -695,9 +785,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/dlt.html",
-                "name" : "DLT",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -772,9 +871,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/ppt.html",
-                "name" : "PPT",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -833,9 +941,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/tam.html",
-                "name" : "TAM",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -906,9 +1023,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/czt.html",
-                "name" : "TAM",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -961,9 +1087,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/dmc.html",
-                "name" : "DMC",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
@@ -1035,9 +1170,18 @@
                 "description": ""}],
             "links":[{
                 "type" : "INFORMATION_LINK",
+                "url": "http://www.bcmt.fr",
+                "description" : {
+                      "en": "BCMT Portal",
+                      "fr": "Portail du BCMT"
+                }
+            },{
+                "type" : "INFORMATION_LINK",
                 "url": "http://www.bcmt.fr/drv.html",
-                "name" : "DRV",
-                "description" : null
+                "description" : {
+                      "en": "Metadata Page",
+                      "fr": "Page des métadonnées"
+                }
             },{
              "type" : "HTTP_DOWNLOAD_LINK",
               "url" : "http://www.bcmt.fr/data_download.php",
