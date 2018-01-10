@@ -18,7 +18,9 @@
         "HTTP_DOWNLOAD_LINK": "Http download links",
         "data": "Data",
         "from": "from",
-        "to": "to"
+        "to": "to",
+        "temporal_extents": "Temporal extents",
+        "now": "Now"
    },
    "fr":{
          "organism":    "organisme",
@@ -38,7 +40,9 @@
          "HTTP_DOWNLOAD_LINK": "Liens de téléchargement http",
          "data": "Données",
          "from": "du",
-         "to": "au"
+         "to": "au",
+         "temporal_extents": "Extension temporelle",
+         "now": "Aujourd'hui"
    }
 }
 </i18n>
@@ -63,8 +67,50 @@
 		  <span v-html="chartTitle"></span>
 		  </h4>
 		</div>
-		<div class="formater-information-container">
+		 <div class="formater-information-container">
 		  <div class="formater-column">
+			 
+                  <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.format">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-file"></i>
+                    format
+                    </h4>
+                    
+                    <main>
+                     <div class="formater-address">
+                          {{data.data.format}}
+                        </div>
+                    </main>
+	               
+	              </div>
+	              <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.temporalExtents">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-clock-o"></i>
+                    {{ $t("temporal_extents")}}
+                    </h4>
+                    
+                    <main>
+                     <div class="formater-address">
+                          {{startDate}} <i class="fa fa-long-arrow-right" :style="styleTitle"></i> {{endDate}}
+                        </div>
+                    </main>
+                   
+                  </div>
+	                <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.links && data.data.links.existType('HTTP_DOWNLOAD_LINK')">
+	                   <h4 :style="styleTitle">
+	                    <i class="fa fa-database"></i>
+	                    {{ $t("data_access")}}
+	                    </h4>
+	                    
+	                    <main>
+	                    <span :style="styleTitle">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
+	                     <div class="formater-address" v-for="link in data.data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
+	                        <a :href="link.url" >{{ link.url}}</a>
+	                        <div class="formater-address" v-if="link.description">{{link.description[lang]}}</div>
+	                     </div>
+	                    </main>
+	               
+	              </div>
 		                                     
 		      <div class="formater-sheet-data-metablock-50" v-if="data && data.data && data.data.contacts" >
 	            <h4 :style="styleTitle">
@@ -91,19 +137,7 @@
 	            </main>
 	          </div>
            
-	          <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.links && data.data.links.existType('INFORMATION_LINK')">
-		           <h4 :style="styleTitle">
-		            <i class="fa fa-link"></i>
-		            {{ $t("information_links")}}
-		            </h4>
-		            <main>
-		             <div class="formater-list" v-for="link in data.data.links" v-if="link['type'] == 'INFORMATION_LINK'">
-		                <a :href="link.url" >{{ link.url}}</a>
-		                <div class="formater-address" v-if="link.description">{{link.description[lang]}}</div>
-		             </div>
-		            </main>
-	           
-	          </div>
+	          
 	          
             </div><!-- end column -->
             <div class="formater-column"> 
@@ -115,34 +149,19 @@
 		            </div>
 		            </main>
 	            </div>
-	             <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.temporalExtents">
+	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.links && data.data.links.existType('INFORMATION_LINK')">
                    <h4 :style="styleTitle">
-                    <i class="fa fa-clock-o"></i>
-                    {{ $t("temporal_extents")}}
+                    <i class="fa fa-link"></i>
+                    {{ $t("information_links")}}
                     </h4>
-                    
                     <main>
-                     <div class="formater-list">
-                          {{data.data.temporalExtents.start}}
-                        </div>
-                    </main>
-               
-              </div>
-	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.links && data.data.links.existType('HTTP_DOWNLOAD_LINK')">
-                   <h4 :style="styleTitle">
-                    <i class="fa fa-database"></i>
-                    {{ $t("data_access")}}
-                    </h4>
-                    
-                    <main>
-                    <span :style="styleTitle">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
-                     <div class="formater-list" v-for="link in data.data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
+                     <div class="formater-list" v-for="link in data.data.links" v-if="link['type'] == 'INFORMATION_LINK'">
                         <a :href="link.url" >{{ link.url}}</a>
                         <div class="formater-address" v-if="link.description">{{link.description[lang]}}</div>
                      </div>
                     </main>
                
-              </div>
+               </div>
 	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.data">
                    <h4 :style="styleTitle">
                     <i class="fa fa-info"></i>
@@ -199,6 +218,24 @@ export default {
 	computed:{
 		styleTitle(){
             return 'color:'+this.color+';';
+        },
+        startDate(){
+        	if(this.data){
+        		return moment(this.data.data.temporalExtents.start, "YYYY-MM-DD").format("ll");
+        	}else{
+        		return "";
+        	}
+        },
+        endDate(){
+        	   if( this.data && this.data.data.temporalExtents ){
+        		   if(this.data.data.temporalExtents.end == "now"){
+        			   return this.$i18n.t("now");
+        		   }else{
+        			   return  moment(this.data.data.temporalExtents.end, "YYYY-MM-DD").format("ll");
+        		   }
+		        }else{
+		            return "";
+		        }
         }
 	},
 	data(){
@@ -282,7 +319,30 @@ export default {
 	    	 var el = this.$el.querySelector("#chartContainer");
 	    	 if(el)  el.parentNode.removeChild( el );
 	     },
-	     
+	     createChartTitle( dataType, begin, end){
+	    	 
+	    	 var chartTitle = this.$i18n.t("data") +" &quot;"+dataType + "&quot; "+ this.$i18n.t("from")+" "+ moment(begin, "YYYY-MM-DD").format("ll");
+	            if(end != begin){
+	                chartTitle += " " + this.$i18n.t("to") + " "+ moment(end, "YYYY-MM-DD").format("ll");;
+	            }
+	    	 this.chartTitle = chartTitle;
+	     },
+	     intervalType( str){
+	    	 console.log(str);
+	    	 switch(str){
+	    	 case "1-day (01-24)":
+	    	 case "1-day (00-23)":
+	    		 return '%e. %b';
+	    	 case "1-hour (00-59)":
+	    		 return '%H:%M';
+	    	 case "1-month (01-31)":
+	    		 return '%e. %b %Y';
+	    	 case "1-year":
+	    		 return '%b %Y';
+	    	  default:
+	    		  return '%e. %b %Y';
+	    	 }
+	     },
 	     createChart(data0){
 	    	 console.log(data0)
 	    	 console.log("createChart");
@@ -305,18 +365,14 @@ export default {
 	    	   // function createChart( data0) { 
 	    	       // console.log(data0);
 	    	var code = data0.meta.get("IAGA Code");
-	    	var dataType = data0.meta.get("Data Type");
-	    	var begin = data0.collection[0].DATE;
-	    	var end = data0.collection[ data0.collection.length-1].DATE;
-	    	console.log("end = "+end);
-	    	var chartTitle = this.$i18n.t("data") +" &quot;"+dataType + "&quot; du "+ data0.collection[0].DATE;
-	    	if(end != begin){
-	    		chartTitle += " " + this.$i18n.t("to") + " "+ end;
-	    	}
-	    	this.chartTitle = chartTitle;
 	    	if(this.code != code){
 	    		return;
 	    	}
+	    	var dataType = data0.meta.get("Data Type");
+	        var interval = this.intervalType(data0.meta.get("Data Interval Type"));
+	        console.log(interval);
+            this.createChartTitle( dataType, data0.collection[0].DATE, data0.collection[ data0.collection.length-1].DATE);
+            
 	    	       
 	    	        var data = new Array();
 	    	        if( data0.collection[0].D){
@@ -418,7 +474,8 @@ export default {
 	    	            ],
 	    	            tooltip: {
 	    	                headerFormat: '<b>{series.name}</b><br>',
-	    	                pointFormat: '{point.x:%e. %b %Y}: {point.y:,.0f}'
+	    	               // pointFormat: '{point.x:%e. %b %Y}: {point.y:,.0f}'
+	    	                pointFormat: '{point.x:'+interval+'}: {point.y:,.0f}'
 	    	            },
 	    	            series: [{
 	    	                name: value,
@@ -473,6 +530,7 @@ export default {
 	},
 	created(){
 		this.$i18n.locale = this.lang;
+		moment.locale(this.lang);
 		this.aerisThemeListener = this.handleTheme.bind(this) 
         document.addEventListener('aerisTheme', this.aerisThemeListener);
 		this.displayInfoListener = this.displayInfo.bind(this) 
