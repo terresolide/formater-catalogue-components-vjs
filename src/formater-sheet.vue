@@ -15,7 +15,10 @@
         "data_access": "Data Access",
         "other_information": "Other information",
         "data_center": "Data Center",
-        "HTTP_DOWNLOAD_LINK": "Http download link"
+        "HTTP_DOWNLOAD_LINK": "Http download links",
+        "data": "Data",
+        "from": "from",
+        "to": "to"
    },
    "fr":{
          "organism":    "organisme",
@@ -32,7 +35,10 @@
          "data_access": "Accès aux données",
          "other_information": "Autre information",
          "data_center": "Centre de données",
-         "HTTP_DOWNLOAD_LINK": "Lien de téléchargement http"
+         "HTTP_DOWNLOAD_LINK": "Liens de téléchargement http",
+         "data": "Données",
+         "from": "du",
+         "to": "au"
    }
 }
 </i18n>
@@ -52,7 +58,11 @@
 			
 			</main>
 		</div>
-		<div id="container"></div>
+		<div id="container" style="display:none;">
+		  <h4 :style="styleTitle"><i class="fa fa-line-chart"></i>
+		  <span v-html="chartTitle"></span>
+		  </h4>
+		</div>
 		<div class="formater-information-container">
 		  <div class="formater-column">
 		                                     
@@ -105,6 +115,19 @@
 		            </div>
 		            </main>
 	            </div>
+	             <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.temporalExtents">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-clock-o"></i>
+                    {{ $t("temporal_extents")}}
+                    </h4>
+                    
+                    <main>
+                     <div class="formater-list">
+                          {{data.data.temporalExtents.start}}
+                        </div>
+                    </main>
+               
+              </div>
 	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.links && data.data.links.existType('HTTP_DOWNLOAD_LINK')">
                    <h4 :style="styleTitle">
                     <i class="fa fa-database"></i>
@@ -181,6 +204,7 @@ export default {
 	data(){
 		return {
 			title: 'le titre',
+			chartTitle: 'graph',
 			theme: '',
 			aerisThemeListener:null,
 			displayInfoListener:null,
@@ -226,6 +250,7 @@ export default {
 	     },
 	     hide(){
 	    	 this.destroyCharts();
+	    	 this.$el.querySelector("#container").style.display = "none";
 	    	 this.hidden = true;
 	    	 this.code ="";
 	     },
@@ -257,15 +282,16 @@ export default {
 	    	 var el = this.$el.querySelector("#chartContainer");
 	    	 if(el)  el.parentNode.removeChild( el );
 	     },
+	     
 	     createChart(data0){
 	    	 console.log(data0)
 	    	 console.log("createChart");
-	    	
+	    	 var parentContainer = this.$el.querySelector("#container");
 	    	 var container = this.$el.querySelector("#chartContainer");
 	    	 if(!container){
-		    	 var node = this.$el.querySelector("#container");
+		    	
 		    	 var container = document.createElement("div");
-		    	 node.appendChild( container );
+		    	 parentContainer.appendChild( container );
 		    	 container.setAttribute("id", "chartContainer");
 		  
 		         
@@ -279,31 +305,56 @@ export default {
 	    	   // function createChart( data0) { 
 	    	       // console.log(data0);
 	    	var code = data0.meta.get("IAGA Code");
+	    	var dataType = data0.meta.get("Data Type");
+	    	var begin = data0.collection[0].DATE;
+	    	var end = data0.collection[ data0.collection.length-1].DATE;
+	    	console.log("end = "+end);
+	    	var chartTitle = this.$i18n.t("data") +" &quot;"+dataType + "&quot; du "+ data0.collection[0].DATE;
+	    	if(end != begin){
+	    		chartTitle += " " + this.$i18n.t("to") + " "+ end;
+	    	}
+	    	this.chartTitle = chartTitle;
 	    	if(this.code != code){
 	    		return;
 	    	}
 	    	       
 	    	        var data = new Array();
-	    	        data["D"] = new Array();
-	    	        data["H"] = new Array();
+	    	        if( data0.collection[0].D){
+	    	        	var dhzf = true;
+		    	        data["D"] = new Array();
+		    	        data["H"] = new Array();
+		    	        var coord = ["H", "D",  "Z", "F"];
+		    	        
+	    	        }else{
+	    	        	var dhzf = false;
+	    	        	data["X"] = new Array();
+                        data["Y"] = new Array();
+                        var coord = ["X", "Y",  "Z", "F"]
+	    	        }
 	    	        data["Z"] = new Array();
-	    	        data["F"]= new Array();
+                    data["F"]= new Array();
 	    	        //traitement des collections
 	    	
 	    	        data0.collection.forEach( function( item){
 	    	            var date = Date.parse(item.DATE+" "+item.TIME);
-	    	            data["D"].push( [date , item.D]);
-	    	            data["H"].push( [date , item.H]);
+	    	            if( dhzf ){
+
+	                        data["D"].push( [date , item.D]);
+	                        data["H"].push( [date , item.H]);
+	    	            }else{
+	    	            	data["x"].push( [date , item.X]);
+	    	                data["Y"].push( [date , item.Y]);
+                        }
 	    	            data["Z"].push( [date , item.Z]);
 	    	            data["F"].push([date , item.F]);
 	    	        });
 	
-	    	        ["D", "H", "Z", "F"].forEach( function(value, key){
+	    	        coord.forEach( function(value, key){
 	    	            console.log(value);
 	    	        var divchart = document.createElement("div");
 	    	        divchart.classname = "chart";
 	    	        container.appendChild(divchart);
-	    	   
+	    	        parentContainer.style.display= 'block';
 	    	        var mychart = Highcharts.chart(divchart, {
 	    	            /*chart: {
 	    	                type: 'linear'
@@ -520,7 +571,7 @@ export default {
 }
 .formater-sheet-container #container{
     max-width:595px;
-    margin:5px 0 0 5px;
+    margin:0 0 5px 5px;
     padding:3px;
     background:white;
     box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
@@ -558,13 +609,12 @@ export default {
     }
     .formater-sheet-data-metablock{
         background:white;
-        margin:5px 0 0 5px;
+        margin:5px 0 5px 5px;
+        max-width:595px;
         padding:3px;
         box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
     }
-    .formater-sheet-data-metablock{
-        max-width:595px;
-    }
+   
     .formater-sheet-data-metablock main,
     .formater-sheet-data-metablock-50 main
     {
@@ -576,7 +626,7 @@ export default {
         width:289px;
         float:left;
         padding:3px;
-        margin-top:5px;
+        margin-bottom:5px;
         border-radius:2px;
         box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
         background:white;

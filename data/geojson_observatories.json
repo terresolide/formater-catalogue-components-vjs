@@ -10,7 +10,7 @@
     	    "identifier":null, 
     	    "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt", 
+            "formaterDataCenter":"BCMT", 
     	    "code": "AAE",
     	    "organism": "BCMT",
     		"title":{
@@ -92,7 +92,7 @@
     	    "identifier":null,   
     	    "lastModification" : null,
     	    "license":null,
-    	    "formaterDataCenter":"bcmt",
+    	    "formaterDataCenter":"BCMT",
     	    "code": "AMS",
     		"title":{
     		    "en": "Amsterdam Island - French Southern and Antarctic Lands",
@@ -158,7 +158,7 @@
             "identifier":null,   
     	    "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
             "code": "BNG",
             "title":{
                 "en": "Bangui",
@@ -229,7 +229,7 @@
     	    "identifier":null, 
     	     "lastModification" : null,
     	    "license":null,
-    	    "formaterDataCenter":"bcmt",
+    	    "formaterDataCenter":"BCMT",
     	    "code": "BOX",
     		"title":{
     		    "en": "Borok, Yaroslavl",
@@ -299,7 +299,7 @@
     	    "identifier":null, 
     	    "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
     	    "code": "CLF",
     		"title":{
     		    "en": "Chambon-la-Foret",
@@ -374,7 +374,7 @@
     	    "identifier":null, 
     	    "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
     	    "code": "IPM",
     		"title":{
     		    "en": "Isla de Pascua",
@@ -456,7 +456,7 @@
             "identifier":null, 
     	    "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
             "code": "KOU",
             "title":{
                 "en": "Kourou, French Guiana",
@@ -526,7 +526,7 @@
             "identifier":null, 
     	    "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
             "code": "LZH",
             "title":{
                 "en": "Lanzhou",
@@ -609,7 +609,7 @@
             "identifier":null, 
             "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
             "code": "MBO",
             "title":{
                 "en": "Mbour",
@@ -679,7 +679,7 @@
             "identifier":null, 
             "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
             "code": "PHU",
             "title":{
                 "en": "Phu Thuy",
@@ -761,7 +761,7 @@
             "identifier":null,
             "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
              "code": "DLT",
             "title":{
                 "en": "Dalat",
@@ -843,7 +843,7 @@
             "identifier":null, 
             "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt",
+            "formaterDataCenter":"BCMT",
             "code": "PPT",
             "title":{
                 "en": "Pamatai, Tahiti Island",
@@ -917,7 +917,7 @@
             "identifier":null,
             "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt", 
+            "formaterDataCenter":"BCMT", 
             "code": "TAM",
             "title":{
                 "en": "Tamanrasset",
@@ -999,7 +999,7 @@
             "identifier":null,
             "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt", 
+            "formaterDataCenter":"BCMT", 
             "code": "CZT",
             "title":{
                 "en":"Crozet Archipelago, Possession Island, Terres Australes et Antarctiques Françaises",
@@ -1068,7 +1068,7 @@
             "identifier":null,
             "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt", 
+            "formaterDataCenter":"BCMT", 
             "code": "DMC",
             "title":{
                 "en":"Base of Concordia Dome C High Antarctic Plateau",
@@ -1146,7 +1146,7 @@
             "identifier":null,
             "lastModification" : null,
     	    "license":null,
-            "formaterDataCenter":"bcmt", 
+            "formaterDataCenter":"BCMT", 
             "code": "DRV",
             "title":{
                 "en":"Dumont d'Urville, Adelie Land, Antartica",
