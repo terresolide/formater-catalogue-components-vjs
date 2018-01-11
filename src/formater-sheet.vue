@@ -20,7 +20,8 @@
         "from": "from",
         "to": "to",
         "temporal_extents": "Temporal extents",
-        "now": "Now"
+        "now": "Now",
+        "license": "License"
    },
    "fr":{
          "organism":    "organisme",
@@ -42,7 +43,8 @@
          "from": "du",
          "to": "au",
          "temporal_extents": "Extension temporelle",
-         "now": "Aujourd'hui"
+         "now": "Aujourd'hui",
+         "license": "Licence"
    }
 }
 </i18n>
@@ -73,7 +75,7 @@
                   <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.format">
                    <h4 :style="styleTitle">
                     <i class="fa fa-file"></i>
-                    format
+                    Format
                     </h4>
                     
                     <main>
@@ -83,6 +85,19 @@
                     </main>
 	               
 	              </div>
+	              <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.license">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-file"></i>
+                    {{$t("license")}}
+                    </h4>
+                    
+                    <main>
+                     <div class="formater-address" v-html="data.data.license">
+                     
+                        </div>
+                    </main>
+                   
+                  </div>
 	              <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.temporalExtents">
                    <h4 :style="styleTitle">
                     <i class="fa fa-clock-o"></i>
@@ -244,6 +259,7 @@ export default {
 			chartTitle: 'graph',
 			theme: '',
 			aerisThemeListener:null,
+			aerisSearchEventListener:null,
 			displayInfoListener:null,
 			findDataListener:null,
 			unselectLayerListener:null,
@@ -365,17 +381,24 @@ export default {
 	    	   // function createChart( data0) { 
 	    	       // console.log(data0);
 	    	var code = data0.meta.get("IAGA Code");
-	    	if(this.code != code){
+	    	if(this.code != code || data0.collection.length == 0 ){
 	    		return;
 	    	}
 	    	var dataType = data0.meta.get("Data Type");
 	        var interval = this.intervalType(data0.meta.get("Data Interval Type"));
-	        console.log(interval);
+	       
             this.createChartTitle( dataType, data0.collection[0].DATE, data0.collection[ data0.collection.length-1].DATE);
             
 	    	       
 	    	        var data = new Array();
-	    	        if( data0.collection[0].D){
+	    	        var coord = new Array();
+	    	        ["D", "H", "X", "Y",  "Z", "F"].forEach( function(index){
+	    	        	if( data0.collection[0][index]){
+	    	        		coord.push(index);
+	    	        		data[index] = new Array();
+	    	        	}
+	    	        });
+	    	       /* if( data0.collection[0].D){
 	    	        	var dhzf = true;
 		    	        data["D"] = new Array();
 		    	        data["H"] = new Array();
@@ -388,21 +411,23 @@ export default {
                         var coord = ["X", "Y",  "Z", "F"]
 	    	        }
 	    	        data["Z"] = new Array();
-                    data["F"]= new Array();
+                    data["F"]= new Array();*/
 	    	        //traitement des collections
 	    	
 	    	        data0.collection.forEach( function( item){
 	    	            var date = Date.parse(item.DATE+" "+item.TIME);
-	    	            if( dhzf ){
-
+	    	            coord.forEach( function(index){
+	    	            	data[index].push([date, item[index]]);
+	    	            });
+/*
 	                        data["D"].push( [date , item.D]);
 	                        data["H"].push( [date , item.H]);
 	    	            }else{
-	    	            	data["x"].push( [date , item.X]);
+	    	            	data["X"].push( [date , item.X]);
 	    	                data["Y"].push( [date , item.Y]);
                         }
 	    	            data["Z"].push( [date , item.Z]);
-	    	            data["F"].push([date , item.F]);
+	    	            data["F"].push([date , item.F]);*/
 	    	        });
 	
 	    	        coord.forEach( function(value, key){
@@ -533,6 +558,8 @@ export default {
 		moment.locale(this.lang);
 		this.aerisThemeListener = this.handleTheme.bind(this) 
         document.addEventListener('aerisTheme', this.aerisThemeListener);
+		this.aerisSearchEventListener = this.close.bind(this);
+		document.addEventListener('aerisSearchEvent', this.aerisSearchEventListener);
 		this.displayInfoListener = this.displayInfo.bind(this) 
         document.addEventListener('displayInfo', this.displayInfoListener);
 		this.findDataListener = this.handleCreateChart.bind(this) 
@@ -567,12 +594,15 @@ export default {
 	     document.dispatchEvent(event);
 	},
 	destroyed(){
-		 document.removeEventListener('aerisTheme', this.aerisThemeListener);
-         this.aerisThemeListener = null;
+		 document.removeEventListener('aerisTheme', this.aerisSearchEventListener);
+         this.aerisSearchEventListener = null;
+         document.removeEventListener('aerisSearchEvent', this.findDataListener);
+         this.findDataListener = null;
          document.removeEventListener('displayInfo', this.displayInfoListener);
          this.displayInfoListener = null;
          document.removeEventListener('findData', this.findDataListener);
          this.findDataListener = null;
+         
 	}
 }
 </script>
