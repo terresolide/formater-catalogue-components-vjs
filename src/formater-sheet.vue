@@ -346,6 +346,8 @@ export default {
 	     intervalType( str){
 	    	 console.log(str);
 	    	 switch(str){
+	    	 case "Filtered 1-minute":
+	    		 return "%e. %b %H:%M";
 	    	 case "1-day (01-24)":
 	    	 case "1-day (00-23)":
 	    		 return '%e. %b';
