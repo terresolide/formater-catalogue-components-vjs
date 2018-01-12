@@ -87,7 +87,7 @@
 	              </div>
 	              <div class="formater-sheet-data-metablock-50"  v-if="data && data.data.license">
                    <h4 :style="styleTitle">
-                    <i class="fa fa-file"></i>
+                    <i class="fa fa-legal"></i>
                     {{$t("license")}}
                     </h4>
                     
@@ -343,9 +343,11 @@ export default {
 	            }
 	    	 this.chartTitle = chartTitle;
 	     },
-	     intervalType( str){
-	    	 console.log(str);
-	    	 switch(str){
+	     intervalType( intervalType, dataType){
+	    	 if(dataType == "variation"){
+	    		 return "%e. %b %H:%M";
+	    	 }
+	    	 switch(intervalType){
 	    	 case "Filtered 1-minute":
 	    		 return "%e. %b %H:%M";
 	    	 case "1-day (01-24)":
@@ -387,7 +389,7 @@ export default {
 	    		return;
 	    	}
 	    	var dataType = data0.meta.get("Data Type");
-	        var interval = this.intervalType(data0.meta.get("Data Interval Type"));
+	        var interval = this.intervalType(data0.meta.get("Data Interval Type"), dataType);
 	       
             this.createChartTitle( dataType, data0.collection[0].DATE, data0.collection[ data0.collection.length-1].DATE);
             
@@ -502,7 +504,7 @@ export default {
 	    	            tooltip: {
 	    	                headerFormat: '<b>{series.name}</b><br>',
 	    	               // pointFormat: '{point.x:%e. %b %Y}: {point.y:,.0f}'
-	    	                pointFormat: '{point.x:'+interval+'}: {point.y:,.0f}'
+	    	                pointFormat: '{point.x:'+interval+'} | {point.y:,.0f}'
 	    	            },
 	    	            series: [{
 	    	                name: value,
