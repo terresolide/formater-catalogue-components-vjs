@@ -31,11 +31,18 @@ L.Marker.prototype.searchData = function( url, query ){
 			    
 		  }
 	}
-	var req = url+"/cds/bcmt/ob/"+this.options.name.toLowerCase();
+	var req = url+"/cds/bcmt/data/"+this.options.name.toLowerCase();
+	if(query.start || query.end){
+		req += "?";
+	}
 	if( query.start){
-		req += "/start/" + query.start;
+		req += "start=" + query.start;
 		if(query.end){
-			req += "/end/" + query.end;
+			req += "&end=" + query.end;
+		}
+	}else{
+		if(query.end){
+			req += "end=" + query.end;
 		}
 	}
 	xhttp.open("GET", encodeURI( req ), true);

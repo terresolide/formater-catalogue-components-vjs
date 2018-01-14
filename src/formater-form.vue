@@ -59,7 +59,7 @@ export default {
       },
       url:{
           type: String,
-          default: '/data/geojson_observatories.json'
+          default: 'http://api.formater/cds/bcmt/obs'
          // default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
       }
       
@@ -98,21 +98,26 @@ export default {
 		callApi(e){
 			  var _this = this;
 			  var data = e.detail;
-			  this.$http.get( this.url).then( 
+			  if(data.box){
+				  data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
+				  delete data.box;
+			  }
+			  this.$http.get( this.url, data).then( 
                       response => {_this.handleSuccess( response, data)},
                       response => {_this.handleError( response , data)});
 			  
   
 		},
 		handleSuccess(rep, data){
-		    console.log( data);
+		    console.log( rep.body);
+		   
 		    //DataType = magnetisme
 		    //StartTime
 		    //EndTime
 		    //box
 		    
 		    
-		    var result = {  
+		  /*  var result = {  
 		    		type: "FeatureCollection",
 		    		features:[] };
 		    //do selection here, no service api for the moment
@@ -164,8 +169,8 @@ export default {
 		       }
 		       
 		    } );
-		    console.log(result);
-		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:result , query:{ start: data.StartTime, end:data.EndTime}}});
+		    console.log(result);*/
+		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , query:{ start: data.StartTime, end:data.EndTime}}});
 		    document.dispatchEvent(event);
 	
 		   
