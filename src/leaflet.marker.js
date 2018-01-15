@@ -12,7 +12,7 @@ L.Marker.prototype.searchData = function( url, query ){
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			//console.log( JSON.parse(this.responseText));
-			console.log(_marker.options);
+			//console.log(_marker.options);
 		   // document.getElementById("demo").innerHTML = this.responseText;
 		   if(this.response.error){
 			   _marker.options.data.status = "ERROR";
@@ -58,9 +58,9 @@ function handle_global(e){
         point,
         i,
         event;
-     Highcharts.each(Highcharts.charts, function (chart) {
-    	 console.log("chart");
-     })
+     //Highcharts.each(Highcharts.charts, function (chart) {
+    //	 console.log("chart");
+    // })
     for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
    
     	if( typeof Highcharts.charts[i] != "undefined"){
@@ -101,7 +101,7 @@ function syncExtremes(e) {
 
     if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
         Highcharts.each(Highcharts.charts, function (chart) {
-        	console.log(chart);
+        	//console.log(chart);
             if (chart !== thisChart) {
                 if (chart.xAxis[0].setExtremes) { // It is null while updating
                     chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
@@ -114,7 +114,7 @@ function syncExtremes(e) {
 L.Marker.prototype.toggle = function( layer){
 	
 	var iconOptions = this.options.icon.options;
-	console.log(iconOptions);
+	//console.log(iconOptions);
 
 	if( layer == this){
 		

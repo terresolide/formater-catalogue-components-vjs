@@ -222,7 +222,7 @@ export default {
 	},
 	watch: {
 		maxheight(newVal, oldVal){
-			console.log("watch");
+			//console.log("watch");
 			if(this.$el && this.$el.querySelector ){
 				var header = this.$el.querySelector(".formater-sheet-header").offsetHeight;
 				this.$el.querySelector(".formater-sheet-main").style.maxHeight = newVal +"px";
@@ -325,7 +325,7 @@ export default {
 	    	 this.createChart( data0);
 	     },
 	     destroyCharts(){
-	    	console.log( Highcharts.charts); 
+	    	//console.log( Highcharts.charts); 
 	    	 for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
 	    		 if( typeof Highcharts.charts[i] != "undefined")
 	    		 Highcharts.charts[i].destroy();
@@ -364,18 +364,14 @@ export default {
 	    	 }
 	     },
 	     createChart(data0){
-	    	 console.log(data0)
-	    	 console.log("createChart");
+	    	 //console.log(data0)
+	    	 //console.log("createChart");
 	    	 var parentContainer = this.$el.querySelector("#container");
 	    	 var container = this.$el.querySelector("#chartContainer");
 	    	 if(!container){
-		    	
 		    	 var container = document.createElement("div");
 		    	 parentContainer.appendChild( container );
-		    	 container.setAttribute("id", "chartContainer");
-		  
-		         
-		    	 
+		    	 container.setAttribute("id", "chartContainer");	    	 
 		    	 container.onmousemove = handle_global;
 		    	 container.ontouchstart = handle_global;
 		    	 container.ontouchmove = handle_global;
@@ -435,7 +431,7 @@ export default {
 	    	        });
 	
 	    	        coord.forEach( function(value, key){
-	    	            console.log(value);
+	    	           // console.log(value);
 	    	        var divchart = document.createElement("div");
 	    	        divchart.classname = "chart";
 	    	        container.appendChild(divchart);
@@ -530,7 +526,7 @@ export default {
 	     displayInfo( event){
 	    	 
 	    	 var options = event.detail.marker.options;
-	    	 console.log(options);
+	    	 //console.log(options);
 	    	 if( this.code == options.name){
 	    		 this.hide();
 	    		 return;

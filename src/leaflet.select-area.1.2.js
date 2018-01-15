@@ -229,6 +229,7 @@ L.SelectArea =   L.Evented.extend({
 		this.setBounds(bounds);
 		
 		if( !evt.detail.north ){
+			if( this.rectangle)
 			this.rectangle.remove();
 			this._mode = "hidden";
 		}

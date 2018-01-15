@@ -59,8 +59,9 @@ export default {
       },
       url:{
           type: String,
-          default: 'http://api.formater/cds/bcmt/obs'
+         // default: 'http://api.formater/cds/bcmt/obs'
          // default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
+         default: 'http://formater.art-sciences.fr/cds/bcmt/obs'
       }
       
   },
@@ -98,7 +99,7 @@ export default {
 		callApi(e){
 			  var _this = this;
 			  var data = e.detail;
-			  console.log(e.detail);
+	
 			  if(data.box && data.box.west){
 				  data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
 				  delete data.box;
@@ -110,7 +111,7 @@ export default {
   
 		},
 		handleSuccess(rep, data){
-		    console.log( rep.body);
+		    
 		   
 		    //DataType = magnetisme
 		    //StartTime

@@ -60,7 +60,7 @@ export default {
           }
 	  },
 	  unselectLayer(){
-		  console.log("unselect");
+		 // console.log("unselect");
 		  if( _selected)
 		  _selected.fire('click');
 	  },
@@ -82,7 +82,7 @@ export default {
               onEachFeature: onEachFeature,*/
 
               pointToLayer: function (feature, latlng) {
-                  console.log(feature.properties.title[lang]);
+                 // console.log(feature.properties.title[lang]);
                   if( feature.properties.organism == "INTERMAGNET"){
                 	  var iconMarker = iconMarkerIntermagnet;
                 	  var color = "blue";
@@ -100,7 +100,7 @@ export default {
                           });
                   //search data??
                   var url = "http://formater.art-sciences.fr";
-                  var url = "http://api.formater"
+                  //var url = "http://api.formater"
                  // 
                   marker.on('click', function(e ){
                 	  
