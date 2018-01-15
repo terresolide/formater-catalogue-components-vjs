@@ -103,7 +103,7 @@ export default {
                   //var url = "http://api.formater"
                  // 
                   marker.on('click', function(e ){
-                	  
+                	  console.log(query);
                 	  if(_selected == this){
                 		  var event = new CustomEvent("unselectLayer", { detail:{}});
                     	  document.dispatchEvent(event);

@@ -31,6 +31,7 @@ L.Marker.prototype.searchData = function( url, query ){
 		  }
 	}
 	var req = url+"/cds/bcmt/data/"+this.options.name.toLowerCase();
+	
 	if(query.start || query.end){
 		req += "?";
 	}

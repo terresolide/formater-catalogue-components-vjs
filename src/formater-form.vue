@@ -99,6 +99,7 @@ export default {
 		callApi(e){
 			  var _this = this;
 			  var data = e.detail;
+
 	
 			  if(data.box && data.box.west){
 				  data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
@@ -172,7 +173,7 @@ export default {
 		       
 		    } );
 		    console.log(result);*/
-		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , query:{ start: data.StartTime, end:data.EndTime}}});
+		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , query:{ start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
 	
 		   
