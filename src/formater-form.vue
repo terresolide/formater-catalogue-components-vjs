@@ -98,11 +98,12 @@ export default {
 		callApi(e){
 			  var _this = this;
 			  var data = e.detail;
-			  if(data.box){
+			  console.log(e.detail);
+			  if(data.box && data.box.west){
 				  data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
 				  delete data.box;
 			  }
-			  this.$http.get( this.url, data).then( 
+			  this.$http.get( this.url,{params: data}).then( 
                       response => {_this.handleSuccess( response, data)},
                       response => {_this.handleError( response , data)});
 			  

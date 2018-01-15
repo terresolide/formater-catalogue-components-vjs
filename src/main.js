@@ -57,19 +57,21 @@ ljs.addAliases({
 	    //leaflet.select-area
 	    //-------------------
 	    //'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.1.js',
-	    'src/leaflet.select-area.1.2.js',
+	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.2.js',
 	    //awesome marker old version... JS
 	    //-----------------------------------
 	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
 	    //Marker
 	    //-----------
-	    'src/leaflet.marker.js',
+	    //'src/leaflet.marker.js',
+	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.marker.js',
 	    //Markers collection
 	    //-----------------
 	    //'src/leaflet.markers-collection.js',
 	    //formater commons components from build
-	    //'http://localhost:8081/dist/build.js',
-	    'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
+	    //'http://localhost:8082/dist/build.js',
+	    //'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
+	    'https://cdn.rawgit.com/terresolide/formater-commons-components-vjs/0.1.0/dist/formater-commons-components-vjs.js' ,
 	    //'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
 		   
 	    
