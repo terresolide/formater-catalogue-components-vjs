@@ -21,8 +21,7 @@ L.Marker.prototype.searchData = function( url, query ){
 			   _marker.options.data.data = this.response;
 			   var event = new CustomEvent("findData", {detail: { marker: _marker }});
 			    document.dispatchEvent(event);
-			   
-			   
+   
 		   }
 		    
 		  }

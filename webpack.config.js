@@ -93,7 +93,7 @@ if (process.env.NODE_ENV === 'preproduction') {
     module.exports.devtool = '#source-map';
     module.exports.output.path =  path.resolve(__dirname, './dist0'),
     module.exports.output.publicPath = preUrl;
-    module.exports.output.filename = buildName+'.1.1.js'
+    module.exports.output.filename = buildName+'.js'
     //module.exports.output.publicPath= PACKAGE.url+ buildName +'/master/dist/';
 
     // http://vue-loader.vuejs.org/en/workflow/production.html
