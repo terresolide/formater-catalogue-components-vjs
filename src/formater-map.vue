@@ -94,10 +94,11 @@ export default {
                           latlng,
                           {icon: iconMarker,
                            name: feature.properties.code,
-                           title: feature.properties.title[lang],
-                           data: feature.properties,
+                           title: feature.properties.name[lang],
+                           properties: feature.properties,
                            color: color
                           });
+                  //marker.createPopup(lang);
                   //search data??
                   var url = "http://formater.art-sciences.fr";
                   //var url = "http://api.formater"
@@ -108,11 +109,15 @@ export default {
                 		  var event = new CustomEvent("unselectLayer", { detail:{}});
                     	  document.dispatchEvent(event);
                 	  }else{
-                	   	this.searchData( url, query);
+                		  //create popup
+                		 // var popupContent = 
+                		   this.createPopup(lang);
+                		   this.bindPopup(this.popup).openPopup();
+                	   	//this.searchData( url, query);
                 	  
                 	  
-                	  var event = new CustomEvent("displayInfo", { detail:{marker:this, query:query}});
-                	  document.dispatchEvent(event);
+                	 // var event = new CustomEvent("displayInfo", { detail:{marker:this, query:query}});
+                	 // document.dispatchEvent(event);
                 	  }
                 	  _selected = this.toggle( _selected );
                 	 // console.log( event);

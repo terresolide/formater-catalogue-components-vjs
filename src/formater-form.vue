@@ -59,9 +59,9 @@ export default {
       },
       url:{
           type: String,
-         // default: 'http://api.formater/cds/bcmt/obs'
+          default: 'http://api.formater/api'
          // default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
-         default: 'http://formater.art-sciences.fr/cds/bcmt/obs'
+         //default: 'http://formater.art-sciences.fr/cds/bcmt/obs'
       }
       
   },
@@ -173,6 +173,7 @@ export default {
 		       
 		    } );
 		    console.log(result);*/
+		    
 		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , query:{ start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
 	

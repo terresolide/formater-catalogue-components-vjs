@@ -129,6 +129,19 @@ L.Marker.prototype.toggle = function( layer){
 		return this;
 	}
 }
+L.Marker.prototype.createPopup = function( lang ){
+	if( this.popup){
+		return;
+	}
+	var node = document.createElement("div");
+	this.options.properties.observations.forEach( function( obs ){
+		var input = document.createElement("input");
+		input.setAttribute("type", "button");
+		input.setAttribute( "value", obs.title[lang]);
+		node.appendChild( input);
+	});
+	this.popup = node;
+}
 Array.prototype.get= function( name ){
 	var i=0;
 	find = false;
