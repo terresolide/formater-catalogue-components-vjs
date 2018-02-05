@@ -134,6 +134,9 @@ L.Marker.prototype.createPopup = function( lang ){
 		return;
 	}
 	var node = document.createElement("div");
+	var h4 = document.createElement("h4");
+	h4.textContent = this.options.properties.name[lang];
+	node.appendChild( h4);
 	this.options.properties.observations.forEach( function( obs ){
 		var input = document.createElement("input");
 		input.setAttribute("type", "button");

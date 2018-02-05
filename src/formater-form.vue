@@ -59,7 +59,8 @@ export default {
       },
       url:{
           type: String,
-          default: 'http://api.formater/api'
+         // default: 'http://api.formater/api'
+         default: 'http://formater.art-sciences.fr/api'
          // default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
          //default: 'http://formater.art-sciences.fr/cds/bcmt/obs'
       }
@@ -113,66 +114,7 @@ export default {
 		},
 		handleSuccess(rep, data){
 		    
-		   
-		    //DataType = magnetisme
-		    //StartTime
-		    //EndTime
-		    //box
-		    
-		    
-		  /*  var result = {  
-		    		type: "FeatureCollection",
-		    		features:[] };
-		    //do selection here, no service api for the moment
-		    if(!data.box.north){
-		    	data.box.north=90;
-		    }
-		    if(!data.box.south){
-		    	data.box.south = -90;
-		    }
-		    if(!data.box.east) data.box.east = 180;
-		    if(!data.box.west) data.box.west = -180;
-		    
-		    var add = 0;
-		    if( data.box.west > data.box.east){
-		    	data.box.east +=360;
-		    	add = 360;
-		    	
-		    }
-		    console.log(data.box);
-		    //search date
-		   var obj = rep.body;
-		    obj.features.forEach( function(feature){
-		       var latlng = {
-		    		   lat:feature.geometry.coordinates[1],
-		    		   lng:feature.geometry.coordinates[0]
-		       }
-	
-		       if( feature.properties.temporalExtents.end.toLowerCase() == "now"){
-		    	   var endTime = moment();
-		       }else{
-		    	   var endTime = moment(feature.properties.temporalExtents.end, 'YYYY-MM-DD');
-		       }
-		      
-		       var startTime = moment(feature.properties.temporalExtents.start, 'YYYY-MM-DD');
-		      
-		       if(( !data.StartTime || (data.StartTime && moment(data.StartTime, 'YYYY-MM-DD')<= endTime))
-		    	  && (!data.EndTime || (data.EndTime && moment(data.EndTime, 'YYYY-MM-DD') >= startTime))){
-                   
-			       if( latlng.lat >= data.box.south && latlng.lat <= data.box.north ){
-			    	   if( latlng.lng >= data.box.west && latlng.lng <= data.box.east){
-			    		   
-			    		      result.features.push( feature);
-			    		   
-			    	   }else if( add && latlng.lng + add >= data.box.west && latlng.lng +add <= data.box.east){
-			    	        feature.geometry.coordinates[0] = latlng.lng + add;	 
-			    	        result.features.push( feature);
-			    	   }
-			       }
-		       }
-		       
-		    } );
-		    console.log(result);*/
+		  
 		    
 		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , query:{ start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
