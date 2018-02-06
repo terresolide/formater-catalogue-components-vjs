@@ -1,0 +1,32 @@
+/* @color: #191970;*/
+input.lfh-button,
+#content input.lfh-button,
+.main input.lfh-button,
+input.lfh-button + input[type="button"] {
+  display: inline-block;
+  margin: 0px 7px 3px 0;
+  padding: 3px 12px;
+  height: auto;
+  line-height: 1.43;
+  white-space: normal;
+  text-align: center;
+  background: #DD9946;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  border-color: #e5b171 #cb8025 #cb8025;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px #a0651d, 1px 0 1px #cb8025, 0 1px 1px #cb8025, -1px 0 1px #a0651d;
+  vertical-align: top;
+  cursor: pointer;
+  pointer-events: auto;
+  box-sizing: border-box;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+}
+input.lfh-button:hover,
+#content input.lfh-button:hover,
+.main input.lfh-button:hover {
+  background: #f39b30;
+  text-decoration: none;
+}
