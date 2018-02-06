@@ -105,19 +105,10 @@ export default {
                  // 
                   marker.on('click', function(e ){
                 	  console.log(query);
+                	  this.createPopup(lang);
                 	  if(_selected == this){
                 		  var event = new CustomEvent("unselectLayer", { detail:{}});
                     	  document.dispatchEvent(event);
-                	  }else{
-                		  //create popup
-                		 // var popupContent = 
-                		   this.createPopup(lang);
-                		   this.bindPopup(this.popup).openPopup();
-                	   	//this.searchData( url, query);
-                	  
-                	  
-                	 // var event = new CustomEvent("displayInfo", { detail:{marker:this, query:query}});
-                	 // document.dispatchEvent(event);
                 	  }
                 	  _selected = this.toggle( _selected );
                 	 // console.log( event);
@@ -188,4 +179,49 @@ export default {
   width:100%;
   min-height:300px;
 }
+#formatermap .leaflet-popup-content h4{
+	color: rgb(221, 153,70);
+}
+#formatermap .leaflet-popup-content input[type="button"]{
+	width:280px;
+	font-family: "Dejavu serif";
+	margin: 0px 0px 3px 7px;
+	padding: 3px 12px;
+	white-space: normal;
+	text-align: center;
+	background: #DD9946;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 1px;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 1.7;
+	border-color: #e5b171 #cb8025 #cb8025;
+	color: #fff;
+	text-decoration: none;
+	text-shadow: 0 -1px 1px #a0651d, 1px 0 1px #cb8025, 0 1px 1px #cb8025, -1px 0 1px #a0651d;
+	vertical-align: top;
+	cursor: pointer;
+	pointer-events: auto;
+	box-sizing: border-box;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+	/*border-color: rgb(224, 163, 89) rgb(199, 138, 63) rgb(199, 138, 63);*/
+}
+#formatermap .leaflet-popup-content input[type="button"]:hover{
+	background:#f39b30;
+}
+#formatermap .leaflet-popup-content input[type="button"].selected{
+	
+	background: #D53E2A;
+
+	 border-color: #dd6555 #aa3222 #aa3222;
+
+	 text-shadow: 0 -1px 1px #802519, 1px 0 1px #aa3222, 0 1px 1px #aa3222, -1px 0 1px #802519;
+
+	
+}
+#formatermap .leaflet-popup-content input[type="button"].selected:hover{
+  background: #ef2a10;
+}
+
 </style>

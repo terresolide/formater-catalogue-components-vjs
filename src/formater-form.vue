@@ -132,9 +132,18 @@ export default {
 		 ensureTheme() {
 		  	if ((this.$el) && (this.$el.querySelector)) {
 		  		this.$el.querySelector(".formater-search-button").style.background= this.theme.primary;
+		  		var color = this.theme.primary;
 		  		var color1 = this.$shadeColor( this.theme.primary, 0.1); //lightcolor
 		  		var color2 = this.$shadeColor( this.theme.primary, -.1); //dark color
 		  		this.$el.querySelector(".formater-search-button").style.borderColor= color1 + ' '+ color2 + ' ' + color2;
+		  		this.$el.querySelector(".formater-search-button").addEventListener("mouseover", function(e){
+
+		  			this.style.backgroundColor = color1;
+		  		});
+		  		this.$el.querySelector(".formater-search-button").addEventListener("mouseout", function(e){
+	
+		  			this.style.backgroundColor = color;
+		  		})
 		  	}
 		 },
 	},
@@ -166,7 +175,7 @@ export default {
   padding: 3px 12px;
   /*white-space: normal;*/
   text-align: center;
-/*  background: #DD9946;*/
+ /*background: #DD9946;*/
   border-width: 1px;
   border-style: solid;
   border-radius: 1px;
@@ -176,12 +185,15 @@ export default {
   border-color: #e5b171 #cb8025 #cb8025;
   color: #fff;
   text-decoration: none;
- /* text-shadow: 0 -1px 1px #a0651d, 1px 0 1px #cb8025, 0 1px 1px #cb8025, -1px 0 1px #a0651d;*/
+  text-shadow: 0 -1px 1px #a0651d, 1px 0 1px #cb8025, 0 1px 1px #cb8025, -1px 0 1px #a0651d;
   vertical-align: top;
   cursor: pointer;
   pointer-events: auto;
   box-sizing: border-box;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+}
+.formater-container .formater-buttons  input[type="button"].formater-search-button:hover{
+background:#f39b30;
 }
 .formater-container input[type="button"]::first-letter{
 	text-transform: uppercase;

@@ -144,6 +144,9 @@ L.Marker.prototype.createPopup = function( lang ){
 		node.appendChild( input);
 	});
 	this.popup = node;
+	this.bindPopup( node );
+	
+	this.openPopup();
 }
 Array.prototype.get= function( name ){
 	var i=0;
