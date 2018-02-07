@@ -96,7 +96,8 @@ export default {
                            name: feature.properties.code,
                            title: feature.properties.name[lang],
                            properties: feature.properties,
-                           color: color
+                           color: color,
+                           query: query
                           });
                   //marker.createPopup(lang);
                   //search data??
@@ -106,11 +107,11 @@ export default {
                   marker.on('click', function(e ){
                 	  console.log(query);
                 	  this.createPopup(lang);
-                	  if(_selected == this){
-                		  var event = new CustomEvent("unselectLayer", { detail:{}});
-                    	  document.dispatchEvent(event);
-                	  }
-                	  _selected = this.toggle( _selected );
+                	 // if(_selected == this){
+                		//  var event = new CustomEvent("unselectLayer", { detail:{}});
+                    	//  document.dispatchEvent(event);
+                	 // }
+                	//  _selected = this.toggle( _selected );
                 	 // console.log( event);
                       //console.log( this.options.name);
                   })

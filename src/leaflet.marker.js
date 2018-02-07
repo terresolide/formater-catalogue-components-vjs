@@ -1,11 +1,11 @@
 /**
  * 
  */
-L.Marker.prototype.searchData = function( url, query ){
-	if( this.options.data.status == "DONE" || this.options.data.status == "ERROR" || this.options.data.status == "WAITING"){
+L.Marker.prototype.searchData = function( url){
+	if( this.options.properties.status == "DONE" || this.options.properties.status == "ERROR" || this.options.properties.status == "WAITING"){
 		return;
 	} 
-	this.options.data.status = "WAITING";
+	this.options.properties.status = "WAITING";
 	var xhttp = new XMLHttpRequest(); 
 	xhttp.responseType = "json";
 	var _marker = this;
@@ -15,10 +15,10 @@ L.Marker.prototype.searchData = function( url, query ){
 			//console.log(_marker.options);
 		   // document.getElementById("demo").innerHTML = this.responseText;
 		   if(this.response.error){
-			   _marker.options.data.status = "ERROR";
+			   _marker.options.properties.status = "ERROR";
 		   }else{
-			   _marker.options.data.status = "DONE";
-			   _marker.options.data.data = this.response;
+			   _marker.options.properties.status = "DONE";
+			   _marker.options.properties.data = this.response;
 			   var event = new CustomEvent("findData", {detail: { marker: _marker }});
 			    document.dispatchEvent(event);
    
@@ -32,17 +32,17 @@ L.Marker.prototype.searchData = function( url, query ){
 	}
 	var req = url+"/cds/bcmt/data/"+this.options.name.toLowerCase();
 	
-	if(query.start || query.end){
+	if(this.options.query.start || this.options.query.end){
 		req += "?";
 	}
-	if( query.start){
-		req += "start=" + query.start;
-		if(query.end){
-			req += "&end=" + query.end;
+	if( this.options.query.start){
+		req += "start=" + this.options.query.start;
+		if( this.options.query.end){
+			req += "&end=" + this.options.query.end;
 		}
 	}else{
-		if(query.end){
-			req += "end=" + query.end;
+		if( this.options.query.end){
+			req += "end=" + this.options.query.end;
 		}
 	}
 	xhttp.open("GET", encodeURI( req ), true);
@@ -133,15 +133,38 @@ L.Marker.prototype.createPopup = function( lang ){
 	if( this.popup){
 		return;
 	}
+	var _this = this;
 	var node = document.createElement("div");
 	var h4 = document.createElement("h4");
 	h4.textContent = this.options.properties.name[lang];
 	node.appendChild( h4);
-	this.options.properties.observations.forEach( function( obs ){
+	this.options.properties.observations.forEach( function( obs, index){
 		var input = document.createElement("input");
 		input.setAttribute("type", "button");
 		input.setAttribute( "value", obs.title[lang]);
+		
 		node.appendChild( input);
+		function displayInfo(e){
+			 if(this.className == "selected"){
+				 //close the window
+				 this.className = "";
+				 
+				 var event = new CustomEvent("unselectInput", { detail:{}});
+           	  	 document.dispatchEvent(event);
+			 }else{
+				 //display INfo
+				 this.className = "selected";
+				 _this.toggle( _this);
+				 var event = new CustomEvent("displayInfo", { detail:{marker:_this, observation: obs, index: index}});
+	       	    document.dispatchEvent(event);
+			 }
+			//_this.searchData( "http://formater.art-sciences.fr");
+		}
+		
+		input.addEventListener("click", displayInfo);
+		input.addEventListener("closeSheet", function(){
+			this.className = "";
+		})
 	});
 	this.popup = node;
 	this.bindPopup( node );
