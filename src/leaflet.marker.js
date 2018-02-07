@@ -110,24 +110,45 @@ function syncExtremes(e) {
         });
     }
 }
-
-L.Marker.prototype.toggle = function( layer){
-	
+L.Marker.prototype.close = function( ){
 	var iconOptions = this.options.icon.options;
-	//console.log(iconOptions);
-
-	if( layer == this){
+	
+	iconOptions.markerColor = this.options.color;
+	var icon= new L.AwesomeMarkers.icon( iconOptions);
+	this.setIcon( icon );
+	_selected_marker = null;
+}
+L.Marker.prototype.toggle = function( ){
+	
+	if( _selected_marker != null){
+		_selected_marker.close();
 		
-		iconOptions.markerColor = this.options.color;
-		var icon= new L.AwesomeMarkers.icon( iconOptions);
-		this.setIcon( icon );
-		return null;
-	}else{
+		}
+
+		
+		var iconOptions = this.options.icon.options;
 		iconOptions.markerColor = "red";
 		var icon= new L.AwesomeMarkers.icon( iconOptions);
 		this.setIcon( icon );
+		_selected_marker = this;
 		return this;
+
+}
+var _selected = null;
+var _selected_marker = null;
+function toggle(node){
+	if(_selected){
+		_selected.className = "";
 	}
+
+	if( _selected == node){
+		_selected = null;
+	}else{
+		node.className = "selected";
+
+		_selected = node;
+	}
+	return _selected;
 }
 L.Marker.prototype.createPopup = function( lang ){
 	if( this.popup){
@@ -138,6 +159,18 @@ L.Marker.prototype.createPopup = function( lang ){
 	var h4 = document.createElement("h4");
 	h4.textContent = this.options.properties.name[lang];
 	node.appendChild( h4);
+	var div = document.createElement("div");
+	div.innerHTML = this.options.properties.description[lang];
+	node.appendChild( div);
+	if( this.options.properties.organisation){
+		var ul = document.createElement("ul");
+		this.options.properties.organisation.forEach( function( org, index){
+			var li = document.createElement("li");
+			li.textContent = org;
+			ul.appendChild(li);
+		});
+		node.appendChild(ul);
+	}
 	this.options.properties.observations.forEach( function( obs, index){
 		var input = document.createElement("input");
 		input.setAttribute("type", "button");
@@ -145,24 +178,26 @@ L.Marker.prototype.createPopup = function( lang ){
 		
 		node.appendChild( input);
 		function displayInfo(e){
-			 if(this.className == "selected"){
-				 //close the window
-				 this.className = "";
+			if(_selected_marker)
+			_selected_marker.close();
+			var event = new CustomEvent("unselectInput", { detail:{}});
+      	  	 document.dispatchEvent(event);
+			 if(this.className != "selected"){
 				 
-				 var event = new CustomEvent("unselectInput", { detail:{}});
-           	  	 document.dispatchEvent(event);
-			 }else{
-				 //display INfo
-				 this.className = "selected";
-				 _this.toggle( _this);
+				_selected_marker = _this.toggle( );
 				 var event = new CustomEvent("displayInfo", { detail:{marker:_this, observation: obs, index: index}});
 	       	    document.dispatchEvent(event);
 			 }
+			 _selected = toggle( this);
 			//_this.searchData( "http://formater.art-sciences.fr");
 		}
 		
 		input.addEventListener("click", displayInfo);
 		input.addEventListener("closeSheet", function(){
+			console.log( "close");
+			if( _selected_marker){
+				_selected_marker.close();
+			}
 			this.className = "";
 		})
 	});

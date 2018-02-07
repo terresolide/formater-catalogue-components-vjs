@@ -10,6 +10,7 @@
         "temporal": "temporal",
         "url": "url",
         "main contact": "Main Contact",
+        "pointOfContact": "Contact",
         "alternate contact": "Alternate Contact",
         "information_links": "Information links",
         "data_access": "Data Access",
@@ -33,6 +34,7 @@
          "temporal": "intervalle de temps",
          "url": "url",
          "main contact": "Contact",
+         "pointOfContact": "Contact",
          "alternate contact": "Autre Contact",
          "information_links": "Liens d'information",
          "data_access": "Accès aux données",
@@ -50,6 +52,7 @@
 </i18n>
 <template>
 	<span class="formater-sheet-container" :class="hidden ? 'hidden' : ''" >
+		
 		<header class="formater-sheet-header">
 		  <h3>{{ title }}</h3>
 		  <span class="fa fa-close" @click="close"></span>
@@ -69,18 +72,33 @@
 		  <span v-html="chartTitle"></span>
 		  </h4>
 		</div>
+		<div class="formater-sheet-data-metablock" v-if="data && data.procedure">
+			<h4 :style="styleTitle">
+			<i class="fa fa-cogs"></i>
+			{{ $t("procedure")}}
+			</h4>
+			<main >
+			<div v-if="data.procedure.method"></div>
+			<div v-if="data.procedure.instruments">
+			 <div class="fa fa-tachometer" v-if="data.procedure.instruments" style="font-weight:600;">  {{ $t("instruments")}}</div>
+			 <div v-for="instrument in data.procedure.instruments" class="formater-address">
+			  - {{ instrument }}
+			 </div>
+			</div>
+			</main>
+		</div>
 		 <div class="formater-information-container">
 		  <div class="formater-column">
 			 
-                  <div class="formater-sheet-data-metablock-50"  v-if="data && data.format">
+                  <div class="formater-sheet-data-metablock-50"  v-if="data && data.formats">
                    <h4 :style="styleTitle">
                     <i class="fa fa-file"></i>
                     Format
                     </h4>
                     
                     <main>
-                     <div class="formater-address">
-                          {{data.format}}
+                     <div class="formater-address" v-for="format in data.formats">
+                          {{format.name}}
                         </div>
                     </main>
 	               
@@ -92,8 +110,10 @@
                     </h4>
                     
                     <main>
-                     <div class="formater-address" v-html="data.license">
-                     
+                     <div class="formater-address" >
+                     		<a :href="data.license.url" v-if="data.license.url">
+                     		<span>{{ data.license.code}}</span>
+                     		</a>
                         </div>
                     </main>
                    
@@ -258,14 +278,12 @@ export default {
 		return {
 			title: 'le titre',
 			chartTitle: 'graph',
-			theme: '',
-			aerisThemeListener:null,
 			aerisSearchEventListener:null,
 			displayInfoListener:null,
 			findDataListener:null,
 			unselectLayerListener:null,
 			hidden: true,
-			color: "#000",
+			color: "#D53E2A",
 			data:null,
 			searched:false,
 			charts:null,
@@ -276,26 +294,7 @@ export default {
 
 	methods:{
 		 
-		   handleTheme( theme ) {
-	            this.theme = theme.detail;
-	            this.ensureTheme();
-	   
-	      },
-	        
-	     ensureTheme() {
-	    	  this.color =  this.$shadeColor( this.theme.primary, -0.2);
-	        if ((this.$el) && (this.$el.querySelector)) {
-	        	var color = this.theme.primary;
-	            
-	           
-	            var nodes= this.$el.querySelectorAll(".formater-sheet-header");
-	            [].forEach.call(nodes, function(node){
-	                node.style.backgroundColor = color;
-	            })
-	           
-	            
-	        }
-	     },
+		
 	     
 	     close(){
 	  
@@ -559,8 +558,8 @@ export default {
 	created(){
 		this.$i18n.locale = this.lang;
 		moment.locale(this.lang);
-		this.aerisThemeListener = this.handleTheme.bind(this) 
-        document.addEventListener('aerisTheme', this.aerisThemeListener);
+		//this.aerisThemeListener = this.handleTheme.bind(this) 
+       // document.addEventListener('aerisTheme', this.aerisThemeListener);
 		this.aerisSearchEventListener = this.close.bind(this);
 		document.addEventListener('aerisSearchEvent', this.aerisSearchEventListener);
 		this.displayInfoListener = this.displayInfo.bind(this) 
@@ -658,7 +657,7 @@ export default {
     margin:0;
     padding:5px;
     color:#fff;
-    background-color:#DD9946;
+    background-color:#D53E2A;
 }
 .formater-sheet-container #container{
     max-width:595px;

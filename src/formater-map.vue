@@ -224,5 +224,7 @@ export default {
 #formatermap .leaflet-popup-content input[type="button"].selected:hover{
   background: #ef2a10;
 }
-
+#formatermap .leaflet-popup-content div > div{
+	margin-bottom:15px;
+}
 </style>
