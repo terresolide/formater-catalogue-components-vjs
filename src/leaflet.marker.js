@@ -124,7 +124,7 @@ L.Marker.prototype.toggle = function( ){
 		_selected_marker.close();
 		
 		}
-
+        console.log( "toggle marker");
 		
 		var iconOptions = this.options.icon.options;
 		iconOptions.markerColor = "red";

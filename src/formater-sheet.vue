@@ -71,6 +71,7 @@
 				   {{ $t(data.type)}}
 				</div>
 			</div>
+			
 			<div v-if="data.observedProperty">
 			  	<div class="formater-list" v-for="(infos, key) in data.observedProperty" :key="key">
                         <span>{{ $t(key)}}</span>
@@ -81,6 +82,12 @@
                         </div>
                      
                </div>
+			</div>
+			<div v-if="data.processingLevel">
+				<span>{{ $t("processingLevel")}}</span>
+				<div class="formater-paragraph">
+				   {{ $t(data.processingLevel)}}
+				</div>
 			</div>
 			</main>
 		</div>
