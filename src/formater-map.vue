@@ -59,11 +59,7 @@ export default {
               
           }
 	  },
-	  unselectLayer(){
-		 // console.log("unselect");
-		  if( _selected)
-		  _selected.fire('click');
-	  },
+	
 	  displayResults( event ){
 		  this.handleReset();
 		  
@@ -130,8 +126,6 @@ export default {
       document.addEventListener('findObservatoriesEvent', this.findObservatoriesListener);
       this.aerisResetListener = this.handleReset.bind(this) 
       document.addEventListener('selectAreaDrawEnd', this.handleReset);
-      this.closeSheetListener = this.unselectLayer.bind(this) 
-      document.addEventListener('closeSheet', this.closeSheetListener);
          
   }, 
  
@@ -163,8 +157,6 @@ export default {
       this.findObservatoriesListener = null;
       document.removeEventListener('selectAreaDrawEnd', this.aeraResetListener);
       this.areaResetListener = null;
-      document.removeEventListener('closeSheet', this.closeSheetListener);
-      this.closeSheetListener = null;
   }
 
 }

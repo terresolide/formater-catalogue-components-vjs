@@ -63,8 +63,25 @@
 			<i class="fa fa-comment-o"></i>
 			{{ $t("description")}}
 			</h4>
-			<main v-html="data.description[lang]">
-			
+			<main >
+			<div v-html="data.description[lang]"></div>
+			<div v-if="data.type">
+				<span>{{ $t("type")}}</span>
+				<div class="formater-paragraph">
+				   {{ $t(data.type)}}
+				</div>
+			</div>
+			<div v-if="data.observedProperty">
+			  	<div class="formater-list" v-for="(infos, key) in data.observedProperty" :key="key">
+                        <span>{{ $t(key)}}</span>
+                        <div class="formater-paragraph">
+                        <span v-if="key!= 'timeResolution'">{{ infos }}</span>
+                        <span  v-if="key == 'timeResolution'" v-for="info in infos">{{info}} </span>
+                        
+                        </div>
+                     
+               </div>
+			</div>
 			</main>
 		</div>
 		<div id="container" style="display:none;">
@@ -81,7 +98,7 @@
 			<div v-if="data.procedure.method"></div>
 			<div v-if="data.procedure.instruments">
 			 <div class="fa fa-tachometer" v-if="data.procedure.instruments" style="font-weight:600;">  {{ $t("instruments")}}</div>
-			 <div v-for="instrument in data.procedure.instruments" class="formater-address">
+			 <div v-for="instrument in data.procedure.instruments" class="formater-paragraph">
 			  - {{ instrument }}
 			 </div>
 			</div>
@@ -89,7 +106,19 @@
 		</div>
 		 <div class="formater-information-container">
 		  <div class="formater-column">
-			 
+			  	<div class="formater-sheet-data-metablock-50"  v-if="data && data.temporalExtents">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-clock-o"></i>
+                    {{ $t("temporal_extents")}}
+                    </h4>
+                    
+                    <main>
+                     <div class="formater-paragraph">
+                          {{startDate}} <i class="fa fa-long-arrow-right" :style="styleTitle"></i> {{endDate}}
+                        </div>
+                    </main>
+                   
+                  </div>
                   <div class="formater-sheet-data-metablock-50"  v-if="data && data.formats">
                    <h4 :style="styleTitle">
                     <i class="fa fa-file"></i>
@@ -97,7 +126,7 @@
                     </h4>
                     
                     <main>
-                     <div class="formater-address" v-for="format in data.formats">
+                     <div class="formater-paragraph" v-for="format in data.formats">
                           {{format.name}}
                         </div>
                     </main>
@@ -110,7 +139,7 @@
                     </h4>
                     
                     <main>
-                     <div class="formater-address" >
+                     <div class="formater-paragraph" >
                      		<a :href="data.license.url" v-if="data.license.url">
                      		<span>{{ data.license.code}}</span>
                      		</a>
@@ -118,34 +147,8 @@
                     </main>
                    
                   </div>
-	              <div class="formater-sheet-data-metablock-50"  v-if="data && data.temporalExtents">
-                   <h4 :style="styleTitle">
-                    <i class="fa fa-clock-o"></i>
-                    {{ $t("temporal_extents")}}
-                    </h4>
-                    
-                    <main>
-                     <div class="formater-address">
-                          {{startDate}} <i class="fa fa-long-arrow-right" :style="styleTitle"></i> {{endDate}}
-                        </div>
-                    </main>
-                   
-                  </div>
-	                <div class="formater-sheet-data-metablock-50"  v-if="data && data.links && data.links.existType('HTTP_DOWNLOAD_LINK')">
-	                   <h4 :style="styleTitle">
-	                    <i class="fa fa-database"></i>
-	                    {{ $t("data_access")}}
-	                    </h4>
-	                    
-	                    <main>
-	                    <span :style="styleTitle">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
-	                     <div class="formater-address" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
-	                        <a :href="link.url" >{{ link.url}}</a>
-	                        <div class="formater-address" v-if="link.description">{{link.description[lang]}}</div>
-	                     </div>
-	                    </main>
-	               
-	              </div>
+	             
+	            
 		                                     
 		      <div class="formater-sheet-data-metablock-50" v-if="data  && data.contacts" >
 	            <h4 :style="styleTitle">
@@ -156,7 +159,7 @@
 	            <div class="formater-list" v-for="contact in data.contacts" >
 	              <div class="formater-function" :style="styleTitle">{{ $t(contact.roles[0])}}</div>
 	                <div style="font-weight:600;"><i class="fa fa-user"></i> {{ contact.name}}</div>
-	                <div class="formater-address" >
+	                <div class="formater-paragraph" >
 		                <a :href="'mailto:'+contact.email" :style="styleTitle">{{contact.email}}</a>
 		                <div v-if="contact.organisation" class="formater-organisation" >{{contact.organisation}}</div>
 		                <div v-if="contact.address">
@@ -184,6 +187,21 @@
 		            </div>
 		            </main>
 	            </div>
+	                <div class="formater-sheet-data-metablock-50"  v-if="data && data.links && data.links.existType('HTTP_DOWNLOAD_LINK')">
+	                   <h4 :style="styleTitle">
+	                    <i class="fa fa-database"></i>
+	                    {{ $t("data_access")}}
+	                    </h4>
+	                    
+	                    <main>
+	                    <span :style="styleTitle">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
+	                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
+	                        <a :href="link.url" >{{ link.url}}</a>
+	                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
+	                     </div>
+	                    </main>
+	               
+	              </div>
 	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.links && data.links.existType('INFORMATION_LINK')">
                    <h4 :style="styleTitle">
                     <i class="fa fa-link"></i>
@@ -192,7 +210,7 @@
                     <main>
                      <div class="formater-list" v-for="link in data.links" v-if="link['type'] == 'INFORMATION_LINK'">
                         <a :href="link.url" >{{ link.url}}</a>
-                        <div class="formater-address" v-if="link.description">{{link.description[lang]}}</div>
+                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
                      </div>
                     </main>
                
@@ -203,13 +221,20 @@
                     {{ $t("other_information")}}
                     </h4>
                     <main>
-                     <ul>
-                     <li v-if="data.formaterDataCenter">
+                   
+                     <div v-if="data.formaterDataCenter">
                         <span :style="styleTitle">{{$t("data_center")}} ForM@Ter :</span>
+                        <div class="formater-paragraph">
                         <span v-if="data.formaterDataCenter.name">{{data.formaterDataCenter.name}} </span>
                         <span v-if="data.formaterDataCenter.code">{{data.formaterDataCenter.code}} </span>
-                     </li>
-                     </ul>
+                     	</div>
+                     </div>
+                     <div v-if="data.metadataLastUpdate">
+                        <span :style="styleTitle">{{$t("metadata_update")}} :</span>
+                        <div class="formater-paragraph">{{ iso2str( data.metadataLastUpdate )}}
+                        </div>
+                     </div>
+                     
                     </main>
                
               </div>
@@ -267,12 +292,13 @@ export default {
         		   if(this.data.temporalExtents.end == "now"){
         			   return this.$i18n.t("now");
         		   }else{
-        			   return  moment(this.data.temporalExtents.end, "YYYY-MM-DD").format("ll");
+        			   return  this.iso2str(this.data.temporalExtents.end);
         		   }
 		        }else{
 		            return "";
 		        }
-        }
+        },
+       
 	},
 	data(){
 		return {
@@ -297,7 +323,7 @@ export default {
 		
 	     
 	     close(){
-	  
+	  		console.log("sheet close");
 	    	 var event = new CustomEvent("closeSheet", { detail:{}});
        	  document.dispatchEvent(event);
 	     },
@@ -307,7 +333,9 @@ export default {
 	    	 this.hidden = true;
 	    	 this.code ="";
 	     },
-	    
+	     iso2str( date){
+	    	 return moment( date, "YYYY-MM-DD").format("ll");
+	     },
 	     open( observation){
 	    	   console.log( observation);
 	    	   this.title = observation.title[this.lang];
@@ -322,7 +350,7 @@ export default {
 	    	 if(this.$el.querySelector && this.$el.querySelector("#chartContainer")){
                  return;
              }
-	    	 var data0 = event.detail.marker.options.properties.data;
+	    	 var data0 = event.detail.obs.data;
 	    	 this.createChart( data0);
 	     },
 	     destroyCharts(){
@@ -727,7 +755,7 @@ export default {
     .formater-sheet-container main h4::first-letter{
         text-transform:uppercase;
     }
-    .formater-sheet-container .formater-address{
+    .formater-sheet-container .formater-paragraph{
        border-left:1px solid #999;
        padding-left:10px;
        margin-left:5px;

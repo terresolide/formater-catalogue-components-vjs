@@ -150,6 +150,72 @@ function toggle(node){
 	}
 	return _selected;
 }
+
+function searchData( obs, query){
+	if(!obs.process){
+		obs.process = {}
+	}
+	if( !obs.api || !obs.api.url){
+		obs.process.status = "DONE";
+	}
+	if( obs.process.status == "DONE" || obs.process.status == "ERROR" || obs.process.status == "WAITING"){
+		return;
+	} 
+	obs.process.status = "WAITING";
+	var xhttp = new XMLHttpRequest(); 
+	xhttp.responseType = "json";
+	
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			//console.log( JSON.parse(this.responseText));
+			//console.log(_marker.options);
+		   // document.getElementById("demo").innerHTML = this.responseText;
+		   if(this.response.error){
+			   obs.process.status = "ERROR";
+		   }else{
+			   obs.process.status = "DONE";
+			   obs.data = this.response;
+			   var event = new CustomEvent("findData", {detail: { obs: obs }});
+			    document.dispatchEvent(event);
+   
+		   }
+		    
+		  }
+		  if (this.readyState == 4 && this.status == 404) {
+			  obs.process.status = "ERROR";
+			    
+		  }
+	}
+	var req = obs.api.url;
+	
+	
+	
+	if( query && query.start){
+		obs.api.parameters["start"] = query.start;
+	}
+	if( query && query.end){
+		obs.api.parameters["end"] = query.end;
+	}
+	console.log( obs.api.parameters.type);
+	//if( obs.api.parameters.length>0){
+		var i = 0;
+		for(var key in obs.api.parameters){
+			console.log( key);
+			if(i == 0){
+				req += "?";
+			}else{
+				req += "&";
+			}
+			i++;
+			req += key +"="+obs.api.parameters[key];
+		}
+	//}
+	console.log( req);
+	xhttp.open("GET", encodeURI( req ), true);
+	
+	xhttp.send();
+	
+}
 L.Marker.prototype.createPopup = function( lang ){
 	if( this.popup){
 		return;
@@ -189,23 +255,31 @@ L.Marker.prototype.createPopup = function( lang ){
 	       	    document.dispatchEvent(event);
 			 }
 			 _selected = toggle( this);
-			//_this.searchData( "http://formater.art-sciences.fr");
+			 searchData( obs , _this.options.query);
 		}
 		
 		input.addEventListener("click", displayInfo);
-		input.addEventListener("closeSheet", function(){
+		/*input.addEventListener("closeSheet", function(){
 			console.log( "close");
 			if( _selected_marker){
 				_selected_marker.close();
 			}
 			this.className = "";
-		})
+		})*/
 	});
 	this.popup = node;
 	this.bindPopup( node );
 	
 	this.openPopup();
 }
+
+document.addEventListener("closeSheet", function(e){
+	if( _selected){
+		var event = new MouseEvent("click", {});
+		_selected.dispatchEvent(event);
+	}
+	
+})
 Array.prototype.get= function( name ){
 	var i=0;
 	find = false;
