@@ -59,8 +59,8 @@ export default {
       },
       url:{
           type: String,
-         // default: 'http://api.formater/api'
-         default: 'http://formater.art-sciences.fr/api'
+          //default: 'http://api.formater/api'
+          default: 'http://formater.art-sciences.fr/api'
          // default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
          //default: 'http://formater.art-sciences.fr/cds/bcmt/obs'
       }

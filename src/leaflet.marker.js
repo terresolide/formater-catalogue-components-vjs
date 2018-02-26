@@ -1,7 +1,7 @@
 /**
- * 
+ * ANCIENNE MANIERE, APPEL DIRECT
  */
-L.Marker.prototype.searchData = function( url){
+/*L.Marker.prototype.searchData = function( url){
 	if( this.options.properties.status == "DONE" || this.options.properties.status == "ERROR" || this.options.properties.status == "WAITING"){
 		return;
 	} 
@@ -50,7 +50,7 @@ L.Marker.prototype.searchData = function( url){
 	xhttp.send();
 	
 }
-
+*/
 //globally available
 function handle_global(e){
   
@@ -93,6 +93,7 @@ Highcharts.Point.prototype.highlight = function (event) {
     this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
 };
 
+window.disabledUrl = new Array();
 /**
  * Synchronize zooming through the setExtremes event handler.
  */
@@ -172,6 +173,11 @@ function searchData( obs, query){
 		   // document.getElementById("demo").innerHTML = this.responseText;
 		   if(this.response.error){
 			   obs.process.status = "ERROR";
+			   if( this.response.error = "FTP_FAILED"){
+				   //DISABLE THE URL FOR OTHER WHICH SAME SERVER
+				   console.log( obs.api.name);
+				   window.disabledUrl.push( obs.api.name);
+			   }
 		   }else{
 			   obs.process.status = "DONE";
 			   obs.data = this.response;
@@ -186,7 +192,7 @@ function searchData( obs, query){
 			    
 		  }
 	}
-	var req = obs.api.url;
+	var req = obs.api.url;//.replace("formater.art-sciences.fr", "api.formater");
 	
 	
 	
@@ -212,8 +218,9 @@ function searchData( obs, query){
 	//}
 	console.log( req);
 	xhttp.open("GET", encodeURI( req ), true);
-	
-	xhttp.send();
+	if( window.disabledUrl.indexOf(obs.api.name)<0){
+		xhttp.send();
+	}
 	
 }
 L.Marker.prototype.createPopup = function( lang ){

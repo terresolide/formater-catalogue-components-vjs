@@ -97,7 +97,7 @@ export default {
                           });
                   //marker.createPopup(lang);
                   //search data??
-                  var url = "http://formater.art-sciences.fr";
+                 // var url = "http://formater.art-sciences.fr";
                   //var url = "http://api.formater"
                  // 
                   marker.on('click', function(e ){

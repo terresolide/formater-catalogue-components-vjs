@@ -375,7 +375,7 @@ export default {
 	    	 
 	    	 var chartTitle = this.$i18n.t("data") +" &quot;"+dataType + "&quot; "+ this.$i18n.t("from")+" "+ moment(begin, "YYYY-MM-DD").format("ll");
 	            if(end != begin){
-	                chartTitle += " " + this.$i18n.t("to") + " "+ moment(end, "YYYY-MM-DD").format("ll");;
+	                chartTitle += " " + this.$i18n.t("to") + " "+ moment(end, "YYYY-MM-DD").format("ll");
 	            }
 	    	 this.chartTitle = chartTitle;
 	     },
