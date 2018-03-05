@@ -6,7 +6,7 @@
        "spatial_extents": "spatial extents",
        "output_format": "Output Format",
        "search": "Search",
-       "magnetisme": "magnetism",
+       "geomagnetisme": "Geomagnetism",
        "service_closed": "The service is closed"
    },
    "fr":{
@@ -15,7 +15,7 @@
         "spatial_extents": "zone géographique",
         "output_format": "Format de sortie",
         "search": "rechercher",
-      "magnetisme": "magnétisme",
+      "geomagnetisme": "Geomagnétisme",
       "service_closed": "Le service est fermé"
    }
 }
@@ -59,8 +59,7 @@ export default {
       },
       url:{
           type: String,
-          //default: 'http://api.formater/api'
-          default: 'http://formater.art-sciences.fr/api'
+          default: 'http://api.formater/api'
          // default: 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/data/geojson_observatories.json'
          //default: 'http://formater.art-sciences.fr/cds/bcmt/obs'
       }
@@ -69,7 +68,7 @@ export default {
   computed:{
       dataType(){
           var interval = JSON.stringify({
-              magnetisme: this.$i18n.t('magnetisme')
+              geomagnetisme: this.$i18n.t('geomagnetisme')
           }).replace(/"/g, "'");
           return interval;
       }

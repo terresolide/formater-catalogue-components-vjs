@@ -15,7 +15,7 @@
 	<div class="formater-wrapper">
 	
 		<aside>
-			<formater-form :lang="lang"></formater-form>
+			<formater-form :lang="lang" :url="url"></formater-form>
 			
 			
 		</aside>
@@ -35,6 +35,10 @@ export default {
         lang: {
             type:String,
             default:'fr'
+        },
+        url:{
+        	type:String,
+        	default: 'http://api.formater/api'
         }
     },
     created(){

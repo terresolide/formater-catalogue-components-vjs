@@ -17,12 +17,24 @@
         "other_information": "Other information",
         "data_center": "Data Center",
         "HTTP_DOWNLOAD_LINK": "Http download links",
+        "FTP_DOWNLOAD_LINK": "Ftp download links",
         "data": "Data",
         "from": "from",
         "to": "to",
         "temporal_extents": "Temporal extents",
         "now": "Now",
-        "license": "License"
+        "license": "License",
+        "type":"Data type",
+        "GeomagneticData": "Geomagnetism",
+        "time series": "time series",
+        "timeResolution": "Time resolution",
+        "processingLevel": "Processing Level",
+        "shortName": "Variables",
+        "domainOfInterest": "Domain of interest",
+        "Geomagnetic Field": "Geomagnetic Field",
+        "ObservedProperty": "Observed property"
+       
+        
    },
    "fr":{
          "organism":    "organisme",
@@ -41,12 +53,23 @@
          "other_information": "Autre information",
          "data_center": "Centre de données",
          "HTTP_DOWNLOAD_LINK": "Liens de téléchargement http",
+         "FTP_DOWNLOAD_LINK": "Liens de téléchargement ftp",
          "data": "Données",
          "from": "du",
          "to": "au",
          "temporal_extents": "Extension temporelle",
          "now": "Aujourd'hui",
-         "license": "Licence"
+         "license": "Licence",
+         "type":"Type de données",
+          "GeomagneticData": "Géomagnétisme",
+         "time series": "Séries temporelles",
+         "timeResolution": "Résolution temporelle",
+          "processingLevel": "Niveau de traitement",
+          "shortName": "Variables",
+        "domainOfInterest": "Domaines",
+         "Geomagnetic Field": "Champ géomagnétique",
+          "ObservedProperty": "Propriété observée"
+          
    }
 }
 </i18n>
@@ -65,30 +88,7 @@
 			</h4>
 			<main >
 			<div v-html="data.description[lang]"></div>
-			<div v-if="data.type">
-				<span>{{ $t("type")}}</span>
-				<div class="formater-paragraph">
-				   {{ $t(data.type)}}
-				</div>
-			</div>
 			
-			<div v-if="data.observedProperty">
-			  	<div class="formater-list" v-for="(infos, key) in data.observedProperty" :key="key">
-                        <span>{{ $t(key)}}</span>
-                        <div class="formater-paragraph">
-                        <span v-if="key!= 'timeResolution'">{{ infos }}</span>
-                        <span  v-if="key == 'timeResolution'" v-for="info in infos">{{info}} </span>
-                        
-                        </div>
-                     
-               </div>
-			</div>
-			<div v-if="data.processingLevel">
-				<span>{{ $t("processingLevel")}}</span>
-				<div class="formater-paragraph">
-				   {{ $t(data.processingLevel)}}
-				</div>
-			</div>
 			</main>
 		</div>
 		<div id="container" style="display:none;">
@@ -96,21 +96,9 @@
 		  <span v-html="chartTitle"></span>
 		  </h4>
 		</div>
-		<div class="formater-sheet-data-metablock" v-if="data && data.procedure">
-			<h4 :style="styleTitle">
-			<i class="fa fa-cogs"></i>
-			{{ $t("procedure")}}
-			</h4>
-			<main >
-			<div v-if="data.procedure.method"></div>
-			<div v-if="data.procedure.instruments">
-			 <div class="fa fa-tachometer" v-if="data.procedure.instruments" style="font-weight:600;">  {{ $t("instruments")}}</div>
-			 <div v-for="instrument in data.procedure.instruments" class="formater-paragraph">
-			  - {{ instrument }}
-			 </div>
-			</div>
-			</main>
-		</div>
+		
+		
+		
 		 <div class="formater-information-container">
 		  <div class="formater-column">
 			  	<div class="formater-sheet-data-metablock-50"  v-if="data && data.temporalExtents">
@@ -181,48 +169,8 @@
 	            </div>
 	            </main>
 	          </div>
-           
-	          
-	          
-            </div><!-- end column -->
-            <div class="formater-column"> 
             
-	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.quicklook">
-		            <main>
-		            <div v-for="image in data.quicklook" style="text-align:center;">
-		             <img :src="image.url" :alt="image.description" />
-		            </div>
-		            </main>
-	            </div>
-	                <div class="formater-sheet-data-metablock-50"  v-if="data && data.links && data.links.existType('HTTP_DOWNLOAD_LINK')">
-	                   <h4 :style="styleTitle">
-	                    <i class="fa fa-database"></i>
-	                    {{ $t("data_access")}}
-	                    </h4>
-	                    
-	                    <main>
-	                    <span :style="styleTitle">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
-	                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
-	                        <a :href="link.url" >{{ link.url}}</a>
-	                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
-	                     </div>
-	                    </main>
-	               
-	              </div>
-	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.links && data.links.existType('INFORMATION_LINK')">
-                   <h4 :style="styleTitle">
-                    <i class="fa fa-link"></i>
-                    {{ $t("information_links")}}
-                    </h4>
-                    <main>
-                     <div class="formater-list" v-for="link in data.links" v-if="link['type'] == 'INFORMATION_LINK'">
-                        <a :href="link.url" >{{ link.url}}</a>
-                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
-                     </div>
-                    </main>
-               
-               </div>
-	            <div class="formater-sheet-data-metablock-50"  v-if="data">
+             <div class="formater-sheet-data-metablock-50"  v-if="data">
                    <h4 :style="styleTitle">
                     <i class="fa fa-info"></i>
                     {{ $t("other_information")}}
@@ -245,8 +193,106 @@
                     </main>
                
               </div>
+	          
+	          
+            </div><!-- end column 1-->
+            <div class="formater-column"> 
+            
+	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.quicklook">
+		            <main>
+		            <div v-for="image in data.quicklook" style="text-align:center;">
+		             <img :src="image.url" :alt="image.description" />
+		            </div>
+		            </main>
+	            </div>
+                 <div class="formater-sheet-data-metablock-50"  v-if="existDownloadLink()">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-database"></i>
+                    {{ $t("data_access")}}
+                    </h4>
+                    
+                    <main>
+                    <span :style="styleTitle" v-if="data.links.existType('HTTP_DOWNLOAD_LINK')">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
+                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
+                        <a :href="link.url" >{{ link.url}}</a>
+                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
+                     </div>
+                     <span :style="styleTitle" v-if="data.links.existType('FTP_DOWNLOAD_LINK')">{{$t('FTP_DOWNLOAD_LINK')}} :</span>
+                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'FTP_DOWNLOAD_LINK'">
+                        <a :href="link.url" >{{ link.url}}</a>
+                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
+                     </div>
+                    </main>
+               
+                </div>
+	             <div class="formater-sheet-data-metablock-50"  v-if="data && data.links && data.links.existType('INFORMATION_LINK')">
+                   <h4 :style="styleTitle">
+                    <i class="fa fa-link"></i>
+                    {{ $t("information_links")}}
+                    </h4>
+                    <main>
+                     <div class="formater-list" v-for="link in data.links" v-if="link['type'] == 'INFORMATION_LINK'">
+                        <a :href="link.url" >{{ link.url}}</a>
+                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
+                     </div>
+                    </main>
+               
+               </div>
+	           
 	        </div><!-- end column 2 -->
 		</div><!-- end information -->
+		<!-- debut -->
+		<div class="formater-sheet-data-metablock" v-if="data && data.observedProperty">
+
+		  <h4 :style="styleTitle">
+		  <i class="fa fa-eye"></i>
+		  {{ $t("ObservedProperty") }}
+		  </h4>
+		<main>
+		  <div>
+			    <div v-if="data.observedProperty.name || data.observedProperty.shortName" style="width:48%; float:left;">
+			    <span :style="styleTitle">{{$t("Variable")}}</span>
+			     <div class="formater-paragraph" v-if="data.observedProperty.name">{{$t(data.observedProperty.name)}}</div>
+			      <div class="formater-paragraph" v-if="data.observedProperty.shortName">{{$t(data.observedProperty.shortName)}}</div>
+			     
+			    </div>
+			<!--  <div v-if="data.observedProperty" style="width:48%; float:left;">-->
+			  	<div class="formater-list" style="width:48%; float:left;" v-for="(infos, key) in data.observedProperty" :key="key" v-if="key!='name' && key!='shortName'" >
+                        <span :style="styleTitle">{{ $t(key)}}</span>
+                        <div class="formater-paragraph">
+                        <span v-if="key!= 'timeResolution'">{{ $t( infos) }}</span>
+                        <span  v-if="key == 'timeResolution'" v-for="info in infos">{{info}} </span>
+                        </div>
+                </div>
+                     
+             <!--   </div>--> 
+			
+			<div v-if="data.processingLevel" style="width:48%; float:left;">
+				<span :style="styleTitle">{{ $t("processingLevel")}}</span>
+				<div class="formater-paragraph">
+				   {{ $t(data.processingLevel)}}
+				</div>
+			</div>
+			<div style="clear:left;"></div>
+			</div>
+			</main>
+			</div>
+			<!-- fin -->
+		<div class="formater-sheet-data-metablock" v-if="data && data.procedure">
+			<h4 :style="styleTitle">
+			<i class="fa fa-cogs"></i>
+			{{ $t("procedure")}}
+			</h4>
+			<main >
+			<div v-if="data.procedure.method"></div>
+			<div v-if="data.procedure.instruments">
+			 <div class="fa fa-tachometer" v-if="data.procedure.instruments" style="font-weight:600;">  {{ $t("instruments")}}</div>
+			 <div v-for="instrument in data.procedure.instruments" class="formater-paragraph">
+			  - {{ instrument }}
+			 </div>
+			</div>
+			</main>
+		</div>
 		</main>
 	</span>
 </template>
@@ -353,11 +399,32 @@ export default {
                //}
                this.hidden = false;
 	     },
+	     existDownloadLink(){
+	    	 if( this.data && this.data.links){
+	    		 var links = this.data.links;
+	    		 if(  links.existType('HTTP_DOWNLOAD_LINK') || links.existType('FTP_DOWNLOAD_LINK')){
+	    			 return true;
+	    		 }else{
+	    			 return false;
+	    		 }
+	    			
+	    	 }else{
+	    		 return false;
+	    	 }
+	    			 
+	     },
 	     handleCreateChart(event){
 	    	 if(this.$el.querySelector && this.$el.querySelector("#chartContainer")){
                  return;
              }
 	    	 var data0 = event.detail.obs.data;
+	    	 var links = data0.meta.get("FTP_DOWNLOAD_LINK");
+	    	 console.log( this.data.links);
+	    	 if( links){
+	    		for(var i in links){
+	    			this.data.links.push({ type:"FTP_DOWNLOAD_LINK",url: links[i]});
+	    		}
+	    	 }
 	    	 this.createChart( data0);
 	     },
 	     destroyCharts(){
