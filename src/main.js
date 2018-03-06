@@ -64,8 +64,8 @@ ljs.addAliases({
 	    //Marker
 	    //-----------
 	    //'src/leaflet.marker.js',
-	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.marker.js',
-	    //'https://cdn.rawgit.com/terresolide/formater-catalogue-components-vjs/0.0.2/src/leaflet.marker.js' ,
+	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.marker.js',
+	    'https://cdn.rawgit.com/terresolide/formater-catalogue-components-vjs/0.0.4/src/leaflet.marker.js' ,
 		   
 	    //Markers collection
 	    //-----------------

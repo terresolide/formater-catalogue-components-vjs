@@ -181,6 +181,23 @@ function searchData( obs, query){
 		   }else{
 			   obs.process.status = "DONE";
 			   obs.data = this.response;
+			   var links = obs.data.meta.get("FTP_DOWNLOAD_LINK");
+			   console.log("REPONSE");
+			   console.log( links);
+		    	 console.log( obs);
+		    	 //DELETE OLD LINK FTP
+		    	 if( links){
+		    		 var i = links.length-1;
+		    		while(i>=0){
+		    			if(links[i].prov){
+		    				links.splice(i,1);
+		    			}
+		    			i--;
+		    		}
+		    		for(var i=0;i<links.length;i++){
+		    			obs.links.push({ type:"FTP_DOWNLOAD_LINK",url: links[i], prov:true});
+		    		}
+		    	 }
 			   var event = new CustomEvent("findData", {detail: { obs: obs }});
 			    document.dispatchEvent(event);
    
@@ -202,11 +219,11 @@ function searchData( obs, query){
 	if( query && query.end){
 		obs.api.parameters["end"] = query.end;
 	}
-	console.log( obs.api.parameters.type);
+	//console.log( obs.api.parameters.type);
 	//if( obs.api.parameters.length>0){
 		var i = 0;
 		for(var key in obs.api.parameters){
-			console.log( key);
+			//console.log( key);
 			if(i == 0){
 				req += "?";
 			}else{
@@ -216,7 +233,7 @@ function searchData( obs, query){
 			req += key +"="+obs.api.parameters[key];
 		}
 	//}
-	console.log( req);
+	//console.log( req);
 	xhttp.open("GET", encodeURI( req ), true);
 	if( window.disabledUrl.indexOf(obs.api.name)<0){
 		xhttp.send();

@@ -89,7 +89,7 @@ export default {
                   var marker = new L.Marker(
                           latlng,
                           {icon: iconMarker,
-                           name: feature.properties.code,
+                           name: feature.properties.identifiers.customId,
                            title: feature.properties.name[lang],
                            properties: feature.properties,
                            color: color,
