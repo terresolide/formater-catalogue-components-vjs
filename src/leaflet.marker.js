@@ -186,16 +186,17 @@ function searchData( obs, query){
 			   console.log( links);
 		    	 console.log( obs);
 		    	 //DELETE OLD LINK FTP
-		    	 if( links){
-		    		 var i = links.length-1;
+		    	 if( obs.links){
+		    		 var i = obs.links.length-1;
 		    		while(i>=0){
-		    			if(links[i].prov){
-		    				links.splice(i,1);
+		    			if(obs.links[i].prov){
+		    				obs.links.splice(i,1);
 		    			}
 		    			i--;
 		    		}
 		    		for(var i=0;i<links.length;i++){
-		    			obs.links.push({ type:"FTP_DOWNLOAD_LINK",url: links[i], prov:true});
+		    			 links[i].prov = true;
+		    			obs.links.push(links[i]);
 		    		}
 		    	 }
 			   var event = new CustomEvent("findData", {detail: { obs: obs }});

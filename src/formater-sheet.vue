@@ -169,15 +169,19 @@
                     </h4>
                     
                     <main>
+                    <div>
                     <span :style="styleTitle" v-if="data.links.existType('HTTP_DOWNLOAD_LINK')">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
                      <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
                         <a :href="link.url" target="_blank">{{ link.url}}</a>
                         <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
                      </div>
-                     <span :style="styleTitle" v-if="data.links.existType('FTP_DOWNLOAD_LINK')">{{$t('FTP_DOWNLOAD_LINK')}} :</span>
+                   </div>
+                   <div style= "padding-top:10px;"  v-if="data.links.existType('FTP_DOWNLOAD_LINK')">
+                     <span :style="styleTitle" >{{$t('FTP_DOWNLOAD_LINK')}} :</span>
                      <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'FTP_DOWNLOAD_LINK'">
-                        <a :href="link.url" target="_blank">{{ link.url}}</a>
-                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
+                        <a :href="link.url" target="_blank">{{link.description ? link.description[lang]: link.url}}</a>
+                        
+                     </div>
                      </div>
                     </main>
                
@@ -266,8 +270,8 @@
 		  <div>
 			    <div v-if="data.observedProperty.name || data.observedProperty.shortName" style="width:48%; float:left;">
 			    <span :style="styleTitle">{{$t("Variable")}}</span>
-			     <div class="formater-paragraph" v-if="data.observedProperty.name">{{$t(data.observedProperty.name)}}</div>
-			      <div class="formater-paragraph" v-if="data.observedProperty.shortName">{{$t(data.observedProperty.shortName)}}</div>
+			     <div class="formater-paragraph" v-if="data.observedProperty.name">{{data.observedProperty.name[lang]}}</div>
+			      <div class="formater-paragraph" v-if="data.observedProperty.shortName">{{data.observedProperty.shortName}}</div>
 			     
 			    </div>
 			<!--  <div v-if="data.observedProperty" style="width:48%; float:left;">-->
