@@ -134,12 +134,15 @@ export default {
 		  		var color = this.theme.primary;
 		  		var color1 = this.$shadeColor( this.theme.primary, 0.1); //lightcolor
 		  		var color2 = this.$shadeColor( this.theme.primary, -.1); //dark color
-		  		this.$el.querySelector(".formater-search-button").style.borderColor= color1 + ' '+ color2 + ' ' + color2;
-		  		this.$el.querySelector(".formater-search-button").addEventListener("mouseover", function(e){
+		  		var color3 = this.$shadeColor( this.theme.primary, 0.2);
+		  		var button = this.$el.querySelector(".formater-search-button");
+		  		button.style.borderColor= color1 + ' '+ color2 + ' ' + color2;
+		  		button.style. textShadow=" 0 -1px 1px "+color3+" , 1px 0 1px "+color2+", 0 1px 1px "+color2+", -1px 0 1px "+color3;
+		  		button.addEventListener("mouseover", function(e){
 
 		  			this.style.backgroundColor = color1;
 		  		});
-		  		this.$el.querySelector(".formater-search-button").addEventListener("mouseout", function(e){
+		  		button.addEventListener("mouseout", function(e){
 	
 		  			this.style.backgroundColor = color;
 		  		})

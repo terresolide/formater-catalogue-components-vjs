@@ -169,14 +169,14 @@
                     </h4>
                     
                     <main>
-                    <div>
+                    <div class="formater-sub">
                     <span :style="styleTitle" v-if="data.links.existType('HTTP_DOWNLOAD_LINK')">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
                      <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
                         <a :href="link.url" target="_blank">{{ link.url}}</a>
                         <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
                      </div>
                    </div>
-                   <div style= "padding-top:10px;"  v-if="data.links.existType('FTP_DOWNLOAD_LINK')">
+                   <div class="formater-sub" v-if="data.links.existType('FTP_DOWNLOAD_LINK')">
                      <span :style="styleTitle" >{{$t('FTP_DOWNLOAD_LINK')}} :</span>
                      <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'FTP_DOWNLOAD_LINK'">
                         <a :href="link.url" target="_blank">{{link.description ? link.description[lang]: link.url}}</a>
@@ -209,21 +209,27 @@
                     {{ $t("other_information")}}
                     </h4>
                     <main>
-                    <div v-if="data.processingLevel" >
+                    <div class="formater-sub" v-if="data.identifiers && data.identifiers.DOI">
+                    	<span :style="styleTitle">DOI</span>
+						<div class="formater-paragraph">
+					   		{{ data.identifiers.DOI }}
+						</div>
+                    </div>
+                    <div class="formater-sub" v-if="data.processingLevel" >
 						<span :style="styleTitle">{{ $t("processingLevel")}}</span>
 						<div class="formater-paragraph">
 					   		{{ $t(data.processingLevel)}}
 						</div>
 					</div>
                    
-                     <div v-if="data.formaterDataCenter">
+                     <div class="formater-sub" v-if="data.formaterDataCenter">
                         <span :style="styleTitle">{{$t("data_center")}} ForM@Ter :</span>
                         <div class="formater-paragraph">
                         <span v-if="data.formaterDataCenter.name">{{data.formaterDataCenter.name}} </span>
                         <span v-if="data.formaterDataCenter.code">{{data.formaterDataCenter.code}} </span>
                      	</div>
                      </div>
-                     <div v-if="data.metadataLastUpdate">
+                     <div class="formater-sub" v-if="data.metadataLastUpdate">
                         <span :style="styleTitle">{{$t("metadata_update")}} :</span>
                         <div class="formater-paragraph">{{ iso2str( data.metadataLastUpdate )}}
                         </div>
@@ -291,20 +297,20 @@
 			</main>
 			</div>
 			<!-- fin -->
-		<div class="formater-sheet-data-metablock" v-if="data && data.procedure">
+			<div class="formater-sheet-data-metablock" v-if="data && data.procedure">
 			<h4 :style="styleTitle">
 			<i class="fa fa-cogs"></i>
 			{{ $t("procedure")}}
 			</h4>
 			<main >
 			<div v-if="data.procedure.method"></div>
-			<div v-if="data.procedure.instruments">
+			<div class="formater-sub" v-if="data.procedure.instruments">
 				 <div class="fa fa-tachometer" style="font-weight:600;">  {{ $t("instruments")}}</div>
 				 <div v-for="instrument in data.procedure.instruments" class="formater-paragraph">
 				  - {{ instrument }}
 				 </div>
 			</div>
-			<div v-if="data.procedure.algorithms">
+			<div class="formater-sub" v-if="data.procedure.algorithms">
 				<div class="fa fa-tachometer"  style="font-weight:600;">  {{ $t("algorithms")}}</div>
 				 <div v-for="algorithm in data.procedure.algorithms" class="formater-paragraph" v-html="algorithm">
 				 
@@ -801,6 +807,7 @@ export default {
     background:#f1f1f1;
    /* max-height:300px;*/
     }
+    
     .formater-sheet-container main h4{
 
         display:inline-block;
@@ -836,6 +843,9 @@ export default {
         border-radius:2px;
         box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
         background:white;
+    }
+    .formater-sheet-container div.formater-sub{
+    	margin-bottom:10px;
     }
     .formater-sheet-container main h4::after{
         content:" :";
