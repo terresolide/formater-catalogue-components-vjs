@@ -53,7 +53,7 @@ ljs.addAliases({
 	    //leaflet
 		//------------
 		'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
-	    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js',
+	   // 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js',
 	    //leaflet.select-area
 	    //-------------------
 	    //'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.1.js',
@@ -65,7 +65,7 @@ ljs.addAliases({
 	    //-----------
 	    //'src/leaflet.marker.js',
 	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.marker.js',
-	    'https://cdn.rawgit.com/terresolide/formater-catalogue-components-vjs/0.0.6/src/leaflet.marker.js' ,
+	   // 'https://cdn.rawgit.com/terresolide/formater-catalogue-components-vjs/0.0.6/src/leaflet.marker.js' ,
 		   
 	    //Markers collection
 	    //-----------------

@@ -23,7 +23,8 @@
 const L.Marker.WAITING = 2;
 const L.Marker.TODO = 0;
 const L.Marker.ERROR = 3;*/
-var _selected = null;
+import ftMap from "./formater-map.js";
+
 export default {
 
   props:{
@@ -36,7 +37,6 @@ export default {
   },
   data(){
       return {
-          map:null,
           selectArea:null,
           observatories:null,
           findObservatoriesListener:null,
@@ -47,11 +47,13 @@ export default {
   },
   methods:{
 	  resize(){
-	      var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight; 
-	      this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
-	      this.map._container.style.height = this.height +"px";
-	      this.$el.querySelector("#formatermap").style.height = Math.round(this.height) + "px";
-	      this.map.invalidateSize()
+	      var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight;
+	      console.log( hw);
+// 	      this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
+// 	      this.map._container.style.height = this.height +"px";
+// 	      this.$el.querySelector("#formatermap").style.height = Math.round(this.height) + "px";
+//this.map.invalidateSize()
+	      ftMap.resize(hw);
 	  },
 	  handleReset(){
 		  if( this.observatories){
@@ -61,62 +63,63 @@ export default {
 	  },
 	
 	  displayResults( event ){
-		  this.handleReset();
+		  ftMap.displayResults(event);
+// 		  this.handleReset();
 		  
-          var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'blue'};
-          var iconMarkerIntermagnet= new L.AwesomeMarkers.icon( iconOptions);
-          var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'orange'};
-          var iconMarkerBCMT= new L.AwesomeMarkers.icon( iconOptions);
-          var lang = this.lang;
-          var query = event.detail.query;
+//           var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'blue'};
+//           var iconMarkerIntermagnet= new L.AwesomeMarkers.icon( iconOptions);
+//           var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'orange'};
+//           var iconMarkerBCMT= new L.AwesomeMarkers.icon( iconOptions);
+//           var lang = this.lang;
+//           var query = event.detail.query;
           
-          this.observatories = L.geoJSON(event.detail.result, {
-              /*style: function (feature) {
-                  return feature.properties && feature.properties.style;
-              },
+//           this.observatories = L.geoJSON(event.detail.result, {
+//               /*style: function (feature) {
+//                   return feature.properties && feature.properties.style;
+//               },
 
-              onEachFeature: onEachFeature,*/
+//               onEachFeature: onEachFeature,*/
 
-              pointToLayer: function (feature, latlng) {
-                 // console.log(feature.properties.title[lang]);
-                  if( feature.properties.organism == "INTERMAGNET"){
-                	  var iconMarker = iconMarkerIntermagnet;
-                	  var color = "blue";
-                  }else{
-                	  var iconMarker = iconMarkerBCMT;
-                	  var color = "orange";
-                  }
-                  var marker = new L.Marker(
-                          latlng,
-                          {icon: iconMarker,
-                           name: feature.properties.identifiers.customId,
-                           title: feature.properties.name[lang],
-                           properties: feature.properties,
-                           color: color,
-                           query: query
-                          });
-                  //marker.createPopup(lang);
-                  //search data??
-                 // var url = "http://formater.art-sciences.fr";
-                  //var url = "http://api.formater"
-                 // 
-                  marker.on('click', function(e ){
-                	  console.log(query);
-                	  this.createPopup(lang);
-                	 // if(_selected == this){
-                		//  var event = new CustomEvent("unselectLayer", { detail:{}});
-                    	//  document.dispatchEvent(event);
-                	 // }
-                	//  _selected = this.toggle( _selected );
-                	 // console.log( event);
-                      //console.log( this.options.name);
-                  })
-                  return marker;
-              }
-          });
-          this.observatories.addTo( this.map);
-         // this.observatoriesRequest();
-          //event observatories for map
+//               pointToLayer: function (feature, latlng) {
+//                  // console.log(feature.properties.title[lang]);
+//                   if( feature.properties.organism == "INTERMAGNET"){
+//                 	  var iconMarker = iconMarkerIntermagnet;
+//                 	  var color = "blue";
+//                   }else{
+//                 	  var iconMarker = iconMarkerBCMT;
+//                 	  var color = "orange";
+//                   }
+//                   var marker = new L.Marker(
+//                           latlng,
+//                           {icon: iconMarker,
+//                            name: feature.properties.identifiers.customId,
+//                            title: feature.properties.name[lang],
+//                            properties: feature.properties,
+//                            color: color,
+//                            query: query
+//                           });
+//                   //marker.createPopup(lang);
+//                   //search data??
+//                  // var url = "http://formater.art-sciences.fr";
+//                   //var url = "http://api.formater"
+//                  // 
+//                   marker.on('click', function(e ){
+//                 	  console.log(query);
+//                 	  this.createPopup(lang);
+//                 	 // if(_selected == this){
+//                 		//  var event = new CustomEvent("unselectLayer", { detail:{}});
+//                     	//  document.dispatchEvent(event);
+//                 	 // }
+//                 	//  _selected = this.toggle( _selected );
+//                 	 // console.log( event);
+//                       //console.log( this.options.name);
+//                   })
+//                   return marker;
+//               }
+//           });
+//           this.observatories.addTo( this.map);
+//          // this.observatoriesRequest();
+//           //event observatories for map
          
       }
   },
@@ -130,25 +133,28 @@ export default {
   }, 
  
   mounted(){
-
+	  var node = this.$el.querySelector(".formater-map > div");
+	  console.log( node);
+      ftMap.initialize( node, this.lang);
+      this.resize();
 	  
-      this.map = L.map(this.$el.querySelector(".formater-map > div"), {selectArea:true}).setView([51.505, -0.09], 3);
-	  L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
-	      attribution: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
-	      maxZoom: 18,
-	      minZoom:1
-	  }).addTo( this.map );
-	  this.map.on( "resize", this.resize);
-	  this.resize();
+//       this.map = L.map(this.$el.querySelector(".formater-map > div"), {selectArea:true}).setView([51.505, -0.09], 3);
+// 	  L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+// 	      attribution: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
+// 	      maxZoom: 18,
+// 	      minZoom:1
+// 	  }).addTo( this.map );
+// 	  this.map.on( "resize", this.resize);
+// 	  this.resize();
 	  
-	  this.selectArea = L.selectArea(
-			  {
-				  map:this.map, 
-				  options:{
-					  width:400, 
-					  height:300, 
-					  color:"#DD9946"
-				  }});
+// 	  this.selectArea = L.selectArea(
+// 			  {
+// 				  map:this.map, 
+// 				  options:{
+// 					  width:400, 
+// 					  height:300, 
+// 					  color:"#DD9946"
+// 				  }});
 	  //var observatoriesMarker = new L.MarkersCollection( "observatories", this.map , {iconMarker:{icon:"binoculars"}, iconSelected:{icon:'binoculars'}});
 	  //this.getObservatories();
   },
