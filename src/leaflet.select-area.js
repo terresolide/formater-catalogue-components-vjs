@@ -10,7 +10,7 @@
  * @param {object} bbox ie {north, east, south, west}
  * @return bbox| false
  */
-L.isValidBbox = function( bbox){
+/*L.isValidBbox = function( bbox){
 	if( bbox.north && bbox.east && bbox.west && bbox.south){
 		bbox.north = bbox.north%90;
 		bbox.south = bbox.south%90;
@@ -34,7 +34,7 @@ L.bbox2bounds = function( bbox ){
 	var ne = [ bbox.north, bbox.east];
 	var sw = [ bbox.south, bbox.west];
 	return [ne, sw];
-}
+}*/
 /**
  * Select area layer
  * @class
@@ -156,6 +156,7 @@ L.SelectArea =   L.Evented.extend({
 	    document.addEventListener('selectAreaDrawEnd', this._areaSelectDrawEndListener);
 	},
 	_enableSelectArea: function(e){
+		console.log("draw");
 		this._showMarkers( e );
 	},
 	_disableSelectArea: function(e){
@@ -276,3 +277,5 @@ L.SelectArea =   L.Evented.extend({
 L.selectArea = function(options) {
     return new L.SelectArea(options);
 }
+
+module.exports = L.SelectArea;

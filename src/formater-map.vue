@@ -41,6 +41,7 @@ export default {
           observatories:null,
           findObservatoriesListener:null,
           closeSheetListener: null,
+          resizeListener:null,
           height: 600,
           selected: null
       }
@@ -49,11 +50,11 @@ export default {
 	  resize(){
 	      var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight;
 	      console.log( hw);
-// 	      this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
+      this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
 // 	      this.map._container.style.height = this.height +"px";
-// 	      this.$el.querySelector("#formatermap").style.height = Math.round(this.height) + "px";
+	      this.$el.querySelector("#formatermap").style.height = Math.round(this.height) + "px";
 //this.map.invalidateSize()
-	      ftMap.resize(hw);
+	      ftMap.resize( this.height);
 	  },
 	  handleReset(){
 		  if( this.observatories){
@@ -129,6 +130,8 @@ export default {
       document.addEventListener('findObservatoriesEvent', this.findObservatoriesListener);
       this.aerisResetListener = this.handleReset.bind(this) 
       document.addEventListener('selectAreaDrawEnd', this.handleReset);
+  	this.resizeListener = this.resize.bind(this);
+	window.addEventListener("resize", this.resizeListener);
          
   }, 
  
@@ -163,6 +166,8 @@ export default {
       this.findObservatoriesListener = null;
       document.removeEventListener('selectAreaDrawEnd', this.aeraResetListener);
       this.areaResetListener = null;
+      window.removeEventListener("resize", this.resizeListener);
+      this.resizeListener = null;
   }
 
 }

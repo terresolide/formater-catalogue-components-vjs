@@ -93,7 +93,7 @@
 			
 			</main>
 		</div>
-		<div id="container" style="display:none;">
+		<div id="container" v-show="hasGraph">
 		  <h4 :style="styleTitle"><i class="fa fa-line-chart"></i>
 		  <span v-html="chartTitle"></span>
 		  </h4>
@@ -322,6 +322,8 @@
 	</span>
 </template>
 <script>
+
+
 Array.prototype.existType = function( type){
 	var i=0;
     find = false;
@@ -333,6 +335,7 @@ Array.prototype.existType = function( type){
     }
     return find;
 }
+var ftChart = require("./formater-chart.js");
 export default {
 	props: {
 		 lang: {
@@ -347,6 +350,7 @@ export default {
 	watch: {
 		maxheight(newVal, oldVal){
 			//console.log("watch");
+			console.log( "height" + newVal);
 			if(this.$el && this.$el.querySelector ){
 				var header = this.$el.querySelector(".formater-sheet-header").offsetHeight;
 				this.$el.querySelector(".formater-sheet-main").style.maxHeight = newVal +"px";
@@ -391,7 +395,8 @@ export default {
 			data:null,
 			searched:false,
 			charts:null,
-			code:null
+			code:null,
+			hasGraph: false
 			
 		}
 	},
@@ -406,7 +411,7 @@ export default {
        	  document.dispatchEvent(event);
 	     },
 	     hide(){
-	    	 this.destroyCharts();
+	    	 ftChart.destroyCharts();
 	    	 this.$el.querySelector("#container").style.display = "none";
 	    	 this.hidden = true;
 	    	 this.code ="";
@@ -419,8 +424,10 @@ export default {
 	    	   this.title = observation.title[this.lang];
                this.data = observation;
                
-               if( observation.data)
-               this.createChart(observation.data);
+               if( observation.data){
+            	   var container = this.$el.querySelector("#chartContainer");
+               		this.hasGraph = ftChart.createChart(container, this.code,observation.data);
+               }
                //}
                this.hidden = false;
 	     },
@@ -441,211 +448,223 @@ export default {
 	     handleCreateChart(event){
 	    	 if(this.$el.querySelector && this.$el.querySelector("#chartContainer")){
                  return;
+             }else{
+            	 var parentContainer = this.$el.querySelector("#container");
+            	 
+    	    	 var container = this.$el.querySelector("#chartContainer");
+    	    	 if(!container){
+    		    	 var container = document.createElement("div");
+    		    	 parentContainer.appendChild( container );
+    		    	 container.setAttribute("id", "chartContainer");	
+    	    	 }
              }
 	    	 var data0 = event.detail.obs.data;
-	    	 
-	    	 this.createChart( data0);
-	     },
-	     destroyCharts(){
-	    	//console.log( Highcharts.charts); 
-	    	 for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
-	    		 if( typeof Highcharts.charts[i] != "undefined")
-	    		 Highcharts.charts[i].destroy();
-	    	 }
-	    	
-	    	 //remove container
-	    	 var el = this.$el.querySelector("#chartContainer");
-	    	 if(el)  el.parentNode.removeChild( el );
-	     },
-	     createChartTitle( dataType, begin, end){
-	    	 
-	    	 var chartTitle = this.$i18n.t("data") +" &quot;"+dataType + "&quot; "+ this.$i18n.t("from")+" "+ moment(begin, "YYYY-MM-DD").format("ll");
-	            if(end != begin){
-	                chartTitle += " " + this.$i18n.t("to") + " "+ moment(end, "YYYY-MM-DD").format("ll");
-	            }
-	    	 this.chartTitle = chartTitle;
-	     },
-	     intervalType( intervalType, dataType){
-	    	 if(dataType == "variation"){
-	    		 return "%e. %b %H:%M";
-	    	 }
-	    	 switch(intervalType){
-	    	 case "Filtered 1-minute":
-	    		 return "%e. %b %H:%M";
-	    	 case "1-day (01-24)":
-	    	 case "1-day (00-23)":
-	    		 return '%e. %b';
-	    	 case "1-hour (00-59)":
-	    		 return '%H:%M';
-	    	 case "1-month (01-31)":
-	    		 return '%e. %b %Y';
-	    	 case "1-year":
-	    		 return '%b %Y';
-	    	  default:
-	    		  return '%e. %b %Y';
-	    	 }
-	     },
-	     createChart(data0){
-	    	 //console.log(data0)
-	    	 //console.log("createChart");
-	    	 var parentContainer = this.$el.querySelector("#container");
-	    	 var container = this.$el.querySelector("#chartContainer");
-	    	 if(!container){
-		    	 var container = document.createElement("div");
-		    	 parentContainer.appendChild( container );
-		    	 container.setAttribute("id", "chartContainer");	    	 
-		    	 container.onmousemove = handle_global;
-		    	 container.ontouchstart = handle_global;
-		    	 container.ontouchmove = handle_global;
-	    	 }else{
-	    		 return;
-	    	 }
-	    	   // function createChart( data0) { 
-	    	       // console.log(data0);
-	    	var code = data0.meta.get("IAGA Code");
-	    	console.log( this.code);
-	    	if(this.code != code || data0.collection.length == 0 ){
-	    		return;
+	    	 this.hasGraph = ftChart.createChart( container, this.code, data0);
+	    	if( this.hasGraph){
+	    		this.chartTitle = ftChart.createChartTitle( );
 	    	}
-	    	var dataType = data0.meta.get("Data Type");
-	        var interval = this.intervalType(data0.meta.get("Data Interval Type"), dataType);
+	    	 
+	     },
+// 	     destroyCharts(){
+// 	    	//console.log( Highcharts.charts); 
+// 	    	 for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
+// 	    		 if( typeof Highcharts.charts[i] != "undefined")
+// 	    		 Highcharts.charts[i].destroy();
+// 	    	 }
+	    	
+// 	    	 //remove container
+// 	    	 var el = this.$el.querySelector("#chartContainer");
+// 	    	 if(el)  el.parentNode.removeChild( el );
+// 	     },
+// 	     createChartTitle( dataType, begin, end){
+	    	 
+// 	    	 var chartTitle = this.$i18n.t("data") +" &quot;"+dataType + "&quot; "+ this.$i18n.t("from")+" "+ moment(begin, "YYYY-MM-DD").format("ll");
+// 	            if(end != begin){
+// 	                chartTitle += " " + this.$i18n.t("to") + " "+ moment(end, "YYYY-MM-DD").format("ll");
+// 	            }
+// 	    	 this.chartTitle = chartTitle;
+// 	     },
+// 	     intervalType( intervalType, dataType){
+// 	    	 if(dataType == "variation"){
+// 	    		 return "%e. %b %H:%M";
+// 	    	 }
+// 	    	 switch(intervalType){
+// 	    	 case "Filtered 1-minute":
+// 	    		 return "%e. %b %H:%M";
+// 	    	 case "1-day (01-24)":
+// 	    	 case "1-day (00-23)":
+// 	    		 return '%e. %b';
+// 	    	 case "1-hour (00-59)":
+// 	    		 return '%H:%M';
+// 	    	 case "1-month (01-31)":
+// 	    		 return '%e. %b %Y';
+// 	    	 case "1-year":
+// 	    		 return '%b %Y';
+// 	    	  default:
+// 	    		  return '%e. %b %Y';
+// 	    	 }
+// 	     },
+// 	     createChart(data0){
+// 	    	 //console.log(data0)
+// 	    	 //console.log("createChart");
+// 	    	 var parentContainer = this.$el.querySelector("#container");
+// 	    	 var container = this.$el.querySelector("#chartContainer");
+// 	    	 if(!container){
+// 		    	 var container = document.createElement("div");
+// 		    	 parentContainer.appendChild( container );
+// 		    	 container.setAttribute("id", "chartContainer");	    	 
+// 		    	 container.onmousemove = handle_global;
+// 		    	 container.ontouchstart = handle_global;
+// 		    	 container.ontouchmove = handle_global;
+// 	    	 }else{
+// 	    		 return;
+// 	    	 }
+// 	    	   // function createChart( data0) { 
+// 	    	       // console.log(data0);
+// 	    	var code = data0.meta.get("IAGA Code");
+// 	    	console.log( this.code);
+// 	    	if(this.code != code || data0.collection.length == 0 ){
+// 	    		return;
+// 	    	}
+// 	    	var dataType = data0.meta.get("Data Type");
+// 	        var interval = this.intervalType(data0.meta.get("Data Interval Type"), dataType);
 	       
-            this.createChartTitle( dataType, data0.collection[0].DATE, data0.collection[ data0.collection.length-1].DATE);
+//             this.createChartTitle( dataType, data0.collection[0].DATE, data0.collection[ data0.collection.length-1].DATE);
             
 	    	       
-	    	        var data = new Array();
-	    	        var coord = new Array();
-	    	        ["D", "H", "X", "Y",  "Z", "F"].forEach( function(index){
-	    	        	if( data0.collection[0][index]){
-	    	        		coord.push(index);
-	    	        		data[index] = new Array();
-	    	        	}
-	    	        });
-	    	       /* if( data0.collection[0].D){
-	    	        	var dhzf = true;
-		    	        data["D"] = new Array();
-		    	        data["H"] = new Array();
-		    	        var coord = ["H", "D",  "Z", "F"];
+// 	    	        var data = new Array();
+// 	    	        var coord = new Array();
+// 	    	        ["D", "H", "X", "Y",  "Z", "F"].forEach( function(index){
+// 	    	        	if( data0.collection[0][index]){
+// 	    	        		coord.push(index);
+// 	    	        		data[index] = new Array();
+// 	    	        	}
+// 	    	        });
+// 	    	       /* if( data0.collection[0].D){
+// 	    	        	var dhzf = true;
+// 		    	        data["D"] = new Array();
+// 		    	        data["H"] = new Array();
+// 		    	        var coord = ["H", "D",  "Z", "F"];
 		    	        
-	    	        }else{
-	    	        	var dhzf = false;
-	    	        	data["X"] = new Array();
-                        data["Y"] = new Array();
-                        var coord = ["X", "Y",  "Z", "F"]
-	    	        }
-	    	        data["Z"] = new Array();
-                    data["F"]= new Array();*/
-	    	        //traitement des collections
+// 	    	        }else{
+// 	    	        	var dhzf = false;
+// 	    	        	data["X"] = new Array();
+//                         data["Y"] = new Array();
+//                         var coord = ["X", "Y",  "Z", "F"]
+// 	    	        }
+// 	    	        data["Z"] = new Array();
+//                     data["F"]= new Array();*/
+// 	    	        //traitement des collections
 	    	
-	    	        data0.collection.forEach( function( item){
-	    	            var date = Date.parse(item.DATE+" "+item.TIME);
-	    	            coord.forEach( function(index){
-	    	            	data[index].push([date, item[index]]);
-	    	            });
-/*
-	                        data["D"].push( [date , item.D]);
-	                        data["H"].push( [date , item.H]);
-	    	            }else{
-	    	            	data["X"].push( [date , item.X]);
-	    	                data["Y"].push( [date , item.Y]);
-                        }
-	    	            data["Z"].push( [date , item.Z]);
-	    	            data["F"].push([date , item.F]);*/
-	    	        });
+// 	    	        data0.collection.forEach( function( item){
+// 	    	            var date = Date.parse(item.DATE+" "+item.TIME);
+// 	    	            coord.forEach( function(index){
+// 	    	            	data[index].push([date, item[index]]);
+// 	    	            });
+// /*
+// 	                        data["D"].push( [date , item.D]);
+// 	                        data["H"].push( [date , item.H]);
+// 	    	            }else{
+// 	    	            	data["X"].push( [date , item.X]);
+// 	    	                data["Y"].push( [date , item.Y]);
+//                         }
+// 	    	            data["Z"].push( [date , item.Z]);
+// 	    	            data["F"].push([date , item.F]);*/
+// 	    	        });
 	
-	    	        coord.forEach( function(value, key){
-	    	           // console.log(value);
-	    	        var divchart = document.createElement("div");
-	    	        divchart.classname = "chart";
-	    	        container.appendChild(divchart);
-	    	        parentContainer.style.display= 'block';
-	    	        var mychart = Highcharts.chart(divchart, {
-	    	            /*chart: {
-	    	                type: 'linear'
-	    	            },*/
-	    	            chart:{
-	    	            height:130,
-	    	            marginBottom: (value==="F")? 45 : 15
-	    	            },
-	    	            title: {
-	    	                text: '<div style="background:#fff;padding:5px;font-size:10px"><div style="background:'+Highcharts.getOptions().colors[key]+';width:10px;height:10px;display:inline-block;margin:0 3px;"></div>'+value+'</div>',
-	    	                align: 'right',
-	    	                margin: 10,
-	    	                useHTML: true,
-	    	              //  x: 70,
-	    	                floating:true
-	    	            },
-	    	            xAxis: {
-	    	                type: 'datetime',
-	    	                lineColor:'#666',
-	    	                tickLength: 5,
-	    	                dateTimeLabelFormats: { // don't display the dummy year
-	    	                   millisecond: '%H:%M:%S.%L',
-	    	                    second: '%H:%M:%S',
-	    	                    minute: '%H:%M',
-	    	                    hour: '%H:%M',
-	    	                    day: '%e %b %Y',
-	    	                    week: '%e. %b',
-	    	                    month: '%b %y',
-	    	                    year: '%Y'
-	    	                },
-	    	                events: {
-	    	                    setExtremes: syncExtremes
-	    	                },
-	    	                crosshair: true,
-	    	                labels:{
-	    	                    enabled:value==="F"
-	    	                }
-	    	            },
-	    	            yAxis: [{
-	    	                title: {
-	    	                    text: "",
-	    	                    margin:10,
-	    	                    lineColor:'#666'
-	    	                },
-	    	                labels:{
-	    	                    style:{
-	    	                        color:'#333',
-	    	                        fontSize:'10px'
-	    	                    }
-	    	                }}
-	    	                /*{title: {
-	    	                    text:'F'
-	    	                }},
-	    	                {title:{
-	    	                    text: 'H',
-	    	                }},
-	    	                {title:{
-	    	                    text: 'Z',
-	    	                },
-	    	                opposite:true}*/
-	    	            ],
-	    	            tooltip: {
-	    	                headerFormat: '<b>{series.name}</b><br>',
-	    	               // pointFormat: '{point.x:%e. %b %Y}: {point.y:,.0f}'
-	    	                pointFormat: '{point.x:'+interval+'} | {point.y:,.0f}'
-	    	            },
-	    	            series: [{
-	    	                name: value,
-	    	                showInLegend:false,
-	    	                color: Highcharts.getOptions().colors[key],
-	    	                data: data[value] //[1, 0, 4]
-	    	            }]/*,{
-	    	                 name: "1",
-	    	                 data: yaxis1 
-	    	            },{
-	    	                 name: "2",
-	    	                 data: yaxis2 
-	    	            },{
-	    	                 name: "3",
-	    	                 data: yaxis3 
-	    	            }]*/
-	    	        });
-	    	    });
-	    	       // Highcharts.charts.push( mychart);
-	    	  //  }
+// 	    	        coord.forEach( function(value, key){
+// 	    	           // console.log(value);
+// 	    	        var divchart = document.createElement("div");
+// 	    	        divchart.classname = "chart";
+// 	    	        container.appendChild(divchart);
+// 	    	        parentContainer.style.display= 'block';
+// 	    	        var mychart = Highcharts.chart(divchart, {
+// 	    	            /*chart: {
+// 	    	                type: 'linear'
+// 	    	            },*/
+// 	    	            chart:{
+// 	    	            height:130,
+// 	    	            marginBottom: (value==="F")? 45 : 15
+// 	    	            },
+// 	    	            title: {
+// 	    	                text: '<div style="background:#fff;padding:5px;font-size:10px"><div style="background:'+Highcharts.getOptions().colors[key]+';width:10px;height:10px;display:inline-block;margin:0 3px;"></div>'+value+'</div>',
+// 	    	                align: 'right',
+// 	    	                margin: 10,
+// 	    	                useHTML: true,
+// 	    	              //  x: 70,
+// 	    	                floating:true
+// 	    	            },
+// 	    	            xAxis: {
+// 	    	                type: 'datetime',
+// 	    	                lineColor:'#666',
+// 	    	                tickLength: 5,
+// 	    	                dateTimeLabelFormats: { // don't display the dummy year
+// 	    	                   millisecond: '%H:%M:%S.%L',
+// 	    	                    second: '%H:%M:%S',
+// 	    	                    minute: '%H:%M',
+// 	    	                    hour: '%H:%M',
+// 	    	                    day: '%e %b %Y',
+// 	    	                    week: '%e. %b',
+// 	    	                    month: '%b %y',
+// 	    	                    year: '%Y'
+// 	    	                },
+// 	    	                events: {
+// 	    	                    setExtremes: syncExtremes
+// 	    	                },
+// 	    	                crosshair: true,
+// 	    	                labels:{
+// 	    	                    enabled:value==="F"
+// 	    	                }
+// 	    	            },
+// 	    	            yAxis: [{
+// 	    	                title: {
+// 	    	                    text: "",
+// 	    	                    margin:10,
+// 	    	                    lineColor:'#666'
+// 	    	                },
+// 	    	                labels:{
+// 	    	                    style:{
+// 	    	                        color:'#333',
+// 	    	                        fontSize:'10px'
+// 	    	                    }
+// 	    	                }}
+// 	    	                /*{title: {
+// 	    	                    text:'F'
+// 	    	                }},
+// 	    	                {title:{
+// 	    	                    text: 'H',
+// 	    	                }},
+// 	    	                {title:{
+// 	    	                    text: 'Z',
+// 	    	                },
+// 	    	                opposite:true}*/
+// 	    	            ],
+// 	    	            tooltip: {
+// 	    	                headerFormat: '<b>{series.name}</b><br>',
+// 	    	               // pointFormat: '{point.x:%e. %b %Y}: {point.y:,.0f}'
+// 	    	                pointFormat: '{point.x:'+interval+'} | {point.y:,.0f}'
+// 	    	            },
+// 	    	            series: [{
+// 	    	                name: value,
+// 	    	                showInLegend:false,
+// 	    	                color: Highcharts.getOptions().colors[key],
+// 	    	                data: data[value] //[1, 0, 4]
+// 	    	            }]/*,{
+// 	    	                 name: "1",
+// 	    	                 data: yaxis1 
+// 	    	            },{
+// 	    	                 name: "2",
+// 	    	                 data: yaxis2 
+// 	    	            },{
+// 	    	                 name: "3",
+// 	    	                 data: yaxis3 
+// 	    	            }]*/
+// 	    	        });
+// 	    	    });
+// 	    	       // Highcharts.charts.push( mychart);
+// 	    	  //  }
 	    	 
-	     },
+// 	     },
 	     displayInfo( event){
 	    	 console.log( event);
 	    	 var options = event.detail.marker.options;
@@ -690,6 +709,7 @@ export default {
         document.addEventListener('findData', this.findDataListener);
 		this.unselectLayerListener = this.hide.bind(this);
 		document.addEventListener('unselectInput', this.unselectLayerListener);
+	
 	},
 	mounted(){
 		   
