@@ -48,6 +48,8 @@ function FtMap(){
 						  height:300, 
 						  color:"#DD9946"
 					  }});
+		 this.layerControl = L.control.groupedLayers();
+		 this.layerControl.addTo( this.map);
 
 	}
 	this.resize = function( ){
@@ -97,8 +99,9 @@ function FtMap(){
               }
           });
           this.observatories.addTo( this.map);
-         
+          this.layerControl.addOverlay( this.observatories, "Observatoires géomagnétismes");
       }
+	
 	L.Marker.prototype.close = function( ){
 		var iconOptions = this.options.icon.options;
 		

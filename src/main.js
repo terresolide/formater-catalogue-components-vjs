@@ -63,6 +63,7 @@ ljs.addAliases({
 	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
 	    //Marker
 	    //-----------
+	    //'src/test.js',
 	    //'src/leaflet.marker.js',
 	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.marker.js',
 	   // 'https://cdn.rawgit.com/terresolide/formater-catalogue-components-vjs/0.0.6/src/leaflet.marker.js' ,

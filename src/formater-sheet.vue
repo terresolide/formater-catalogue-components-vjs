@@ -93,10 +93,11 @@
 			
 			</main>
 		</div>
-		<div id="container" v-show="hasGraph">
+		<div  class="formater-sheet-data-metablock" v-show="hasGraph">
 		  <h4 :style="styleTitle"><i class="fa fa-line-chart"></i>
 		  <span v-html="chartTitle"></span>
 		  </h4>
+		  <div id="ftChartContainer"></div>
 		</div>
 		
 		
@@ -411,8 +412,9 @@ export default {
        	  document.dispatchEvent(event);
 	     },
 	     hide(){
-	    	 ftChart.destroyCharts();
-	    	 this.$el.querySelector("#container").style.display = "none";
+	    	 console.log( "hide");
+	    	 this.hasGraph = ftChart.destroyCharts();
+	    	// this.$el.querySelector("#container").style.display = "none";
 	    	 this.hidden = true;
 	    	 this.code ="";
 	     },
@@ -425,7 +427,8 @@ export default {
                this.data = observation;
                
                if( observation.data){
-            	   var container = this.$el.querySelector("#chartContainer");
+            	   var container = this.$el.querySelector("#ftChartContainer");
+            	  
                		this.hasGraph = ftChart.createChart(container, this.code,observation.data);
                }
                //}
@@ -446,18 +449,19 @@ export default {
 	    			 
 	     },
 	     handleCreateChart(event){
-	    	 if(this.$el.querySelector && this.$el.querySelector("#chartContainer")){
+	    	 if(!this.$el.querySelector ){//}&& this.$el.querySelector("#ftChartContainer")){
                  return;
-             }else{
-            	 var parentContainer = this.$el.querySelector("#container");
-            	 
-    	    	 var container = this.$el.querySelector("#chartContainer");
-    	    	 if(!container){
-    		    	 var container = document.createElement("div");
-    		    	 parentContainer.appendChild( container );
-    		    	 container.setAttribute("id", "chartContainer");	
-    	    	 }
              }
+	    	 
+            	 var container= this.$el.querySelector("#ftChartContainer");
+            	 
+//     	    	 var container = this.$el.querySelector("#chartContainer");
+//     	    	 if(!container){
+//     		    	 var container = document.createElement("div");
+//     		    	 parentContainer.appendChild( container );
+//     		    	 container.setAttribute("id", "chartContainer");	
+//     	    	 }
+             console.log( container);
 	    	 var data0 = event.detail.obs.data;
 	    	 this.hasGraph = ftChart.createChart( container, this.code, data0);
 	    	if( this.hasGraph){
@@ -709,6 +713,7 @@ export default {
         document.addEventListener('findData', this.findDataListener);
 		this.unselectLayerListener = this.hide.bind(this);
 		document.addEventListener('unselectInput', this.unselectLayerListener);
+		
 	
 	},
 	mounted(){
@@ -801,14 +806,7 @@ export default {
     color:#fff;
     background-color:#D53E2A;
 }
-.formater-sheet-container #container{
-    max-width:595px;
-    margin:0 0 5px 5px;
-    padding:3px;
-    background:white;
-    box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
 
-}
 .formater-layout .formater-sheet-container main  h4{
     color:#000;
 }

@@ -19,11 +19,12 @@ Highcharts.Point.prototype.highlight = function (event) {
 };
 function FtChart(){
 
-	
+	/** public **/
 	this.container = null;
 	this.code = null;
 	this.data = null;
 	
+	/** private **/
 	var _mousemoveListener = null;
 	var _touchstartListener = null;
 	var _touchmoveListener = null;
@@ -73,18 +74,25 @@ function FtChart(){
     		  return '%e. %b %Y';
     	 }
      }
-	 function _addListeners(){
-		
-		 _mousemoveListener = this.container.addEventListener("mousemove", _handle_global);
-		 _touchstartListener = this.container.addEventListener("touchstart", _handle_global);
-		 _touchmoveListener = this.container.addEventListener("touchmove", _handle_global);
+	 function _addListeners( container){
+		if(!container ) return;
+		//this.container.onmousemove = _handle_global;
+		_mousemoveListener = container.addEventListener("mousemove", _handle_global);
+		_touchstartListener = container.addEventListener("touchstart", _handle_global);
+		 _touchmoveListener = container.addEventListener("touchmove", _handle_global);
 	 }
 	 
 	 function _removeListeners(){
-		 
+		 if(! this.container) return;
+		 this.container.removeEventListener("mousemove", _handle_global);
+		 _mousemoveListener = null;
+		 this.container.removeEventListener("touchstart", _handle_global);
+		 _touchstartListener = null;
+		 this.container.removeEventListener("touchmove", _handle_global);
+		 _touchmoveListener = null;
 	 }
 	 function _handle_global(e){
-		  
+		 console.log(e);
 	     var chart,
 	        point,
 	        i,
@@ -98,7 +106,7 @@ function FtChart(){
 	    		
 	        chart = Highcharts.charts[i];
 	        event = chart.pointer.normalize(e); // Find coordinates within the chart
-
+	       
 	        point = chart.series[0].searchPoint(event, true); // Get the hovered point
 
 	        if (point) {
@@ -109,21 +117,23 @@ function FtChart(){
 	}
 	 
 	
-	 function _syncExtremes(e) {
-		    var thisChart = this.chart;
-
-		    if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
-		        Highcharts.each(Highcharts.charts, function (chart) {
-		        	//console.log(chart);
-		            if (chart !== thisChart) {
-		                if (chart.xAxis[0].setExtremes) { // It is null while updating
-		                    chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
-		                }
-		            }
-		        });
-		    }
-		}
- this.createChartTitle =  function( lang ){
+//	function _syncExtremes(e) {
+//		    return;
+//		    console.log(e);
+//		    var thisChart = this.chart;
+//		    
+//		    if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
+//		        Highcharts.each(Highcharts.charts, function (chart) {
+//		        	//console.log(chart);
+//		            if (chart !== thisChart) {
+//		                if (chart.xAxis[0].setExtremes) { // It is null while updating
+//		                    chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
+//		                }
+//		            }
+//		        });
+//		    }
+//		}
+	 this.createChartTitle =  function( lang ){
     	 
 		 var dataType = this.data.meta.get("Data Type");
 		 var interval = _intervalType( this.data.meta.get("Data Interval Type"), dataType);
@@ -137,35 +147,44 @@ function FtChart(){
 	    	 return chartTitle;
 	     }
 	 this.destroyCharts = function(){
-		    if(! this.container ) return;
-	    	//console.log( Highcharts.charts); 
-	    	 for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
+		  
+		    if(! this.container ) return false;
+		   // _removeListeners();
+	    	 for (var i = 0; i < Highcharts.charts.length; i++) {
 	    		 if( typeof Highcharts.charts[i] != "undefined")
 	    		 Highcharts.charts[i].destroy();
 	    	 }
 	    	
-	    	 //remove container
-	    	if( this.container && this.container.parentNode)
-	    	  this.container.parentNode.removeChild(this.container );
+	    	 //remove all in container
+	    	 while (this.container.firstChild) {
+	    		 console.log("ici");
+	    		    this.container.removeChild(this.container.firstChild);
+	    		}
+	    	
+	    	return true;
 	     },
      this.createChart= function(container, code, data0){
     	 this.code = code;
     	 this.data = data0;
+    	 
+
     	 var datacode = data0.meta.get("IAGA Code");
      	console.log( this.code);
      	if(this.code != datacode || data0.collection.length == 0 ){
      		return false;
      	}
-    	 	this.container = container;
-    	 	this.code = code;
+    	 	
     	 //console.log(data0)
     	 //console.log("createChart");
     	  if(! _mousemoveListener){ 	 
-	    	 _addListeners();
+    		  _addListeners(container);
+	    	
     	 }
     	   // function createChart( data0) { 
     	       // console.log(data0);
-    
+    	  this.container = container;
+  	 	console.log( container);
+  	 	this.code = code;
     	var dataType = data0.meta.get("Data Type");
         var interval = _intervalType(data0.meta.get("Data Interval Type"), dataType);
        
@@ -193,8 +212,8 @@ function FtChart(){
     	           // console.log(value);
     	        var divchart = document.createElement("div");
     	        divchart.classname = "chart";
-    	        this.container.appendChild(divchart);
-    	       
+    	        container.appendChild(divchart);
+    	        
     	        var mychart = Highcharts.chart(divchart, {
     	            /*chart: {
     	                type: 'linear'
@@ -225,9 +244,11 @@ function FtChart(){
     	                    month: '%b %y',
     	                    year: '%Y'
     	                },
-    	                events: {
-    	                    setExtremes: _syncExtremes
-    	                },
+//    	                events: {
+//    	                    setExtremes: function(e){
+//    	                    	console.log(e);
+//    	                    }
+//    	                },
     	                crosshair: true,
     	                labels:{
     	                    enabled:value==="F"

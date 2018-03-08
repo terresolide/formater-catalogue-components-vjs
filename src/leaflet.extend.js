@@ -56,6 +56,7 @@ L.bbox2bounds = function( bbox ){
 
 
 L.selectArea = require("./leaflet.select-area.js");
+L.Control.groupedLayers = require("./leaflet.layergroup.js");
 
 
 
