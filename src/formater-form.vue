@@ -35,7 +35,7 @@
 		</formater-search-box>
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
 	    <div class= "formater-buttons" >
-	    <input class="formater-search-button" type="button" :value="$t('search')" @click="search"/>
+	    <input class="formater-search-button" type="button" :value="$t('search')" @click="search" :disabled="searching"/>
 	    </div>
 	</div>
 	</div>
@@ -76,10 +76,14 @@ export default {
   data(){
       return {
            aerisThemeListener:null,
-           theme:null
+           theme:null,
+           searching:false
       }
   },
   methods: {
+	    reset(e){
+	    	
+	    },
       	
 		search(){
 		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
@@ -97,6 +101,7 @@ export default {
 			}
 		},
 		callApi(e){
+			  this.searching = true;
 			  var _this = this;
 			  var data = e.detail;
 
@@ -117,7 +122,7 @@ export default {
 		    
 		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , query:{ start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
-	
+			this.searching = false;
 		   
 		},
 		handleError(rep, data){
@@ -200,5 +205,8 @@ background:#f39b30;
 .formater-container input[type="button"]::first-letter{
 	text-transform: uppercase;
 }
-
+.formater-container .formater-buttons  input[type="button"].formater-search-button:disabled{
+    opacity:0.5;
+	cursor:not-allowed;
+}
 </style>

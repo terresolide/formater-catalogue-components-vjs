@@ -23,9 +23,11 @@ function FtMap(){
 	this.observatories = null;
 	
 	this.handleReset = function(){
+		  return;
 		  if( this.observatories){
-              this.observatories.remove();
-              
+             // this.observatories.remove();
+             this.layerControl.removeLayer( this.observatories);
+             this.observatories = null;
           }
 	  }
 	  
@@ -48,7 +50,7 @@ function FtMap(){
 						  height:300, 
 						  color:"#DD9946"
 					  }});
-		 this.layerControl = L.control.groupedLayers();
+	     this.layerControl = L.control.groupedLayers();
 		 this.layerControl.addTo( this.map);
 
 	}
@@ -98,8 +100,8 @@ function FtMap(){
                   return marker;
               }
           });
-          this.observatories.addTo( this.map);
-          this.layerControl.addOverlay( this.observatories, "Observatoires géomagnétismes");
+          //this.observatories.addTo( this.map);
+          this.layerControl.addOverlay( this.observatories, "Observatoires", "Géomagnétisme");
       }
 	
 	L.Marker.prototype.close = function( ){
