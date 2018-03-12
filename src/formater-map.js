@@ -49,9 +49,7 @@ function FtMap(){
 	
 	this.handleReset = function(){
 		
-		  console.log("reset");
 		  if( this.observatories){
-			  console.log("enleve observatoires du controle");
 			  if(this.layerControl)
 		             this.layerControl.removeLayer( this.observatories);
              // this.observatories.remove();
@@ -124,7 +122,7 @@ function FtMap(){
                   return marker;
               }
           }).on("add", function(){
-        	  console.log( "on add");
+       
         	 
         	 
           }).on( "remove", function(){
@@ -148,7 +146,6 @@ function FtMap(){
 			_selected_marker.close();
 			
 			}
-	        console.log( "toggle marker");
 			
 			this.setIcon( bcmt.selectedMarker );
 			_selected_marker = this;
@@ -159,7 +156,6 @@ function FtMap(){
 		if( this.popup){
 			return;
 		}
-		console.log( this.options.properties);
 		var _this = this;
 		var node = document.createElement("div");
 		var h4 = document.createElement("h4");
@@ -253,16 +249,14 @@ function FtMap(){
 				   obs.process.status = "ERROR";
 				   if( this.response.error = "FTP_FAILED"){
 					   //DISABLE THE URL FOR OTHER WHICH SAME SERVER
-					   console.log( obs.api.name);
+					  
 					   _disabledUrl.push( obs.api.name);
 				   }
 			   }else{
 				   obs.process.status = "DONE";
 				   obs.data = this.response;
 				   var links = obs.data.meta.get("FTP_DOWNLOAD_LINK");
-				   console.log("REPONSE");
-				   console.log( links);
-			    	 console.log( obs);
+				
 			    	 //DELETE OLD LINK FTP
 			    	 if( obs.links){
 			    		 var i = obs.links.length-1;

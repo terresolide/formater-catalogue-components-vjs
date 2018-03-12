@@ -24,7 +24,7 @@ function FtChart(){
 	this.container = null;
 	this.code = null;
 	this.data = null;
-	this.lang = "fr";
+	var _lang = "en";
 	
 	/** private **/
 	var _mousemoveListener = null;
@@ -46,11 +46,10 @@ function FtChart(){
 	}
 	
 	function _translate( name){
-		
 		if(!_translation[name]){
 			return name;
 		}else{
-			return _translation[name][ this.lang];
+			return _translation[name][_lang];
 		}
 		
 	}
@@ -134,7 +133,8 @@ function FtChart(){
 //		    }
 //		}
 	 this.init = function( lang){
-		 this.lang =lang;
+		 _lang =lang;
+	
 		 if(lang == "fr"){
 	           Highcharts.setOptions({
 	               lang: {

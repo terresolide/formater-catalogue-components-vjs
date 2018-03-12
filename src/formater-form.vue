@@ -119,8 +119,6 @@ export default {
 		},
 		handleSuccess(rep, data){
 		    
-		  
-		    console.log( "find");
 		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , id:Math.random(), query:{ start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
 		    var _searching = this.searching;

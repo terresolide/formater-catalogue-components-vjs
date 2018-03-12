@@ -2,6 +2,7 @@
  * select area layer using leaflet
  * @author epointal
  * @licence gnu
+ * @version 1.2
  * 
  */
 
@@ -10,31 +11,57 @@
  * @param {object} bbox ie {north, east, south, west}
  * @return bbox| false
  */
-/*L.isValidBbox = function( bbox){
+L.isValidBbox = function( bbox){
+
 	if( bbox.north && bbox.east && bbox.west && bbox.south){
-		bbox.north = bbox.north%90;
-		bbox.south = bbox.south%90;
-		bbox.east = bbox.east%180;
-		bbox.west = bbox.west%180;
+		
+		bbox.north = L.modLat(bbox.north);
+		bbox.south = L.modLat(bbox.south);
+		bbox.east = L.modLng(bbox.east);
+		bbox.west = L.modLng(bbox.west);
 		if(bbox.east < bbox.west){
-            bbox.west -=180;
+				bbox.east +=360;
+			
 		}
-		if( bbox.north < bbox.south){
-			bbox.south -=90;
-		}
+		
 		return bbox;
 	}else{
 		return false;
 	}
 }
-
+L.isValidBounds =  function( ne, sw ){
+	if( Math.abs( ne.lat - sw.lat)>=180 
+			|| Math.abs( ne.lng - sw.lng)>=360){
+		return false;
+	}else{
+		return true;
+	}
+}
+L.modLat = function( lat ){
+	lat = lat%180;
+	if( lat > 90 ){
+		lat -= 180;
+	}else if( lat < -90 ){
+		lat += 180;
+	}
+	return lat;
+}
+L.modLng = function( lng ){
+	lng = lng%360;
+	if( lng > 180 ){
+		lng -= 360;
+	}else if( lng < -180 ){
+		lng += 360;
+	}
+	return lng;
+}
 L.bbox2bounds = function( bbox ){
    bbox = L.isValidBbox (bbox);
 
 	var ne = [ bbox.north, bbox.east];
 	var sw = [ bbox.south, bbox.west];
 	return [ne, sw];
-}*/
+}
 /**
  * Select area layer
  * @class
@@ -86,12 +113,12 @@ L.SelectArea =   L.Evented.extend({
 		this.on("change", function(){
             var bounds = this.rectangle.getBounds();
             var bbox = {
-                    north: bounds.getNorthEast().lat%90,
-                    east: bounds.getNorthEast().lng%180,
-                    south: bounds.getSouthWest().lat%90,
-                    west: bounds.getSouthWest().lng%180
+                    north: L.modLat( bounds.getNorthEast().lat),
+                    east: L.modLng(bounds.getNorthEast().lng),
+                    south: L.modLat(bounds.getSouthWest().lat),
+                    west: L.modLng(bounds.getSouthWest().lng)
             }
-            
+        
             var event = new CustomEvent('selectAreaChange', {detail:bbox});
             document.dispatchEvent(event);
         });
@@ -105,9 +132,13 @@ L.SelectArea =   L.Evented.extend({
 		
 		var ne = bounds[0];
 		var sw = bounds[1];
+		if( !this.ne){
+			return;
+		}
 		this.ne.setLatLng(ne);
 		this.sw.setLatLng(sw);
 		this.rectangle.setBounds( bounds);
+		
 		
 	},
 	
@@ -156,11 +187,12 @@ L.SelectArea =   L.Evented.extend({
 	    document.addEventListener('selectAreaDrawEnd', this._areaSelectDrawEndListener);
 	},
 	_enableSelectArea: function(e){
-		console.log("draw");
 		this._showMarkers( e );
 	},
 	_disableSelectArea: function(e){
 		this._hideMarkers(e );
+		if(this.rectangle)
+		this.map.fitBounds( this.rectangle.getBounds());
 	},
 	_showMarkers: function(e){
 		
@@ -177,10 +209,8 @@ L.SelectArea =   L.Evented.extend({
 		case "hidden":
 			this.rectangle.addTo( this.map );
 		case "hideMarkers":
-			if(this.ne){
-				this.ne.addTo( this.map );
-				this.sw.addTo( this.map );
-			}
+			this.ne.addTo( this.map );
+			this.sw.addTo( this.map );
 			break;
 		}
 		this._mode = "show";
@@ -189,10 +219,8 @@ L.SelectArea =   L.Evented.extend({
 	_hideMarkers: function(evt){
 		
 		if(this._mode == "show"){
-			if( this.ne){
-				this.ne.remove();
-				this.sw.remove();
-			}
+			this.ne.remove();
+			this.sw.remove();
 			//if dragging marker
 			this.map.fire("click");
 			this._mode = "hideMarkers";
@@ -202,6 +230,7 @@ L.SelectArea =   L.Evented.extend({
 		this.setBounds(bounds);
 		
 		if( !evt.detail.north ){
+			if( this.rectangle)
 			this.rectangle.remove();
 			this._mode = "hidden";
 		}
@@ -253,24 +282,29 @@ L.SelectArea =   L.Evented.extend({
 		    });
 		});
 	},
+
 	_initEventsOnMarkers: function(){
 		var _ne = this.ne;
 		var _sw = this.sw;
 		var _area = this.rectangle;
 		var _self = this;
 		function dragNE(e){
-			_self.ne.setLatLng(e.latlng);   
-			_self.rectangle.setBounds([
-				_self.ne.getLatLng(),
-				_self.sw.getLatLng()]);
-			_self.fire("change");
+			if( L.isValidBounds( e.latlng, _sw.getLatLng())){
+				_self.ne.setLatLng(e.latlng);   
+				_self.rectangle.setBounds([
+					_self.ne.getLatLng(),
+					_self.sw.getLatLng()]);
+				_self.fire("change");
+			}
 		}
 		function dragSW(e){
-			_self.sw.setLatLng(e.latlng);   
-			_self.rectangle.setBounds([
-				_self.ne.getLatLng(),
-				_self.sw.getLatLng()]);
-			_self.fire("change");
+			if( L.isValidBounds( e.latlng, _ne.getLatLng())){
+				_self.sw.setLatLng(e.latlng);   
+				_self.rectangle.setBounds([
+					_self.ne.getLatLng(),
+					_self.sw.getLatLng()]);
+				_self.fire("change");
+			}
 		}
 		
 		this._initEventOnMarker( _ne, dragNE);
@@ -281,5 +315,4 @@ L.SelectArea =   L.Evented.extend({
 L.selectArea = function(options) {
     return new L.SelectArea(options);
 }
-
 module.exports = L.selectArea;

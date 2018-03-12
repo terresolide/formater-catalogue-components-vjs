@@ -49,7 +49,7 @@ export default {
   methods:{
 	  resize(){
 	      var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight;
-	      console.log( hw);
+	     
       this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
 // 	      this.map._container.style.height = this.height +"px";
 	     // this.$el.querySelector("#formatermap").style.height = Math.round(this.height) + "px";
@@ -65,7 +65,6 @@ export default {
 	  },
 	
 	  displayResults( event ){
-		  console.log("display result");
 		  ftMap.displayResults(event);
 // 		  this.handleReset();
 		  
@@ -142,7 +141,7 @@ export default {
  
   mounted(){
 	  var node = this.$el.querySelector(".formater-map > div");
-	  console.log( node);
+	
       ftMap.initialize( node, this.lang);
       this.resize();
 	  
