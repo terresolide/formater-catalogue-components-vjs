@@ -341,6 +341,7 @@ Array.prototype.existType = function( type){
     }
     return find;
 }
+
 var ftChart = require("./formater-chart.js");
 export default {
 	props: {
@@ -723,22 +724,7 @@ export default {
 	},
 	mounted(){
 		   
-        if(this.lang == "fr"){
-           Highcharts.setOptions({
-               lang: {
-                   months: [
-                       'Janvier', 'Février', 'Mars', 'Avril',
-                       'Mai', 'Juin', 'Juillet', 'Août',
-                       'Septembre', 'Octobre', 'Novembre', 'Décembre'
-                   ],
-                   weekdays: [
-                       'Dimanche', 'Lundi', 'Mardi', 'Mercredi',
-                       'Jeudi', 'Vendredi', 'Samedi'
-                   ],
-                   shortMonths: ["Jan" , "Fév" , "Mar" , "Apr" , "Mai" , "Jun" , "Jul" , "Aut" , "Sep" , "Oct" , "Nov" , "Déc"]
-               }
-           });
-        }
+        ftChart.init( this.lang);
 		this.$el.style.maxHeight = this.maxHeight +"px";
 		if(this.$el.querySelector && this.$el.querySelector(".formater-sheet-container")){
             var header = this.$el.querySelector(".formater-sheet-container header").offsetHeight;

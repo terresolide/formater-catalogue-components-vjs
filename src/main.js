@@ -45,7 +45,7 @@ ljs.addAliases({
 		//'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
 	    // lib for highchart
 		//------------------
-		'https://code.highcharts.com/highcharts.src.js',
+		//'https://code.highcharts.com/highcharts.src.js',
 		
 		//icon marker with font awesome CSS
 		//-----------------------------
@@ -57,7 +57,7 @@ ljs.addAliases({
 	    //leaflet.select-area
 	    //-------------------
 	    //'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.1.js',
-	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.2.js',
+	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.2.js',
 	    //awesome marker old version... JS
 	    //-----------------------------------
 	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',

@@ -278,4 +278,4 @@ L.selectArea = function(options) {
     return new L.SelectArea(options);
 }
 
-module.exports = L.SelectArea;
+module.exports = L.selectArea;

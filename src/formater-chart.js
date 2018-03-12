@@ -1,28 +1,30 @@
 /**
  *  Drawing graph
  */
-var Highcharts = require("highcharts");
-/**
- * Override the reset function, we don't need to hide the tooltips and crosshairs.
- */
-Highcharts.Pointer.prototype.reset = function () {
-    return undefined;
-};
 
-/**
- * Highlight a point by showing tooltip, setting hover state and draw crosshair
- */
-Highcharts.Point.prototype.highlight = function (event) {
-    this.onMouseOver(); // Show the hover marker
-    this.series.chart.tooltip.refresh(this); // Show the tooltip
-    this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
-};
 function FtChart(){
+	var Highcharts = require("highcharts");
+	/**
+	 * Override the reset function, we don't need to hide the tooltips and crosshairs.
+	 */
+	Highcharts.Pointer.prototype.reset = function () {
+	    return undefined;
+	};
+
+	/**
+	 * Highlight a point by showing tooltip, setting hover state and draw crosshair
+	 */
+	Highcharts.Point.prototype.highlight = function (event) {
+	    this.onMouseOver(); // Show the hover marker
+	    this.series.chart.tooltip.refresh(this); // Show the tooltip
+	    this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+	};
 
 	/** public **/
 	this.container = null;
 	this.code = null;
 	this.data = null;
+	this.lang = "fr";
 	
 	/** private **/
 	var _mousemoveListener = null;
@@ -43,14 +45,12 @@ function FtChart(){
 			}
 	}
 	
-	function _translate( name, lang){
-		if( !lang || ["fr", "en"].indexOf( lang)<0){
-			lang = "fr";
-		}
+	function _translate( name){
+		
 		if(!_translation[name]){
 			return name;
 		}else{
-			return _translation[name][lang];
+			return _translation[name][ this.lang];
 		}
 		
 	}
@@ -133,16 +133,35 @@ function FtChart(){
 //		        });
 //		    }
 //		}
-	 this.createChartTitle =  function( lang ){
+	 this.init = function( lang){
+		 this.lang =lang;
+		 if(lang == "fr"){
+	           Highcharts.setOptions({
+	               lang: {
+	                   months: [
+	                       'Janvier', 'Février', 'Mars', 'Avril',
+	                       'Mai', 'Juin', 'Juillet', 'Août',
+	                       'Septembre', 'Octobre', 'Novembre', 'Décembre'
+	                   ],
+	                   weekdays: [
+	                       'Dimanche', 'Lundi', 'Mardi', 'Mercredi',
+	                       'Jeudi', 'Vendredi', 'Samedi'
+	                   ],
+	                   shortMonths: ["Jan" , "Fév" , "Mar" , "Apr" , "Mai" , "Jun" , "Jul" , "Aut" , "Sep" , "Oct" , "Nov" , "Déc"]
+	               }
+	           });
+	        }
+	 }
+	 this.createChartTitle =  function(  ){
     	 
 		 var dataType = this.data.meta.get("Data Type");
 		 var interval = _intervalType( this.data.meta.get("Data Interval Type"), dataType);
 	     var begin= this.data.collection[0].DATE;
 	     var end = this.data.collection[ this.data.collection.length-1].DATE
 //          this.createChartTitle( dataType, data0.collection[0].DATE, data0.collection[ data0.collection.length-1].DATE);
-	    	 var chartTitle = _translate("data", lang) +" &quot;"+dataType + "&quot; "+ _translate("from",lang)+" "+ moment(begin, "YYYY-MM-DD").format("ll");
+	    	 var chartTitle = _translate("data") +" &quot;"+dataType + "&quot; "+ _translate("from")+" "+ moment(begin, "YYYY-MM-DD").format("ll");
 	            if(end != begin){
-	                chartTitle += " " + _translate("to",lang)+ " "+ moment(end, "YYYY-MM-DD").format("ll");
+	                chartTitle += " " + _translate("to")+ " "+ moment(end, "YYYY-MM-DD").format("ll");
 	            }
 	    	 return chartTitle;
 	     }

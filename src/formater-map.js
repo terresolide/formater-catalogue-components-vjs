@@ -67,7 +67,7 @@ function FtMap(){
 	     _lang = lang;
 		
 		 this.map = L.map( container, {selectArea:true}).setView([51.505, -0.09], 3);
-		 console.log( this.map);
+		// console.log( this.map);
 		  L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
 		      attribution: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
 		      maxZoom: 18,
@@ -83,7 +83,7 @@ function FtMap(){
 						  color:"#DD9946"
 					  }});
 	     this.layerControl = L.control.groupedLayers();
-		 this.layerControl.addTo( this.map);
+		this.layerControl.addTo( this.map);
 
 	}
 	this.resize = function( ){
