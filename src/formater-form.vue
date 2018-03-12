@@ -86,6 +86,7 @@ export default {
 	    },
       	
 		search(){
+	    	this.searching = true;
 		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
 			document.dispatchEvent(e);
 			if( e.detail.error){
@@ -101,7 +102,7 @@ export default {
 			}
 		},
 		callApi(e){
-			  this.searching = true;
+			  
 			  var _this = this;
 			  var data = e.detail;
 
@@ -119,9 +120,11 @@ export default {
 		handleSuccess(rep, data){
 		    
 		  
-		    
-		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , query:{ start: data.start, end:data.end}}});
+		    console.log( "find");
+		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , id:Math.random(), query:{ start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
+		    var _searching = this.searching;
+		    setTimeout( function(){this.searching = false;}, 1000);
 			this.searching = false;
 		   
 		},

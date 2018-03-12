@@ -6,6 +6,31 @@ var L = require('./leaflet.extend.js');
 function FtMap(){
 	var _disabledUrl = new Array();
 	var _lang ="fr";
+	var _treatedEvents = new Array();
+	var _translations= {
+		"Geomagnetism":{
+			fr:"Géomagnétisme",
+			en: "Geomagnetism"
+		},
+		"Observatories":{
+			fr:"Observatoires",
+			en: "Observatories"
+		}
+	}
+
+	var bcmt = {
+		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange'}),
+		selectedMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'red'})
+	}
+	function _t( name ){
+		
+		if(!_translations[name]){
+			return name;
+		}else{
+			return _translations[name][_lang];
+		}
+		
+	}
 	Array.prototype.get= function( name ){
 		var i=0;
 		find = false;
@@ -23,10 +48,17 @@ function FtMap(){
 	this.observatories = null;
 	
 	this.handleReset = function(){
-		  return;
+		
+		  console.log("reset");
 		  if( this.observatories){
+			  console.log("enleve observatoires du controle");
+			  if(this.layerControl)
+		             this.layerControl.removeLayer( this.observatories);
              // this.observatories.remove();
-             this.layerControl.removeLayer( this.observatories);
+			 if( this.map.hasLayer( this.observatories)){
+				 this.observatories.remove();
+			 }
+			
              this.observatories = null;
           }
 	  }
@@ -63,34 +95,26 @@ function FtMap(){
 		this.map.invalidateSize()
 	}
 	this.displayResults = function( event ){
-		this.handleReset();
-		  
-		var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'blue'};
-		var iconMarkerIntermagnet= new L.AwesomeMarkers.icon( iconOptions);
-		var iconOptions = { icon: 'magnet', prefix: 'fa', markerColor: 'orange'};
-		var iconMarkerBCMT= new L.AwesomeMarkers.icon( iconOptions);
+		 
+		if( _treatedEvents.indexOf( event.detail.id )>=0){
+			return;
+		}
+		_treatedEvents.push(event.detail.id);
+
 		var lang = this.lang;
 		var query = event.detail.query;
-		  
+		var _layerControl = this.layerControl;
+	
 		this.observatories = L.geoJSON(event.detail.result, {
 
               pointToLayer: function (feature, latlng) {
- 
-                  if( feature.properties.organism == "INTERMAGNET"){
-                	  var iconMarker = iconMarkerIntermagnet;
-                	  var color = "blue";
-                  }else{
-                	  var iconMarker = iconMarkerBCMT;
-                	  var color = "orange";
-                  }
-                 
+
                   var marker = new L.Marker(
                           latlng,
-                          {icon: iconMarker,
+                          {icon: bcmt.iconMarker,
                            name: feature.properties.identifiers.customId,
                            title: feature.properties.name[lang],
                            properties: feature.properties,
-                           color: color,
                            query: query
                           });
 
@@ -99,17 +123,23 @@ function FtMap(){
                   })
                   return marker;
               }
-          });
+          }).on("add", function(){
+        	  console.log( "on add");
+        	 
+        	 
+          }).on( "remove", function(){
+        	  var event = new CustomEvent("closeSheet", {});
+        	  document.dispatchEvent( event);
+          }).addTo( this.map);
+		 this.layerControl.addOverlay( this.observatories, _t("Observatories"), _t("Geomagnetism"));
           //this.observatories.addTo( this.map);
-          this.layerControl.addOverlay( this.observatories, "Observatoires", "Géomagnétisme");
+          
       }
 	
 	L.Marker.prototype.close = function( ){
-		var iconOptions = this.options.icon.options;
 		
-		iconOptions.markerColor = this.options.color;
-		var icon= new L.AwesomeMarkers.icon( iconOptions);
-		this.setIcon( icon );
+		
+		this.setIcon( bcmt.iconMarker );
 		_selected_marker = null;
 	}
 	L.Marker.prototype.toggle = function( ){
@@ -120,10 +150,7 @@ function FtMap(){
 			}
 	        console.log( "toggle marker");
 			
-			var iconOptions = this.options.icon.options;
-			iconOptions.markerColor = "red";
-			var icon= new L.AwesomeMarkers.icon( iconOptions);
-			this.setIcon( icon );
+			this.setIcon( bcmt.selectedMarker );
 			_selected_marker = this;
 			return this;
 

@@ -60,7 +60,7 @@ ljs.addAliases({
 	    'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.2.js',
 	    //awesome marker old version... JS
 	    //-----------------------------------
-	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
+	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
 	    //Marker
 	    //-----------
 	    //'src/test.js',

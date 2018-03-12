@@ -69,10 +69,11 @@ L.Control.GroupedLayers = L.Control.extend({
     var id = L.Util.stamp(layer);
     var _layer = this._getLayer(id);
     if (_layer) {
-    	console.log( _layer);
-      delete this._layers[this._layers.indexOf(_layer)];
+     
+      this._layers.splice(this._layers.indexOf(_layer),1)//delete this._layers.indexOf(_layer)];
+    
+      this._update();
     }
-    this._update();
     return this;
   },
 
@@ -160,6 +161,7 @@ L.Control.GroupedLayers = L.Control.extend({
       this._lastZIndex++;
       layer.setZIndex(this._lastZIndex);
     }
+    console.log( this._layers);
   },
 
   _update: function () {
@@ -177,8 +179,8 @@ L.Control.GroupedLayers = L.Control.extend({
 
     for (var i = 0; i < this._layers.length; i++) {
       obj = this._layers[i];
-      console.log(obj);
-     // if( obj =! "undefined"){
+    
+    //  if( obj =! "undefined"){
 	      this._addItem(obj);
 	      overlaysPresent = overlaysPresent || obj.overlay;
 	      baseLayersPresent = baseLayersPresent || !obj.overlay;

@@ -57,13 +57,15 @@ export default {
 	      ftMap.resize( this.height);
 	  },
 	  handleReset(){
-		  if( this.observatories){
-              this.observatories.remove();
+		  ftMap.handleReset();
+		 // if( this.observatories){
+          //    this.observatories.remove();
               
-          }
+         // }
 	  },
 	
 	  displayResults( event ){
+		  console.log("display result");
 		  ftMap.displayResults(event);
 // 		  this.handleReset();
 		  
@@ -128,8 +130,11 @@ export default {
       this.$i18n.locale = this.lang;
       this.findObservatoriesListener = this.displayResults.bind(this) 
       document.addEventListener('findObservatoriesEvent', this.findObservatoriesListener);
-      this.aerisResetListener = this.handleReset.bind(this) 
+      this.aerisResetListener = this.handleReset.bind(this) ;
       document.addEventListener('selectAreaDrawEnd', this.handleReset);
+      this.aerisResetListener = this.handleReset.bind(this) ;
+      document.addEventListener('aerisSearchEvent', this.handleReset);
+      
   	this.resizeListener = this.resize.bind(this);
 	window.addEventListener("resize", this.resizeListener);
          

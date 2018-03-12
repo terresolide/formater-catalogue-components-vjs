@@ -92,7 +92,7 @@ function FtChart(){
 		 _touchmoveListener = null;
 	 }
 	 function _handle_global(e){
-		 console.log(e);
+		
 	     var chart,
 	        point,
 	        i,
@@ -157,7 +157,7 @@ function FtChart(){
 	    	
 	    	 //remove all in container
 	    	 while (this.container.firstChild) {
-	    		 console.log("ici");
+	    		
 	    		    this.container.removeChild(this.container.firstChild);
 	    		}
 	    	
@@ -169,7 +169,7 @@ function FtChart(){
     	 
 
     	 var datacode = data0.meta.get("IAGA Code");
-     	console.log( this.code);
+     	
      	if(this.code != datacode || data0.collection.length == 0 ){
      		return false;
      	}
@@ -183,7 +183,7 @@ function FtChart(){
     	   // function createChart( data0) { 
     	       // console.log(data0);
     	  this.container = container;
-  	 	console.log( container);
+  	 	
   	 	this.code = code;
     	var dataType = data0.meta.get("Data Type");
         var interval = _intervalType(data0.meta.get("Data Interval Type"), dataType);

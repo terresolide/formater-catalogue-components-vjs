@@ -33,7 +33,10 @@
         "domainOfInterest": "Domain of interest",
         "Geomagnetic Field": "Geomagnetic Field",
         "ObservedProperty": "Observed property",
-        "metadata_update": "Last metadata update"
+        "metadata_update": "Last metadata update",
+        "procedure": "Procedure",
+        "algorithms": "Algorithms"
+    
        
         
    },
@@ -70,7 +73,9 @@
         "domainOfInterest": "Domaines",
          "Geomagnetic Field": "Champ géomagnétique",
           "ObservedProperty": "Propriété observée",
-           "metadata_update": "Dernière mise à jour des métadonnées"
+           "metadata_update": "Dernière mise à jour des métadonnées",
+           "procedure": "Procédure",
+        "algorithms": "Algorithmes"
           
    }
 }
@@ -138,7 +143,7 @@
                     
                     <main>
                      <div class="formater-paragraph" >
-                     		<a :href="data.license.url" v-if="data.license.url">
+                     		<a :href="data.license.url" v-if="data.license.url" target="_blank">
                      		<span>{{ data.license.code}}</span>
                      		</a>
                         </div>
@@ -219,7 +224,7 @@
                     <div class="formater-sub" v-if="data.processingLevel" >
 						<span :style="styleTitle">{{ $t("processingLevel")}}</span>
 						<div class="formater-paragraph">
-					   		{{ $t(data.processingLevel)}}
+					   		{{data.processingLevel}}
 						</div>
 					</div>
                    
@@ -276,7 +281,7 @@
 		<main>
 		  <div>
 			    <div v-if="data.observedProperty.name || data.observedProperty.shortName" style="width:48%; float:left;">
-			    <span :style="styleTitle">{{$t("Variable")}}</span>
+			    <span :style="styleTitle">Variable</span>
 			     <div class="formater-paragraph" v-if="data.observedProperty.name">{{data.observedProperty.name[lang]}}</div>
 			      <div class="formater-paragraph" v-if="data.observedProperty.shortName">{{data.observedProperty.shortName}}</div>
 			     
@@ -306,7 +311,7 @@
 			<main >
 			<div v-if="data.procedure.method"></div>
 			<div class="formater-sub" v-if="data.procedure.instruments">
-				 <div class="fa fa-tachometer" style="font-weight:600;">  {{ $t("instruments")}}</div>
+				 <div class="fa fa-tachometer" style="font-weight:600;"> Instruments</div>
 				 <div v-for="instrument in data.procedure.instruments" class="formater-paragraph">
 				  - {{ instrument }}
 				 </div>
