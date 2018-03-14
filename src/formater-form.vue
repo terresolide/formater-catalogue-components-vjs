@@ -77,7 +77,8 @@ export default {
       return {
            aerisThemeListener:null,
            theme:null,
-           searching:false
+           searching:false,
+           cds: ["bcmt", "isgi"]
       }
   },
   methods: {
@@ -111,19 +112,34 @@ export default {
 				  data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
 				  delete data.box;
 			  }
-			  this.$http.get( this.url,{params: data}).then( 
-                      response => {_this.handleSuccess( response, data)},
-                      response => {_this.handleError( response , data)});
+			  this.callApiByCds(0, data);
+			  //data.isgi = 1;
+			 // this.$http.get( this.url,{params: data}).then( 
+              //        response => {_this.handleSuccess( response, data)},
+             //         response => {_this.handleError( response , data)});
 			  
   
 		},
+		callApiByCds( i, data){
+			if( i < this.cds.length){
+				data.cds = this.cds[i];
+				var _this = this;
+				var index = i;
+				this.$http.get( this.url, {params:data}).then(
+						response => {_this.handleSuccess( response, data)},
+	                    response => {_this.handleError( response , data)}
+				);
+			}else{
+				this.searching = false;
+			}
+		},
 		handleSuccess(rep, data){
 		    
-		    var event = new CustomEvent("findObservatoriesEvent", {detail: {result:rep.body , id:Math.random(), query:{ start: data.start, end:data.end}}});
+		    var event = new CustomEvent("findFeatureEvent", {detail: {result:rep.body , id:Math.random(), query:{ cds:data.cds, start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
-		    var _searching = this.searching;
-		    setTimeout( function(){this.searching = false;}, 1000);
-			this.searching = false;
+		    //var _searching = this.searching;
+		   // setTimeout( function(){this.searching = false;}, 1000);
+			//this.searching = false;
 		   
 		},
 		handleError(rep, data){

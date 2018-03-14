@@ -183,6 +183,9 @@ function FtChart(){
 	    	return true;
 	     },
      this.createChart= function(container, code, data0){
+	     if(!data0 || !data0.collection){
+	    	 return false
+	     }
     	 this.code = code;
     	 this.data = data0;
     	 

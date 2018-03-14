@@ -467,8 +467,9 @@ export default {
 //     		    	 parentContainer.appendChild( container );
 //     		    	 container.setAttribute("id", "chartContainer");	
 //     	    	 }
-             console.log( container);
+            
 	    	 var data0 = event.detail.obs.data;
+	    	
 	    	 this.hasGraph = ftChart.createChart( container, this.code, data0);
 	    	if( this.hasGraph){
 	    		this.chartTitle = ftChart.createChartTitle( );
