@@ -55,16 +55,12 @@ function FtMap(){
 	this.handleReset = function(){
 		var _this = this;
 		var layers = this.layers;
-		
 
 		layers.forEach( function(layer){
-			console.log( "remove layer");
-			console.log( layer);
 			_this.layerControl.removeLayer(layer);
 			if( _this.map.hasLayer( layer)){
 				layer.remove();
 			}
-		//	_this.map.removeLayer(layer);
 			
 		})
 		this.layers = [];
@@ -113,7 +109,7 @@ function FtMap(){
 		var query = event.detail.query;
 		var _layerControl = this.layerControl;
 	    var cds = query.cds;
-	    console.log(cds);
+        var count = 0;
 		var layer = L.geoJSON(event.detail.result, {
 
               pointToLayer: function (feature, latlng) {
@@ -134,6 +130,7 @@ function FtMap(){
                   return marker;
               },
               onEachFeature: function( feature, layer){
+            	  count++;
             	  layer.options.properties = feature.properties;
             	  layer.options.cds = cds;
             	  layer.on('click', function(e){
@@ -148,6 +145,10 @@ function FtMap(){
         	  var event = new CustomEvent("closeSheet", {});
         	  document.dispatchEvent( event);
           }).addTo( this.map);
+		
+		if( count == 0 ){
+			return;
+		}
 		switch( cds){
 		case "bcmt":
 			 this.layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));
@@ -293,7 +294,7 @@ function FtMap(){
 	}
 	function searchData( obs, query, cds){
 		var _cds = cds;
-		console.log("search data cds "+_cds);
+
 		if(!obs.process){
 			obs.process = {}
 		}

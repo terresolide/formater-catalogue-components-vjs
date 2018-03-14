@@ -115,6 +115,7 @@ function FtChart(){
 	    }
 	}
 	 function _createChartBCMT( container,data0){
+	
 		var dataType = data0.meta.get("Data Type");
 	    var interval = _intervalType(data0.meta.get("Data Interval Type"), dataType);
      
@@ -137,7 +138,7 @@ function FtChart(){
         });
 
     	coord.forEach( function(value, key){
-    	       
+    	     
     	        var divchart = document.createElement("div");
     	        divchart.classname = "chart";
     	        container.appendChild(divchart);
@@ -274,6 +275,7 @@ function FtChart(){
 	    	return true;
 	     },
      this.createChart= function(container, cds, data0, code){
+	    	
 	     if(!data0 || !data0.collection){
 	    	 return false
 	     }
@@ -285,14 +287,15 @@ function FtChart(){
     	 var datacode = data0.meta.get("IAGA Code");
      	
     	 if( this.cds == "bcmt" &&  this.code != datacode ){
+
     		 return false;
     	 }
      	if( data0.collection.length == 0 ){
+
      		return false;
      	}
     	 	
-    	 //console.log(data0)
-    	 //console.log("createChart");
+     	
     	  if(! _mousemoveListener){ 	 
     		  _addListeners(container);
 	    	

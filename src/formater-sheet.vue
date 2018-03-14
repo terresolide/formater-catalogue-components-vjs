@@ -427,7 +427,7 @@ export default {
 	     iso2str( date){
 	    	 return moment( date, "YYYY-MM-DD").format("ll");
 	     },
-	     open( observation){
+	     open( observation, cds){
 	    	  
 	    	   this.title = observation.title[this.lang];
                this.data = observation;
@@ -435,7 +435,8 @@ export default {
                if( observation.data){
             	   var container = this.$el.querySelector("#ftChartContainer");
             	  
-               		this.hasGraph = ftChart.createChart(container, this.code,observation.data);
+               		this.hasGraph = ftChart.createChart(container, cds ,observation.data, this.code);
+               		
                }
                //}
                this.hidden = false;
@@ -681,7 +682,8 @@ export default {
 	    	 
 	    	 var options = event.detail.layer.options;
 	    	 var observation = event.detail.observation;
-	    	 //console.log(options);
+	    	 
+	    	 console.log(options);
 	    	 if( this.code == options.title){
 	    		 this.hide();
 	    		 return;
@@ -689,7 +691,7 @@ export default {
 	    	 this.close();
 	    	 if(this.code = ""){
 	    		 this.code = options.name;
-	    		 this.open(observation);
+	    		 this.open( observation,  options.cds);
                
                //  setTimeout( next, 0);
 	    	 }else if( this.code != options.name){
@@ -697,7 +699,7 @@ export default {
 	            
 	            var _self = this;
 	           var next = function(){ 
-	        	   _self.open(observation);
+	        	   _self.open(  observation, options.cds);
 	                 }
 	             setTimeout( next, 300);
 	    	 }
