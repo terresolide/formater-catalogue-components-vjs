@@ -247,10 +247,10 @@ function FtMap(){
 			   // document.getElementById("demo").innerHTML = this.responseText;
 			   if(this.response.error){
 				   obs.process.status = "ERROR";
-				   if( this.response.error = "FTP_FAILED"){
+				   if( this.response.error == "FTP_FAILED"){
 					   //DISABLE THE URL FOR OTHER WHICH SAME SERVER
 					  
-					   _disabledUrl.push( obs.api.name);
+					  _disabledUrl.push( obs.api.name);
 				   }
 			   }else{
 				   obs.process.status = "DONE";
@@ -279,7 +279,7 @@ function FtMap(){
 			  }
 			  if (this.readyState == 4 && this.status == 404) {
 				  obs.process.status = "ERROR";
-				    
+				  _disabledUrl.push( obs.api.name);
 			  }
 		}
 		var req = obs.api.url;//.replace("formater.art-sciences.fr", "api.formater");
