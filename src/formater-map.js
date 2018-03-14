@@ -15,6 +15,10 @@ function FtMap(){
 		"Observatories":{
 			fr:"Observatoires",
 			en: "Observatories"
+		},
+		"Geomagnetic_zones":{
+			fr:"Zones géomagnétiques",
+			en: "Geomagnetic zones"
 		}
 	}
 
@@ -46,19 +50,25 @@ function FtMap(){
 
 	this.map = null;
 	this.observatories = null;
+	this.layers = [];
 	
 	this.handleReset = function(){
+		var _this = this;
+		var layers = this.layers;
 		
-		  if( this.observatories){
-			  if(this.layerControl)
-		             this.layerControl.removeLayer( this.observatories);
-             // this.observatories.remove();
-			 if( this.map.hasLayer( this.observatories)){
-				 this.observatories.remove();
-			 }
+
+		layers.forEach( function(layer){
+			console.log( "remove layer");
+			console.log( layer);
+			_this.layerControl.removeLayer(layer);
+			if( _this.map.hasLayer( layer)){
+				layer.remove();
+			}
+		//	_this.map.removeLayer(layer);
 			
-             this.observatories = null;
-          }
+		})
+		this.layers = [];
+		
 	  }
 	  
 	this.initialize = function( container, lang){
@@ -102,8 +112,9 @@ function FtMap(){
 		var lang = this.lang;
 		var query = event.detail.query;
 		var _layerControl = this.layerControl;
-	
-		this.observatories = L.geoJSON(event.detail.result, {
+	    var cds = query.cds;
+	    console.log(cds);
+		var layer = L.geoJSON(event.detail.result, {
 
               pointToLayer: function (feature, latlng) {
 
@@ -116,10 +127,16 @@ function FtMap(){
                            query: query
                           });
 
-                  marker.on('click', function(e ){
-                	  this.createPopup(lang);
-                  })
+//                  marker.on('click', function(e ){
+//                	  this.createPopup(lang);
+//                  })
                   return marker;
+              },
+              onEachFeature: function( feature, layer){
+            	  layer.options.properties = feature.properties;
+            	  layer.on('click', function(e){
+            		  this.createPopup(lang);
+            	  })
               }
           }).on("add", function(){
        
@@ -129,12 +146,20 @@ function FtMap(){
         	  var event = new CustomEvent("closeSheet", {});
         	  document.dispatchEvent( event);
           }).addTo( this.map);
-		 this.layerControl.addOverlay( this.observatories, _t("Observatories"), _t("Geomagnetism"));
-          //this.observatories.addTo( this.map);
+		switch( cds){
+		case "bcmt":
+			 this.layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));
+			 break;
+		case "isgi":
+			 this.layerControl.addOverlay( layer, _t("Geomagnetic_zones"), _t("Geomagnetism"));
+		     break;
+		}
+		this.layers.push( layer);
+		   //this.observatories.addTo( this.map);
           
       }
 	
-	L.Marker.prototype.close = function( ){
+	/*L.Marker.prototype.close = function( ){
 		
 		
 		this.setIcon( bcmt.iconMarker );
@@ -151,8 +176,34 @@ function FtMap(){
 			_selected_marker = this;
 			return this;
 
+	}*/
+	L.Layer.prototype.close = function(){
+		console.log( "close");
+		console.log( this.options.color);
+		if(this instanceof L.Marker){
+			this.setIcon( bcmt.iconMarker);
+		}else{
+			this.setStyle( { color: this.options.defColor});
+		}
+		_selected_layer = null;
 	}
-	L.Marker.prototype.createPopup = function(  ){
+	L.Layer.prototype.toggle = function(){
+		if( _selected_layer != null){
+			_selected_layer.close();
+			
+			}
+		console.log( this.options);
+		if(this instanceof L.Marker){
+			this.setIcon( bcmt.selectedMarker);
+		}else{
+			this.options.defColor = this.options.color;
+			this.setStyle( { color:"red"});
+		}
+		
+		_selected_layer = this;
+		return this;
+	}
+	L.Layer.prototype.createPopup = function(  ){
 		if( this.popup){
 			return;
 		}
@@ -180,13 +231,13 @@ function FtMap(){
 			
 			node.appendChild( input);
 			function displayInfo(e){
-				if(_selected_marker)
-				_selected_marker.close();
+				if(_selected_layer)
+				_selected_layer.close();
 				var event = new CustomEvent("unselectInput", { detail:{}});
 	      	  	 document.dispatchEvent(event);
 				 if(this.className != "selected"){
 					 
-					_selected_marker = _this.toggle( );
+					_selected_layer = _this.toggle( );
 					 var event = new CustomEvent("displayInfo", { detail:{marker:_this, observation: obs, index: index}});
 		       	    document.dispatchEvent(event);
 				 }
@@ -212,6 +263,7 @@ function FtMap(){
 	/** selected element on the map **/
 	var _selected = null;
 	var _selected_marker = null;
+	var _selected_layer =null;
 	function toggle(node){
 		if(_selected){
 			_selected.className = "";
@@ -282,7 +334,7 @@ function FtMap(){
 				  _disabledUrl.push( obs.api.name);
 			  }
 		}
-		var req = obs.api.url;//.replace("formater.art-sciences.fr", "api.formater");
+		var req = obs.api.url;
 		
 		
 		

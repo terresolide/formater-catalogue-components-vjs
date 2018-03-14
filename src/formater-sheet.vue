@@ -160,7 +160,7 @@
 	            <div class="formater-sheet-data-metablock-50"  v-if="data && data.quicklook">
 		            <main>
 		            <div v-for="image in data.quicklook" style="text-align:center;">
-		             <img :src="image.url" :alt="image.description" />
+		             <img class="formater-quicklook" :src="image.url" :alt="image.description" />
 		            </div>
 		            </main>
 	            </div>
@@ -868,6 +868,9 @@ export default {
        padding-left:10px;
        margin-left:5px;
        font-size:0.9rem;
+    }
+    .formater-sheet-container .formater-quicklook{
+        max-width: 270px;
     }
     .formater-sheet-container .formater-function{
         margin-bottom:5px;

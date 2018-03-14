@@ -39,7 +39,7 @@ export default {
       return {
           selectArea:null,
           observatories:null,
-          findObservatoriesListener:null,
+          findFeatureListener:null,
           closeSheetListener: null,
           resizeListener:null,
           height: 600,
@@ -127,8 +127,8 @@ export default {
   },
   created(){
       this.$i18n.locale = this.lang;
-      this.findObservatoriesListener = this.displayResults.bind(this) 
-      document.addEventListener('findObservatoriesEvent', this.findObservatoriesListener);
+      this.findFeatureListener = this.displayResults.bind(this) 
+      document.addEventListener('findFeatureEvent', this.findFeatureListener);
       this.aerisResetListener = this.handleReset.bind(this) ;
       document.addEventListener('selectAreaDrawEnd', this.handleReset);
       this.aerisResetListener = this.handleReset.bind(this) ;
@@ -166,7 +166,7 @@ export default {
 	  //this.getObservatories();
   },
   destroyed(){
-	  document.removeEventListener('findObservatoriesEvent', this.findObservatoriesListener);
+	  document.removeEventListener('findFeatureEvent', this.findFeatureListener);
       this.findObservatoriesListener = null;
       document.removeEventListener('selectAreaDrawEnd', this.aeraResetListener);
       this.areaResetListener = null;

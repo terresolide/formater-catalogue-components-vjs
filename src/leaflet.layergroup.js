@@ -161,7 +161,7 @@ L.Control.GroupedLayers = L.Control.extend({
       this._lastZIndex++;
       layer.setZIndex(this._lastZIndex);
     }
-    console.log( this._layers);
+   
   },
 
   _update: function () {

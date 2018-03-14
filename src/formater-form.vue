@@ -108,10 +108,13 @@ export default {
 			  var data = e.detail;
 
 	
-			  if(data.box && data.box.west){
-				  data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
+			  if(data.box ){
+				  if(data.box.west){
+				  	data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
+				  }
 				  delete data.box;
 			  }
+			 
 			  this.callApiByCds(0, data);
 			  //data.isgi = 1;
 			 // this.$http.get( this.url,{params: data}).then( 
@@ -122,20 +125,22 @@ export default {
 		},
 		callApiByCds( i, data){
 			if( i < this.cds.length){
-				data.cds = this.cds[i];
+				var params = data;
+				var cds = this.cds[i];
+			    params.cds = cds;
 				var _this = this;
 				var index = i;
-				this.$http.get( this.url, {params:data}).then(
-						response => {_this.handleSuccess( response, data)},
-	                    response => {_this.handleError( response , data)}
+				this.$http.get( this.url, {params:params}).then(
+						response => {_this.handleSuccess( response, params, cds);  _this.callApiByCds( index+1, data);},
+	                    response => { _this.handleError( response ,  params, cds); _this.callApiByCds( index+1, data);}
 				);
 			}else{
 				this.searching = false;
 			}
 		},
-		handleSuccess(rep, data){
-		    
-		    var event = new CustomEvent("findFeatureEvent", {detail: {result:rep.body , id:Math.random(), query:{ cds:data.cds, start: data.start, end:data.end}}});
+		handleSuccess(rep, data, cds){
+		    console.log( data.cds);
+		    var event = new CustomEvent("findFeatureEvent", {detail: {result:rep.body , id:Math.random(), query:{ cds:cds, start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
 		    //var _searching = this.searching;
 		   // setTimeout( function(){this.searching = false;}, 1000);
