@@ -114,7 +114,98 @@ function FtChart(){
 	    }
 	    }
 	}
+	 function _createChartBCMT( container,data0){
+		var dataType = data0.meta.get("Data Type");
+	    var interval = _intervalType(data0.meta.get("Data Interval Type"), dataType);
+     
+		var data = new Array();
+		var coord = new Array();
+	    ["D", "H", "X", "Y",  "Z", "F"].forEach( function(index){
+	    	if( data0.collection[0][index]){
+	    		coord.push(index);
+	    		data[index] = new Array();
+	    	}
+	    });
+    	      
+    	
+        data0.collection.forEach( function( item){
+            var date = Date.parse(item.DATE+" "+item.TIME);
+            coord.forEach( function(index){
+            	data[index].push([date, item[index]]);
+            });
+
+        });
+
+    	coord.forEach( function(value, key){
+    	       
+    	        var divchart = document.createElement("div");
+    	        divchart.classname = "chart";
+    	        container.appendChild(divchart);
+    	        
+    	        var mychart = Highcharts.chart(divchart, {
+    	     
+    	            chart:{
+    	            height:130,
+    	            marginBottom: (value==="F")? 45 : 15
+    	            },
+    	            title: {
+    	                text: '<div style="background:#fff;padding:5px;font-size:10px"><div style="background:'+Highcharts.getOptions().colors[key]+';width:10px;height:10px;display:inline-block;margin:0 3px;"></div>'+value+'</div>',
+    	                align: 'right',
+    	                margin: 10,
+    	                useHTML: true,
+    	              //  x: 70,
+    	                floating:true
+    	            },
+    	            xAxis: {
+    	                type: 'datetime',
+    	                lineColor:'#666',
+    	                tickLength: 5,
+    	                dateTimeLabelFormats: { // don't display the dummy year
+    	                   millisecond: '%H:%M:%S.%L',
+    	                    second: '%H:%M:%S',
+    	                    minute: '%H:%M',
+    	                    hour: '%H:%M',
+    	                    day: '%e %b %Y',
+    	                    week: '%e. %b',
+    	                    month: '%b %y',
+    	                    year: '%Y'
+    	                },
+    	                crosshair: true,
+    	                labels:{
+    	                    enabled:value==="F"
+    	                }
+    	            },
+    	            yAxis: [{
+    	                title: {
+    	                    text: "",
+    	                    margin:10,
+    	                    lineColor:'#666'
+    	                },
+    	                labels:{
+    	                    style:{
+    	                        color:'#333',
+    	                        fontSize:'10px'
+    	                    }
+    	                }}
+    	            ],
+    	            tooltip: {
+    	                headerFormat: '<b>{series.name}</b><br>',
+    	                pointFormat: '{point.x:'+interval+'} | {point.y:,.0f}'
+    	            },
+    	            series: [{
+    	                name: value,
+    	                showInLegend:false,
+    	                color: Highcharts.getOptions().colors[key],
+    	                data: data[value] //[1, 0, 4]
+    	            }]
+    	        });
+    	    });
+	        return true;
+	 }
 	 
+	 function _createChartISGI( container, data0){
+		 return false;
+	 }
 	
 //	function _syncExtremes(e) {
 //		    return;
@@ -182,17 +273,21 @@ function FtChart(){
 	    	
 	    	return true;
 	     },
-     this.createChart= function(container, code, data0){
+     this.createChart= function(container, cds, data0, code){
 	     if(!data0 || !data0.collection){
 	    	 return false
 	     }
     	 this.code = code;
     	 this.data = data0;
+    	 this.cds = cds;
     	 
 
     	 var datacode = data0.meta.get("IAGA Code");
      	
-     	if(this.code != datacode || data0.collection.length == 0 ){
+    	 if( this.cds == "bcmt" &&  this.code != datacode ){
+    		 return false;
+    	 }
+     	if( data0.collection.length == 0 ){
      		return false;
      	}
     	 	
@@ -207,115 +302,122 @@ function FtChart(){
     	  this.container = container;
   	 	
   	 	this.code = code;
-    	var dataType = data0.meta.get("Data Type");
-        var interval = _intervalType(data0.meta.get("Data Interval Type"), dataType);
-       
-       
-    	       
-	    var data = new Array();
-	    var coord = new Array();
-	    ["D", "H", "X", "Y",  "Z", "F"].forEach( function(index){
-	    	if( data0.collection[0][index]){
-	    		coord.push(index);
-	    		data[index] = new Array();
-	    	}
-	    });
-    	      
     	
-        data0.collection.forEach( function( item){
-            var date = Date.parse(item.DATE+" "+item.TIME);
-            coord.forEach( function(index){
-            	data[index].push([date, item[index]]);
-            });
-
-        });
-
-    	        coord.forEach( function(value, key){
-    	           // console.log(value);
-    	        var divchart = document.createElement("div");
-    	        divchart.classname = "chart";
-    	        container.appendChild(divchart);
-    	        
-    	        var mychart = Highcharts.chart(divchart, {
-    	            /*chart: {
-    	                type: 'linear'
-    	            },*/
-    	            chart:{
-    	            height:130,
-    	            marginBottom: (value==="F")? 45 : 15
-    	            },
-    	            title: {
-    	                text: '<div style="background:#fff;padding:5px;font-size:10px"><div style="background:'+Highcharts.getOptions().colors[key]+';width:10px;height:10px;display:inline-block;margin:0 3px;"></div>'+value+'</div>',
-    	                align: 'right',
-    	                margin: 10,
-    	                useHTML: true,
-    	              //  x: 70,
-    	                floating:true
-    	            },
-    	            xAxis: {
-    	                type: 'datetime',
-    	                lineColor:'#666',
-    	                tickLength: 5,
-    	                dateTimeLabelFormats: { // don't display the dummy year
-    	                   millisecond: '%H:%M:%S.%L',
-    	                    second: '%H:%M:%S',
-    	                    minute: '%H:%M',
-    	                    hour: '%H:%M',
-    	                    day: '%e %b %Y',
-    	                    week: '%e. %b',
-    	                    month: '%b %y',
-    	                    year: '%Y'
-    	                },
-//    	                events: {
-//    	                    setExtremes: function(e){
-//    	                    	console.log(e);
-//    	                    }
+	    
+	    switch( this.cds){
+	    case "bcmt":
+	    	var hasChart = _createChartBCMT( container, data0);
+	    	break;
+	    case "isgi":
+	    	var hasChart = _createChartISGI( container, data0);
+	    	break;
+	    }
+	    this.hasChart = hasChart;
+	    return hasChart;
+//	    var coord = new Array();
+//	    ["D", "H", "X", "Y",  "Z", "F"].forEach( function(index){
+//	    	if( data0.collection[0][index]){
+//	    		coord.push(index);
+//	    		data[index] = new Array();
+//	    	}
+//	    });
+//    	      
+//    	
+//        data0.collection.forEach( function( item){
+//            var date = Date.parse(item.DATE+" "+item.TIME);
+//            coord.forEach( function(index){
+//            	data[index].push([date, item[index]]);
+//            });
+//
+//        });
+//
+//    	        coord.forEach( function(value, key){
+//    	           // console.log(value);
+//    	        var divchart = document.createElement("div");
+//    	        divchart.classname = "chart";
+//    	        container.appendChild(divchart);
+//    	        
+//    	        var mychart = Highcharts.chart(divchart, {
+//    	            /*chart: {
+//    	                type: 'linear'
+//    	            },*/
+//    	            chart:{
+//    	            height:130,
+//    	            marginBottom: (value==="F")? 45 : 15
+//    	            },
+//    	            title: {
+//    	                text: '<div style="background:#fff;padding:5px;font-size:10px"><div style="background:'+Highcharts.getOptions().colors[key]+';width:10px;height:10px;display:inline-block;margin:0 3px;"></div>'+value+'</div>',
+//    	                align: 'right',
+//    	                margin: 10,
+//    	                useHTML: true,
+//    	              //  x: 70,
+//    	                floating:true
+//    	            },
+//    	            xAxis: {
+//    	                type: 'datetime',
+//    	                lineColor:'#666',
+//    	                tickLength: 5,
+//    	                dateTimeLabelFormats: { // don't display the dummy year
+//    	                   millisecond: '%H:%M:%S.%L',
+//    	                    second: '%H:%M:%S',
+//    	                    minute: '%H:%M',
+//    	                    hour: '%H:%M',
+//    	                    day: '%e %b %Y',
+//    	                    week: '%e. %b',
+//    	                    month: '%b %y',
+//    	                    year: '%Y'
 //    	                },
-    	                crosshair: true,
-    	                labels:{
-    	                    enabled:value==="F"
-    	                }
-    	            },
-    	            yAxis: [{
-    	                title: {
-    	                    text: "",
-    	                    margin:10,
-    	                    lineColor:'#666'
-    	                },
-    	                labels:{
-    	                    style:{
-    	                        color:'#333',
-    	                        fontSize:'10px'
-    	                    }
-    	                }}
-    	            ],
-    	            tooltip: {
-    	                headerFormat: '<b>{series.name}</b><br>',
-    	               // pointFormat: '{point.x:%e. %b %Y}: {point.y:,.0f}'
-    	                pointFormat: '{point.x:'+interval+'} | {point.y:,.0f}'
-    	            },
-    	            series: [{
-    	                name: value,
-    	                showInLegend:false,
-    	                color: Highcharts.getOptions().colors[key],
-    	                data: data[value] //[1, 0, 4]
-    	            }]/*,{
-    	                 name: "1",
-    	                 data: yaxis1 
-    	            },{
-    	                 name: "2",
-    	                 data: yaxis2 
-    	            },{
-    	                 name: "3",
-    	                 data: yaxis3 
-    	            }]*/
-    	        });
-    	    });
-    	        return true;
+////    	                events: {
+////    	                    setExtremes: function(e){
+////    	                    	console.log(e);
+////    	                    }
+////    	                },
+//    	                crosshair: true,
+//    	                labels:{
+//    	                    enabled:value==="F"
+//    	                }
+//    	            },
+//    	            yAxis: [{
+//    	                title: {
+//    	                    text: "",
+//    	                    margin:10,
+//    	                    lineColor:'#666'
+//    	                },
+//    	                labels:{
+//    	                    style:{
+//    	                        color:'#333',
+//    	                        fontSize:'10px'
+//    	                    }
+//    	                }}
+//    	            ],
+//    	            tooltip: {
+//    	                headerFormat: '<b>{series.name}</b><br>',
+//    	               // pointFormat: '{point.x:%e. %b %Y}: {point.y:,.0f}'
+//    	                pointFormat: '{point.x:'+interval+'} | {point.y:,.0f}'
+//    	            },
+//    	            series: [{
+//    	                name: value,
+//    	                showInLegend:false,
+//    	                color: Highcharts.getOptions().colors[key],
+//    	                data: data[value] //[1, 0, 4]
+//    	            }]/*,{
+//    	                 name: "1",
+//    	                 data: yaxis1 
+//    	            },{
+//    	                 name: "2",
+//    	                 data: yaxis2 
+//    	            },{
+//    	                 name: "3",
+//    	                 data: yaxis3 
+//    	            }]*/
+//    	        });
+//    	    });
+//    	        return true;
     	       // Highcharts.charts.push( mychart);
     	  //  }
     	 
      }
+	     
 }
 
 module.exports = new FtChart();

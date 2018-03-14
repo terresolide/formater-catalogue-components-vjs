@@ -139,7 +139,7 @@ export default {
 			}
 		},
 		handleSuccess(rep, data, cds){
-		    console.log( data.cds);
+		  
 		    var event = new CustomEvent("findFeatureEvent", {detail: {result:rep.body , id:Math.random(), query:{ cds:cds, start: data.start, end:data.end}}});
 		    document.dispatchEvent(event);
 		    //var _searching = this.searching;

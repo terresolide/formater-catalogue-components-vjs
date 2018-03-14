@@ -124,7 +124,8 @@ function FtMap(){
                            name: feature.properties.identifiers.customId,
                            title: feature.properties.name[lang],
                            properties: feature.properties,
-                           query: query
+                           query: query,
+                           cds:cds
                           });
 
 //                  marker.on('click', function(e ){
@@ -134,6 +135,7 @@ function FtMap(){
               },
               onEachFeature: function( feature, layer){
             	  layer.options.properties = feature.properties;
+            	  layer.options.cds = cds;
             	  layer.on('click', function(e){
             		  this.createPopup(lang);
             	  })
@@ -188,14 +190,16 @@ function FtMap(){
 		_selected_layer = null;
 	}
 	L.Layer.prototype.toggle = function(){
+		console.log("toogle");
 		if( _selected_layer != null){
 			_selected_layer.close();
 			
-			}
-		console.log( this.options);
+    	}
+		
 		if(this instanceof L.Marker){
 			this.setIcon( bcmt.selectedMarker);
 		}else{
+			if(! this.options.defColor)
 			this.options.defColor = this.options.color;
 			this.setStyle( { color:"red"});
 		}
@@ -207,7 +211,7 @@ function FtMap(){
 		if( this.popup){
 			return;
 		}
-		var _this = this;
+		var _layer = this;
 		var node = document.createElement("div");
 		var h4 = document.createElement("h4");
 		h4.textContent = this.options.properties.name[_lang];
@@ -231,18 +235,27 @@ function FtMap(){
 			
 			node.appendChild( input);
 			function displayInfo(e){
-				if(_selected_layer)
-				_selected_layer.close();
+				
+				
+				
 				var event = new CustomEvent("unselectInput", { detail:{}});
 	      	  	 document.dispatchEvent(event);
-				 if(this.className != "selected"){
-					 
-					_selected_layer = _this.toggle( );
-					 var event = new CustomEvent("displayInfo", { detail:{marker:_this, observation: obs, index: index}});
+	      	  	// setTimeout( function(){
+				 if(this != _selected){
+					// if( _layer != _selected_layer)
+					 //console.log( _selected.className);
+					 if( _selected_layer != _layer)
+					 _layer.toggle( );
+					 var event = new CustomEvent("displayInfo", { detail:{ layer:_layer, observation: obs, index: index}});
 		       	    document.dispatchEvent(event);
+				 }else if(_selected_layer){
+					    console.log( "className  selected => close");
+						 _selected_layer.close();
 				 }
 				 _selected = toggle( this);
-				 searchData( obs , _this.options.query);
+				 //
+				 searchData( obs , _layer.options.query, _layer.options.cds);
+	      	  	//}, 1);
 			}
 			
 			input.addEventListener("click", displayInfo);
@@ -278,7 +291,9 @@ function FtMap(){
 		}
 		return _selected;
 	}
-	function searchData( obs, query){
+	function searchData( obs, query, cds){
+		var _cds = cds;
+		console.log("search data cds "+_cds);
 		if(!obs.process){
 			obs.process = {}
 		}
@@ -323,7 +338,7 @@ function FtMap(){
 			    			obs.links.push(links[i]);
 			    		}
 			    	 }
-				   var event = new CustomEvent("findData", {detail: { obs: obs }});
+				   var event = new CustomEvent("findData", {detail: { obs: obs, cds: _cds }});
 				    document.dispatchEvent(event);
 	   
 			   }

@@ -413,12 +413,12 @@ export default {
 		
 	     
 	     close(){
-	  		console.log("sheet close");
+	  		
 	    	 var event = new CustomEvent("closeSheet", { detail:{}});
-       	  document.dispatchEvent(event);
+       	    document.dispatchEvent(event);
 	     },
 	     hide(){
-	    	 console.log( "hide");
+	    	
 	    	 this.hasGraph = ftChart.destroyCharts();
 	    	// this.$el.querySelector("#container").style.display = "none";
 	    	 this.hidden = true;
@@ -428,7 +428,7 @@ export default {
 	    	 return moment( date, "YYYY-MM-DD").format("ll");
 	     },
 	     open( observation){
-	    	   console.log( observation);
+	    	  
 	    	   this.title = observation.title[this.lang];
                this.data = observation;
                
@@ -469,8 +469,9 @@ export default {
 //     	    	 }
             
 	    	 var data0 = event.detail.obs.data;
+	    	 console.log(event.detail.cds);
 	    	
-	    	 this.hasGraph = ftChart.createChart( container, this.code, data0);
+	    	 this.hasGraph = ftChart.createChart( container, event.detail.cds,data0, this.code);
 	    	if( this.hasGraph){
 	    		this.chartTitle = ftChart.createChartTitle( );
 	    	}
@@ -677,8 +678,8 @@ export default {
 	    	 
 // 	     },
 	     displayInfo( event){
-	    	 console.log( event);
-	    	 var options = event.detail.marker.options;
+	    	 
+	    	 var options = event.detail.layer.options;
 	    	 var observation = event.detail.observation;
 	    	 //console.log(options);
 	    	 if( this.code == options.title){
