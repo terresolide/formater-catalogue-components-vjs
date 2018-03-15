@@ -31,7 +31,7 @@ L.isValidBbox = function( bbox){
 }
 L.isValidBounds =  function( ne, sw ){
 	if( Math.abs( ne.lat - sw.lat)>=180 
-			|| Math.abs( ne.lng - sw.lng)>=360){
+			|| Math.abs( ne.lng )> 180 || Math.abs(sw.lng)>180 ){
 		return false;
 	}else{
 		return true;
@@ -47,14 +47,11 @@ L.modLat = function( lat ){
 	return lat;
 }
 L.modLng = function( lng ){
-	lng = lng%360;
-	if( lng > 180 ){
-		lng -= 360;
-	}else if( lng < -180 ){
-		lng += 360;
-	}
-	return lng;
+	
+	 return lng = lng%360;
+
 }
+
 L.bbox2bounds = function( bbox ){
    bbox = L.isValidBbox (bbox);
 
@@ -260,9 +257,20 @@ L.SelectArea =   L.Evented.extend({
 	_createGeometries: function( bounds){
 		var ne = bounds[0];
 		var sw = bounds[1];
+		if(!L.isValidBounds(ne, sw )){
+			//case bounds are invalid because of lng
+			if(Math.abs(ne.lng)> 180){
+				ne.lng = 180;
+			}
+			if(Math.abs(sw.lng)>180){
+				sw.lng = -180;
+			}
+			
+		}
 		this.ne = L.circleMarker( ne, this.options.markerOptions);
 		this.sw = L.circleMarker( sw, this.options.markerOptions);
 		this.rectangle = L.rectangle( bounds , this.options.rectangleOptions);
+		this.map.fitBounds( bounds);
 		this._initEventsOnMarkers();
 		this.fire("change");
 	},
