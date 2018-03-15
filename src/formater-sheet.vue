@@ -688,9 +688,13 @@ export default {
 	    		 this.hide();
 	    		 return;
 	    	 }
-	    	 this.close();
+	    	 //this.close();
 	    	 if(this.code = ""){
+	    		 if( options.cds == "bcmt"){
 	    		 this.code = options.name;
+	    		 }else{
+	    			 this.code == observation.identifiers.customId;
+	    		 }
 	    		 this.open( observation,  options.cds);
                
                //  setTimeout( next, 0);
