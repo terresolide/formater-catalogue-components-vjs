@@ -121,7 +121,7 @@ function FtChart(){
     	 this.data = data0;
     	 this.cds = cds;
     	 if( data0.collection.length == 0 ){
-
+    		 this.hasChart = false;
       		return false;
       	}
     	 // specifique isgi et bcmt!!

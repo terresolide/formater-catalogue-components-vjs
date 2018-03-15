@@ -417,9 +417,11 @@ export default {
 	    	 var event = new CustomEvent("closeSheet", { detail:{}});
        	    document.dispatchEvent(event);
 	     },
-	     hide( bool){
+	     hide( ){
 	    	
-	    	 this.hasGraph = ftChart.destroyCharts();
+	    	 ftChart.destroyCharts();
+	    	 this.hasGraph = false;
+	    	 this.chartTitle = "";
 	    	// this.$el.querySelector("#container").style.display = "none";
 	    	 this.hidden = true;
 	    	 this.code ="";
@@ -428,7 +430,7 @@ export default {
 	    	 return moment( date, "YYYY-MM-DD").format("ll");
 	     },
 	     open( observation, cds){
-	    	 console.log("f-sheet open");
+
 	    	  
 	    	   this.title = observation.title[this.lang];
                this.data = observation;
@@ -437,9 +439,11 @@ export default {
             	   var container = this.$el.querySelector("#ftChartContainer");
             	  
                		this.hasGraph = ftChart.createChart(container, cds ,observation.data, this.code, observation.query);
-               		
+               		if( this.hasGraph){
+        	    		this.chartTitle = ftChart.createChartTitle( );
+        	    	}
                }
-               //}
+
                this.hidden = false;
 	     },
 	     existDownloadLink(){
