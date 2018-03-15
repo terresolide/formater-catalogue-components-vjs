@@ -428,14 +428,15 @@ export default {
 	    	 return moment( date, "YYYY-MM-DD").format("ll");
 	     },
 	     open( observation, cds){
+	    	 console.log("f-sheet open");
 	    	  
 	    	   this.title = observation.title[this.lang];
                this.data = observation;
                
-               if( observation.data){
+               if( observation.data && observation.query){
             	   var container = this.$el.querySelector("#ftChartContainer");
             	  
-               		this.hasGraph = ftChart.createChart(container, cds ,observation.data, this.code);
+               		this.hasGraph = ftChart.createChart(container, cds ,observation.data, this.code, observation.query);
                		
                }
                //}
@@ -463,8 +464,11 @@ export default {
  
             
 	    	 var data0 = event.detail.obs.data;
+	    	 var query = event.detail.obs.query;
+	    	 console.log( "ft-sheet handle create chart");
+	    	 console.log( event.detail);
 	    	
-	    	 this.hasGraph = ftChart.createChart( container, event.detail.cds,data0, this.code);
+	    	 this.hasGraph = ftChart.createChart( container, event.detail.cds,data0, this.code, query);
 	    	if( this.hasGraph){
 	    		this.chartTitle = ftChart.createChartTitle( );
 	    	}
@@ -475,8 +479,8 @@ export default {
 	    	 
 	    	 var options = event.detail.layer.options;
 	    	 var observation = event.detail.observation;
-	    	 
-	    	
+	    	 var query = observation.query != "undefined" ? observation.query:null;
+	    	 console.log( query);
 	         var code = observation.identifiers.customId;
 
 			
@@ -486,10 +490,12 @@ export default {
 	    	 }
 	    
 	         this.code = code;
-	            
+	         console.log( this.code);
 	         var _self = this;
 			 var next = function(){ 
-				 _self.open(  observation, options.cds);
+				 console.log("dans next");
+				 console.log(query);
+				 _self.open(  observation, options.cds, query);
 			 }
 	         setTimeout( next, 300);
 	    	

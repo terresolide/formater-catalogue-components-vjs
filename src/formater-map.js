@@ -21,7 +21,7 @@ function FtMap(){
 			en: "Geomagnetic zones"
 		}
 	}
-
+	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
 		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange'}),
 		selectedMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'red'})
@@ -132,6 +132,7 @@ function FtMap(){
               onEachFeature: function( feature, layer){
             	  count++;
             	  layer.options.properties = feature.properties;
+            	  layer.options.query = query;
             	  layer.options.cds = cds;
             	  layer.on('click', function(e){
             		  this.createPopup(lang);
@@ -293,6 +294,8 @@ function FtMap(){
 		return _selected;
 	}
 	function searchData( obs, query, cds){
+		console.log( "searchData");
+		console.log( query);
 		var _cds = cds;
 
 		if(!obs.process){
@@ -339,7 +342,8 @@ function FtMap(){
 			    			obs.links.push(links[i]);
 			    		}
 			    	 }
-				   var event = new CustomEvent("findData", {detail: { obs: obs, cds: _cds }});
+			       obs.query = query;
+				   var event = new CustomEvent("findData", {detail: { obs: obs, cds: _cds}});
 				    document.dispatchEvent(event);
 	   
 			   }
@@ -355,9 +359,15 @@ function FtMap(){
 		
 		
 		if( query && query.start){
+			if( !obs.api.parameters){
+				obs.api.parameters = {};
+			}
 			obs.api.parameters["start"] = query.start;
 		}
 		if( query && query.end){
+			if( !obs.api.parameters){
+				obs.api.parameters = {};
+			}
 			obs.api.parameters["end"] = query.end;
 		}
 		//console.log( obs.api.parameters.type);
