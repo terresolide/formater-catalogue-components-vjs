@@ -88,6 +88,7 @@ function FtMap(){
 					  }});
 	     this.layerControl = L.control.groupedLayers();
 		this.layerControl.addTo( this.map);
+		
 
 	}
 	this.resize = function( ){
@@ -159,28 +160,11 @@ function FtMap(){
 		     break;
 		}
 		this.layers.push( layer);
-		   //this.observatories.addTo( this.map);
+
           
       }
 	
-	/*L.Marker.prototype.close = function( ){
-		
-		
-		this.setIcon( bcmt.iconMarker );
-		_selected_marker = null;
-	}
-	L.Marker.prototype.toggle = function( ){
-		
-		if( _selected_marker != null){
-			_selected_marker.close();
-			
-			}
-			
-			this.setIcon( bcmt.selectedMarker );
-			_selected_marker = this;
-			return this;
 
-	}*/
 	L.Layer.prototype.close = function(){
 		console.log( "close");
 		console.log( this.options.color);

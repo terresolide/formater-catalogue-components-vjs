@@ -1,40 +1,4 @@
-/**
- * select area layer using leaflet
- * @author epointal
- * @licence gnu
- * 
- */
 
-/**
- * compute if bbox is valid
- * @param {object} bbox ie {north, east, south, west}
- * @return bbox| false
- */
-/*L.isValidBbox = function( bbox){
-	if( bbox.north && bbox.east && bbox.west && bbox.south){
-		bbox.north = bbox.north%90;
-		bbox.south = bbox.south%90;
-		bbox.east = bbox.east%180;
-		bbox.west = bbox.west%180;
-		if(bbox.east < bbox.west){
-            bbox.west -=180;
-		}
-		if( bbox.north < bbox.south){
-			bbox.south -=90;
-		}
-		return bbox;
-	}else{
-		return false;
-	}
-}
-
-L.bbox2bounds = function( bbox ){
-   bbox = L.isValidBbox (bbox);
-
-	var ne = [ bbox.north, bbox.east];
-	var sw = [ bbox.south, bbox.west];
-	return [ne, sw];
-}*/
 /**
  * Select area layer
  * @class
