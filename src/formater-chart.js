@@ -2,8 +2,12 @@
  *  Drawing graph
  */
 var Highcharts = require("highcharts");
-var bcmt = require("./bcmt-chart.js");
-var isgi = require("../../isgi-component-vjs/src/isgi-indice-module.js");
+
+
+var Bcmt = require("./bcmt-chart.js");
+var bcmt = new Bcmt(Highcharts);
+var Isgi = require("../../isgi-component-vjs/src/isgi-indice-module.js");
+var isgi = new Isgi(Highcharts);
 console.log( isgi.tr);
 function FtChart(){
 	

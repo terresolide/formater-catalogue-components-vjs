@@ -1,8 +1,8 @@
 /**
  * 
  */
-var Highcharts = require('highcharts');
-function Bcmt(){
+//var Highcharts = require('highcharts');
+module.exports= function ( Highcharts){
 
 	var _mousemoveListener = null;
 	var _touchstartListener = null;
@@ -170,5 +170,5 @@ function Bcmt(){
 	 }
 	return this;
 }
-var bcmt = new Bcmt();
-	 module.exports = bcmt;
+
+	
