@@ -38,15 +38,7 @@ Vue.use( formaterPlugin);
 
 
 ljs.addAliases({
-	dep: [//'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 
-		//'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js',
-		//'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js',
-		//'https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js',
-		//'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
-	    // lib for highchart
-		//------------------
-		//'https://code.highcharts.com/highcharts.src.js',
-		
+	dep: [
 		//icon marker with font awesome CSS
 		//-----------------------------
 	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
@@ -54,25 +46,9 @@ ljs.addAliases({
 		//------------
 		'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
 	   // 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js',
-	    //leaflet.select-area
-	    //-------------------
-	    //'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.1.js',
-	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.select-area.1.2.js',
-	    //awesome marker old version... JS
-	    //-----------------------------------
-	   // 'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.min.js',
-	    //Marker
-	    //-----------
-	    //'src/test.js',
-	    //'src/leaflet.marker.js',
-	   // 'https://rawgit.com/terresolide/formater-catalogue-components-vjs/master/src/leaflet.marker.js',
-	   // 'https://cdn.rawgit.com/terresolide/formater-catalogue-components-vjs/0.0.6/src/leaflet.marker.js' ,
-		   
-	    //Markers collection
-	    //-----------------
-	    //'src/leaflet.markers-collection.js',
-	    //formater commons components from build
-	    //'http://localhost:8082/dist/build.js',
+	    
+		// composants formater de bases
+		//-----------------------------
 	    //'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
 	    'https://cdn.rawgit.com/terresolide/formater-commons-components-vjs/0.1.3/dist/formater-commons-components-vjs.js' ,
 	    //'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
