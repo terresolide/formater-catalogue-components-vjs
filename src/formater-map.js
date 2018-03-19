@@ -121,15 +121,12 @@ module.exports = function( L ){
 		var _layerControl = this.layerControl;
 	    var cds = query.cds;
         var count = 0;
+        var _map = this.map;
 		var layer = L.geoJSON(event.detail.result, {
 
               pointToLayer: function (feature, latlng) {
             	 
-                  var marker = new L.Marker(
-                          latlng,
-                          {icon: bcmt.iconMarker,
-                         
-                          });
+                  var marker = new L.Marker( latlng, {icon: bcmt.iconMarker });
 
                   return marker;
               },
@@ -148,14 +145,31 @@ module.exports = function( L ){
             	  layer.on('click', function(e){
             		  this.createPopup(e);
             	  })
-           	  if( layer.setStyle){
-           		  console.log("setStyle");
-            		  layer.setStyle( feature.properties.style)
-            	  }
+           	 
             	 // layer.bingTooltip( feature.properties.name[lang]).addTo(_map);
-            	  layer.on("mouseover", function(e){
-            		  console.log(this.options.title);
+            	  layer.on("mouseover", function(evt){
+            		  if(feature.geometry.type != "Point"){
+            			 // this.bindTooltip( layer.options.title);
+            			  _tooltip.setContent( layer.options.title);
+            			 
+            			  _map.openTooltip(_tooltip );
+            			  console.log(evt.latlng);
+            			  _tooltip.setLatLng( evt.latlng);
+            			 this.setStyle({ fillOpacity:0.6});
+            		  }
+            		  
             	  })
+            	  layer.on("mousemove", function(evt){
+            		  if(feature.geometry.type != "Point"){
+            			  _tooltip.setLatLng( evt.latlng)
+            		  }
+            		  
+            	  })
+            	  layer.on('mouseout', function(evt){
+            		   this.setStyle({ fillOpacity:0.4});
+            		   _map.closeTooltip(_tooltip);
+            	  })
+            	  return layer;
             	 
               },
               filter: function(feature){
@@ -169,8 +183,8 @@ module.exports = function( L ){
             	  }
               },
               style: function(feature) {
-                 console.log( feature.properties.style);
-                 return feature.properties.style;
+                 if( typeof feature.properties.style != "undefined")
+                 return  {color:feature.properties.style.fill, fillOpacity:0.4};
               }
           }).on("add", function(){
        
@@ -230,6 +244,7 @@ module.exports = function( L ){
 		if( this.popup){
 			return;
 		}
+		this.closeTooltip();
 		var _layer = this;
 		var node = document.createElement("div");
 		var h4 = document.createElement("h4");
