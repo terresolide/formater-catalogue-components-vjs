@@ -23,6 +23,7 @@
 var L = require('./leaflet.extend.js');
 import FtMap from "./formater-map.js";
 var ftMap = new FtMap(L);
+
 export default {
 
   props:{
@@ -35,8 +36,7 @@ export default {
   },
   data(){
       return {
-          selectArea:null,
-          observatories:null,
+
           findFeatureListener:null,
           closeSheetListener: null,
           resizeListener:null,
@@ -47,19 +47,11 @@ export default {
   methods:{
 	  resize(){
 	      var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight;
-	     
-      this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
-// 	      this.map._container.style.height = this.height +"px";
-	     // this.$el.querySelector("#formatermap").style.height = Math.round(this.height) + "px";
-//this.map.invalidateSize()
+	      this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
 	      ftMap.resize( this.height);
 	  },
 	  handleReset(){
 		  ftMap.handleReset();
-		 // if( this.observatories){
-          //    this.observatories.remove();
-              
-         // }
 	  },
 	
 	  displayResults( event ){
@@ -144,17 +136,12 @@ export default {
 	background:#f39b30;
 }
 #formatermap .leaflet-popup-content input[type="button"].selected{
-	
 	background: #D53E2A;
-
-	 border-color: #dd6555 #aa3222 #aa3222;
-
-	 text-shadow: 0 -1px 1px #802519, 1px 0 1px #aa3222, 0 1px 1px #aa3222, -1px 0 1px #802519;
-
-	
+	border-color: #dd6555 #aa3222 #aa3222;
+	text-shadow: 0 -1px 1px #802519, 1px 0 1px #aa3222, 0 1px 1px #aa3222, -1px 0 1px #802519;
 }
 #formatermap .leaflet-popup-content input[type="button"].selected:hover{
-  background: #ef2a10;
+  	ackground: #ef2a10;
 }
 #formatermap .leaflet-popup-content div > div{
 	margin-bottom:15px;

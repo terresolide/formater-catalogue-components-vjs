@@ -1,4 +1,12 @@
 /**
+ * FtMap 
+ * @property {L.map} 			map 
+ * @property {Array of L.layer} layers
+ * @method initialize
+ * @method resize
+ * @method handleReset
+ * @method displayResult
+ * 
  * 
  */
 
@@ -21,6 +29,7 @@ module.exports = function( L ){
 			en: "Geomagnetic zones"
 		}
 	}
+	var _global_observations = [];
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
 		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange'}),
@@ -47,9 +56,8 @@ module.exports = function( L ){
 		return find;
 	}
 	
-
+  
 	this.map = null;
-	this.observatories = null;
 	this.layers = [];
 	
 	this.handleReset = function(){
@@ -106,7 +114,7 @@ module.exports = function( L ){
 		}
 		_treatedEvents.push(event.detail.id);
 
-		var lang = this.lang;
+		
 		var query = event.detail.query;
 		var _layerControl = this.layerControl;
 	    var cds = query.cds;
@@ -114,30 +122,52 @@ module.exports = function( L ){
 		var layer = L.geoJSON(event.detail.result, {
 
               pointToLayer: function (feature, latlng) {
-
+            	 
                   var marker = new L.Marker(
                           latlng,
                           {icon: bcmt.iconMarker,
-                           name: feature.properties.identifiers.customId,
-                           title: feature.properties.name[lang],
-                           properties: feature.properties,
-                           query: query,
-                           cds:cds
+                         
                           });
 
-//                  marker.on('click', function(e ){
-//                	  this.createPopup(lang);
-//                  })
                   return marker;
               },
               onEachFeature: function( feature, layer){
             	  count++;
-            	  layer.options.properties = feature.properties;
-            	  layer.options.query = query;
-            	  layer.options.cds = cds;
+            	 
+            	  var options = {
+            			  properties: feature.properties,
+            			  query: query,
+            			  title: feature.properties.name[_lang],
+            			  cds:cds
+            	  }
+            	  L.setOptions( layer, options);
+            	 
+            	 
             	  layer.on('click', function(e){
-            		  this.createPopup(lang);
+            		  this.createPopup(_lang);
             	  })
+           	  if( layer.setStyle){
+            		  layer.setStyle( feature.properties.style)
+            	  }
+            	 // layer.bingTooltip( feature.properties.name[lang]).addTo(_map);
+            	  layer.on("mouseover", function(e){
+            		  console.log(this.options.title);
+            	  })
+            	 
+              },
+              filter: function(feature){
+            	  if( feature.properties.name.fr == "Global"){
+            		  feature.properties.observations.forEach( function( obs){
+            			  _global_observations.push(obs);
+            		  })
+            		  return false;
+            	  }else{
+            		  return true;
+            	  }
+              },
+              style: function(feature) {
+                 console.log( feature.properties.style);
+                 return feature.properties.style;
               }
           }).on("add", function(){
        
