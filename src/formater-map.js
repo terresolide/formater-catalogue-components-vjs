@@ -2,8 +2,8 @@
  * 
  */
 
-var L = require('./leaflet.extend.js');
-function FtMap(){
+
+module.exports = function( L ){
 	var _disabledUrl = new Array();
 	var _lang ="fr";
 	var _treatedEvents = new Array();
@@ -388,4 +388,3 @@ function FtMap(){
 	
 	return this;
 }
-module.exports = new FtMap();
