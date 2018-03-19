@@ -29,6 +29,7 @@ module.exports = function( L ){
 			en: "Geomagnetic zones"
 		}
 	}
+	var _tooltip = null;
 	var _global_observations = [];
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
@@ -96,6 +97,7 @@ module.exports = function( L ){
 					  }});
 	     this.layerControl = L.control.groupedLayers();
 		this.layerControl.addTo( this.map);
+		_tooltip = L.tooltip();
 		
 
 	}
@@ -144,9 +146,10 @@ module.exports = function( L ){
             	 
             	 
             	  layer.on('click', function(e){
-            		  this.createPopup(_lang);
+            		  this.createPopup(e);
             	  })
            	  if( layer.setStyle){
+           		  console.log("setStyle");
             		  layer.setStyle( feature.properties.style)
             	  }
             	 // layer.bingTooltip( feature.properties.name[lang]).addTo(_map);
@@ -223,7 +226,7 @@ module.exports = function( L ){
 		_selected_layer = this;
 		return this;
 	}
-	L.Layer.prototype.createPopup = function(  ){
+	L.Layer.prototype.createPopup = function( evt ){
 		if( this.popup){
 			return;
 		}
@@ -284,9 +287,9 @@ module.exports = function( L ){
 			})*/
 		});
 		this.popup = node;
-		this.bindPopup( node );
+		this.bindPopup( node, );
 		
-		this.openPopup();
+		this.openPopup( evt.latlng);
 	}
 
 	/** selected element on the map **/

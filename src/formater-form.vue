@@ -28,7 +28,7 @@
 			<formater-select type="associative" name="DataType" :options="dataType" multiple="true" width="260px"></formater-select>
 		</formater-search-box>
 		<formater-search-box header-icon-class="fa fa-calendar" :title="$t('time_slot')" deployed="true">	
-			 <formater-temporal-search :lang="lang"></formater-temporal-search>
+			 <formater-temporal-search :lang="lang" daymin="1868-01-01"></formater-temporal-search>
 		</formater-search-box>
 		<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" deployed="true">	
 			<formater-spatial-search :lang="lang"></formater-spatial-search>
