@@ -99,8 +99,8 @@ module.exports = function( L ){
 	     this.layerControl = L.control.groupedLayers();
 		this.layerControl.addTo( this.map);
 		_tooltip = L.tooltip();
-		this.earthControl = L.control.earthLayer(_selected, _selected_layer,{ lang:lang});
-		this.earthControl.addTo( this.map);
+		//this.earthControl = L.control.earthLayer(_selected, _selected_layer,{ lang:lang});
+		//this.earthControl.addTo( this.map);
 		
 
 	}
@@ -208,7 +208,7 @@ module.exports = function( L ){
 			return;
 		}
 		
-		this.earthControl.addObservations( _global_observations);
+		//this.earthControl.addObservations( _global_observations);
 		switch( cds){
 		case "bcmt":
 			 this.layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));
