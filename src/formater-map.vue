@@ -107,7 +107,8 @@ export default {
 #formatermap .leaflet-popup-content h4{
 	color: rgb(221, 153,70);
 }
-#formatermap .leaflet-popup-content input[type="button"]{
+#formatermap .leaflet-popup-content input[type="button"],
+#formatermap .leaflet-control-earth-list input[type="button"]{
 	width:280px;
 	font-family: "Dejavu serif";
 	margin: 0px 0px 3px 7px;
@@ -132,7 +133,8 @@ export default {
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
 	/*border-color: rgb(224, 163, 89) rgb(199, 138, 63) rgb(199, 138, 63);*/
 }
-#formatermap .leaflet-popup-content input[type="button"]:hover{
+#formatermap .leaflet-popup-content input[type="button"]:hover,
+#formatermap .leaflet-control-earth-list input[type="button"]:hover{
 	background:#f39b30;
 }
 #formatermap .leaflet-popup-content input[type="button"].selected{
@@ -145,5 +147,29 @@ export default {
 }
 #formatermap .leaflet-popup-content div > div{
 	margin-bottom:15px;
+}
+#formatermap .leaflet-control-earth::before{
+	font-family: FontAwesome;
+	content: "\f0ac";
+
+	font-size: 30px;
+	padding: 5px 10px;
+}
+#formatermap .leaflet-control-earth{
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	background:#fff;
+	border-radius:5px;
+    color: rgba(0,0,0,0.5);
+    cursor:pointer;
+}
+#formatermap .leaflet-control-earth form{
+  display:none;
+  width:300px;
+  margin: 10px 15px;
+  overflow-y:auto;
+}
+#formatermap .leaflet-control-earth.leaflet-control-earth-expanded form{
+	display:block;
 }
 </style>

@@ -99,6 +99,8 @@ module.exports = function( L ){
 	     this.layerControl = L.control.groupedLayers();
 		this.layerControl.addTo( this.map);
 		_tooltip = L.tooltip();
+		this.earthControl = L.control.earthLayer(_selected, _selected_layer,{ lang:lang});
+		this.earthControl.addTo( this.map);
 		
 
 	}
@@ -205,6 +207,8 @@ module.exports = function( L ){
 		if( count == 0 ){
 			return;
 		}
+		
+		this.earthControl.addObservations( _global_observations);
 		switch( cds){
 		case "bcmt":
 			 this.layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));
@@ -313,10 +317,10 @@ module.exports = function( L ){
 		
 		this.openPopup( evt.latlng);
 	}
-
-	/** selected element on the map **/
+	/** selected button on Dom**/
+	
 	var _selected = null;
-	var _selected_marker = null;
+	/** selected element on the map **/
 	var _selected_layer =null;
 	function toggle(node){
 		if(_selected){

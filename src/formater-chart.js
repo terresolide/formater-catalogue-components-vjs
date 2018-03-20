@@ -153,7 +153,7 @@ function FtChart(){
 	    	hasChart = bcmt.createChart( container, data0);
 	    	break;
 	    case "isgi":
-	    	console.log( query);
+
 	    	var collection = new isgi.Collection({result:data0, query:query}, code, code, _lang);
 	    	hasChart = collection.createChart( container, 580);
 	    	break;

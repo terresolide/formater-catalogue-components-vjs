@@ -465,7 +465,11 @@ export default {
 	    	 this.code ="";
 	     },
 	     iso2str( date){
-	    	 return moment( date, "YYYY-MM-DD").format("ll");
+	    	 if(date == "now"){
+	    		 return this.$i18n.t("now");
+	    	 }else{
+	    	 	return moment( date, "YYYY-MM-DD").format("ll");
+	     	 }
 	     },
 	     open( observation, cds){
 
