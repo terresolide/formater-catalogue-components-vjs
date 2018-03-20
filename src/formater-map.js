@@ -30,6 +30,7 @@ module.exports = function( L ){
 		}
 	}
 	var _tooltip = null;
+	var _tooltip_timer = null;
 	var _global_observations = [];
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
@@ -147,11 +148,12 @@ module.exports = function( L ){
             	  })
            	 
             	 // layer.bingTooltip( feature.properties.name[lang]).addTo(_map);
+            	  
             	  layer.on("mouseover", function(evt){
             		  if(feature.geometry.type != "Point"){
             			 // this.bindTooltip( layer.options.title);
             			  _tooltip.setContent( layer.options.title);
-            			 setTimeout( function(){ _map.openTooltip(_tooltip);}, 1000);
+            			 _tooltip_timer = setTimeout( function(){ _map.openTooltip(_tooltip);}, 1000);
             			//  _map.openTooltip(_tooltip );
             			 if(evt.latlng);
             			  _tooltip.setLatLng( evt.latlng);
@@ -172,6 +174,7 @@ module.exports = function( L ){
             		  if( typeof this.setStyle == "function")
             		   this.setStyle({ fillOpacity:0.4});
             		   _map.closeTooltip(_tooltip);
+            		   clearTimeout( _tooltip_timer);
             	  })
             	  return layer;
             	 
