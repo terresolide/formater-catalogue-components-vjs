@@ -309,7 +309,12 @@
 			{{ $t("procedure")}}
 			</h4>
 			<main >
-			<div v-if="data.procedure.method"></div>
+			<div class="formater-sub" v-if="data.procedure.method">
+				<div class="fa fa-tachometer"  style="font-weight:600;">  {{ $t("Method")}}</div>
+				 <div class="formater-paragraph" v-html="data.procedure.method[lang]">
+				 
+				 </div>
+			</div>
 			<div class="formater-sub" v-if="data.procedure.instruments">
 				 <div class="fa fa-tachometer" style="font-weight:600;"> Instruments</div>
 				 <div v-for="instrument in data.procedure.instruments" class="formater-paragraph">
@@ -469,8 +474,8 @@ export default {
             
 	    	 var data0 = event.detail.obs.data;
 	    	 var query = event.detail.obs.query;
-	    	 console.log( "ft-sheet handle create chart");
-	    	 console.log( event.detail);
+// 	    	 console.log( "ft-sheet handle create chart");
+// 	    	 console.log( event.detail);
 	    	
 	    	 this.hasGraph = ftChart.createChart( container, event.detail.cds,data0, this.code, query);
 	    	if( this.hasGraph){

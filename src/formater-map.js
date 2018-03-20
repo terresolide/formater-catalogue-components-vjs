@@ -151,21 +151,25 @@ module.exports = function( L ){
             		  if(feature.geometry.type != "Point"){
             			 // this.bindTooltip( layer.options.title);
             			  _tooltip.setContent( layer.options.title);
-            			 
-            			  _map.openTooltip(_tooltip );
-            			  console.log(evt.latlng);
+            			 setTimeout( function(){ _map.openTooltip(_tooltip);}, 1000);
+            			//  _map.openTooltip(_tooltip );
+            			 if(evt.latlng);
             			  _tooltip.setLatLng( evt.latlng);
+            			  if( typeof this.setStyle == "function")
             			 this.setStyle({ fillOpacity:0.6});
+            		  }else{
+            			  _map.closeTooltip(_tooltip);
             		  }
             		  
             	  })
             	  layer.on("mousemove", function(evt){
             		  if(feature.geometry.type != "Point"){
-            			  _tooltip.setLatLng( evt.latlng)
+            			  _tooltip.setLatLng( evt.latlng);
             		  }
             		  
             	  })
             	  layer.on('mouseout', function(evt){
+            		  if( typeof this.setStyle == "function")
             		   this.setStyle({ fillOpacity:0.4});
             		   _map.closeTooltip(_tooltip);
             	  })
