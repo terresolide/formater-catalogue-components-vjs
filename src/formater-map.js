@@ -381,6 +381,21 @@ module.exports = function( L ){
 			    			obs.links.push(links[i]);
 			    		}
 			    	 }
+			    	if(_cds == "isgi"){
+			    		//recuperation du lien archive
+			    		var url = obs.data.meta.get("isgi_url");
+			    		console.log(url);
+			    		if( url){
+			    			var link = {
+			    					type: "HTTP_DOWNLOAD_DIRECT_LINK",
+			    					url: url,
+			    					description:{fr:"archive.zip", en:"archive.zip"},
+			    					prov:true
+			    			}
+			    			obs.links.push(link);
+			    		}
+			    	}
+			    
 			       obs.query = query;
 				   var event = new CustomEvent("findData", {detail: { obs: obs, cds: _cds}});
 				    document.dispatchEvent(event);

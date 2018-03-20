@@ -36,7 +36,8 @@
         "metadata_update": "Last metadata update",
         "procedure": "Procedure",
         "algorithms": "Algorithms",
-        "method": "Method"
+        "method": "Method",
+        "data_last_update": "Data last update"
     
        
         
@@ -77,7 +78,8 @@
            "metadata_update": "Dernière mise à jour des métadonnées",
            "procedure": "Procédure",
         "algorithms": "Algorithmes",
-        "method": "Méthode"
+        "method": "Méthode",
+         "data_last_update": "Dernière mise à jour des données"
           
    }
 }
@@ -120,9 +122,22 @@
                     <main>
                      <div class="formater-paragraph">
                           {{startDate}} <i class="fa fa-long-arrow-right" :style="styleTitle"></i> {{endDate}}
-                        </div>
+                        
+	 					<div v-if="data.dataLastUpdate" class="formater-sub" style="margin-top:10px;">
+		                   <span :style="styleTitle">
+		                    {{ $t("data_last_update")}}
+		                    </span>
+		                    
+		                    <main>
+		                     <div >
+		                          {{ iso2str( data.dataLastUpdate )}} 
+		                        </div>
+		                    </main>                       
+	                        </div>
+                      </div>
                     </main>
                    
+                  
                   </div>
                   <div class="formater-sheet-data-metablock-50"  v-if="data && data.formats">
                    <h4 :style="styleTitle">
@@ -177,6 +192,13 @@
                     </h4>
                     
                     <main>
+                     <div class="formater-sub">
+                    <span :style="styleTitle" v-if="data.links.existType('HTTP_DOWNLOAD_DIRECT_LINK')">{{$t('HTTP_DOWNLOAD_DIRECT_LINK')}} :</span>
+                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_DIRECT_LINK'">
+                        <a :href="link.url" >{{ link.description ? link.description[lang]: link.url}}</a>
+                       
+                     </div>
+                   </div>
                     <div class="formater-sub">
                     <span :style="styleTitle" v-if="data.links.existType('HTTP_DOWNLOAD_LINK')">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
                      <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
@@ -324,7 +346,7 @@
 				 </div>
 			</div>
 			<div class="formater-sub" v-if="data.procedure.algorithms">
-				<div class="fa fa-inventory"  style="font-weight:600;">  {{ $t("algorithms")}}</div>
+				<div class="fa fa-code"  style="font-weight:600;">  {{ $t("algorithms")}}</div>
 				 <div v-for="algorithm in data.procedure.algorithms" class="formater-paragraph" v-html="algorithm">
 				 
 				 </div>
@@ -393,7 +415,8 @@ export default {
 		        }else{
 		            return "";
 		        }
-        },
+        }
+       
        
 	},
 	data(){
