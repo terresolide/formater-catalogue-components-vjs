@@ -37,7 +37,8 @@
         "procedure": "Procedure",
         "algorithms": "Algorithms",
         "method": "Method",
-        "data_last_update": "Data last update"
+        "data_last_update": "Data last update",
+        "download": "Download"
     
        
         
@@ -79,7 +80,8 @@
            "procedure": "Procédure",
         "algorithms": "Algorithmes",
         "method": "Méthode",
-         "data_last_update": "Dernière mise à jour des données"
+         "data_last_update": "Dernière mise à jour des données",
+          "download": "Téléchargement"
           
    }
 }
@@ -167,6 +169,18 @@
                     </main>
                    
                   </div>
+                 <div class="formater-sheet-data-metablock-50" v-if="data && data.links && data.links.existType('HTTP_DOWNLOAD_DIRECT_LINK')">
+                  <h4 :style="styleTitle">
+                    <i class="fa fa-download"></i>
+                    {{$t("download")}}
+                    </h4>
+                    <main>
+                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_DIRECT_LINK'">
+                        <a :href="link.url" >{{ link.description ? link.description[lang]: link.url}}</a>
+                       
+                     </div>
+                     </main>
+                 </div>
 	             
 	            </div>
 	            <!-- fin de column 1 -->
@@ -192,13 +206,7 @@
                     </h4>
                     
                     <main>
-                     <div class="formater-sub">
-                    <span :style="styleTitle" v-if="data.links.existType('HTTP_DOWNLOAD_DIRECT_LINK')">{{$t('HTTP_DOWNLOAD_DIRECT_LINK')}} :</span>
-                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_DIRECT_LINK'">
-                        <a :href="link.url" >{{ link.description ? link.description[lang]: link.url}}</a>
-                       
-                     </div>
-                   </div>
+                   
                     <div class="formater-sub">
                     <span :style="styleTitle" v-if="data.links.existType('HTTP_DOWNLOAD_LINK')">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
                      <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
@@ -215,7 +223,7 @@
                      </div>
                     </main>
                
-                </div>
+        </div>
 	             
 		<!-- debut -->
 		<div class="formater-information-container">
