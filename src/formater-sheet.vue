@@ -35,7 +35,8 @@
         "ObservedProperty": "Observed property",
         "metadata_update": "Last metadata update",
         "procedure": "Procedure",
-        "algorithms": "Algorithms"
+        "algorithms": "Algorithms",
+        "method": "Method"
     
        
         
@@ -75,7 +76,8 @@
           "ObservedProperty": "Propriété observée",
            "metadata_update": "Dernière mise à jour des métadonnées",
            "procedure": "Procédure",
-        "algorithms": "Algorithmes"
+        "algorithms": "Algorithmes",
+        "method": "Méthode"
           
    }
 }
@@ -309,8 +311,8 @@
 			{{ $t("procedure")}}
 			</h4>
 			<main >
-			<div class="formater-sub" v-if="data.procedure.method">
-				<div class="fa fa-tachometer"  style="font-weight:600;">  {{ $t("Method")}}</div>
+			<div class="formater-sub" v-if="data.procedure.method && data.procedure.method[lang]">
+				<div class="fa fa-cog"  style="font-weight:600;">  {{ $t("method")}}</div>
 				 <div class="formater-paragraph" v-html="data.procedure.method[lang]">
 				 
 				 </div>
@@ -322,7 +324,7 @@
 				 </div>
 			</div>
 			<div class="formater-sub" v-if="data.procedure.algorithms">
-				<div class="fa fa-tachometer"  style="font-weight:600;">  {{ $t("algorithms")}}</div>
+				<div class="fa fa-inventory"  style="font-weight:600;">  {{ $t("algorithms")}}</div>
 				 <div v-for="algorithm in data.procedure.algorithms" class="formater-paragraph" v-html="algorithm">
 				 
 				 </div>
@@ -449,6 +451,8 @@ export default {
         	    	}
                }
 
+               
+               this.$el.querySelector(".formater-sheet-main").scrollTop = 0;
                this.hidden = false;
 	     },
 	     existDownloadLink(){
