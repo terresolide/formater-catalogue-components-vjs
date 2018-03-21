@@ -301,39 +301,6 @@ module.exports = function( L ){
 		
 		this.openPopup( evt.latlng);
 	}
-	L.Layer.prototype.addEventListeners = function(){
-		 this.on('click', function(e){
-			  this.createPopup(e);
-		  })
-		  
-		  this.on("mouseover", function(evt){
-			  
-			  if(feature.geometry.type != "Point"){
-				  _tooltip.setContent( layer.options.title);
-				  
-				 _tooltip_timer = setTimeout( function(){ _map.openTooltip(_tooltip);}, 1000);
-				 if(evt.latlng);
-				  _tooltip.setLatLng( evt.latlng);
-				  if( typeof this.setStyle == "function")
-				 this.setStyle({ fillOpacity:0.6});
-			  }else{
-				  _map.closeTooltip(_tooltip);
-			  }
-			  
-		  })
-		  layer.on("mousemove", function(evt){
-			  if(feature.geometry.type != "Point"){
-				  _tooltip.setLatLng( evt.latlng);
-			  }
-			  
-		  })
-		  layer.on('mouseout', function(evt){
-			  if( typeof this.setStyle == "function")
-			   this.setStyle({ fillOpacity:0.4});
-			   _map.closeTooltip(_tooltip);
-			   clearTimeout( _tooltip_timer);
-		  })
-	}
 	
 		
 	
