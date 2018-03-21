@@ -15,6 +15,7 @@ L.SelectedLayer =   L.Evented.extend({
 		
 	},
 	change:function( button,layer){
+		
 		if( this.button != button){
 			console.log("differents boutons");
 			this.close();

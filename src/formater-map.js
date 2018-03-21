@@ -116,8 +116,8 @@ module.exports = function( L ){
 					_selected.button.dispatchEvent(event);
 				}
 		  });
-		//this.earthControl = L.control.earthLayer(_selected, { lang:lang});
-		//this.earthControl.addTo( this.map);
+		this.earthControl = L.control.earthLayer(_selected, { lang:lang});
+		this.earthControl.addTo( this.map);
 		
 
 	}
@@ -225,7 +225,7 @@ module.exports = function( L ){
 			return;
 		}
 		
-		//this.earthControl.addObservations( _global_observations);
+		this.earthControl.addObservations( _global_observations);
 		switch( cds){
 		case "bcmt":
 			 this.layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));
@@ -250,7 +250,6 @@ module.exports = function( L ){
 		}
 	}
 	L.Layer.prototype.unselect = function(){
-		console.log("unselect layer");
 		if(this instanceof L.Marker){
 			this.setIcon( bcmt.iconMarker);
 		}else if( this instanceof L.Control){

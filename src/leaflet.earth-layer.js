@@ -10,15 +10,16 @@ L.Control.EarthLayer = L.Control.extend({
   options: {
     collapsed:true,
     position: 'topleft',
-    lang: 'fr'
+    lang: 'fr',
+    properties:[]
   },
 
-  initialize: function (_selected, _selected_layer, options) {
+  initialize: function (_selected,options) {
 	  this._selected = _selected;
-	  this._selected_layer = _selected_layer;
 	  L.Util.setOptions(this, options);
 
 	    this._observations = [];
+	    
   },
 
   onAdd: function (map) {
@@ -36,7 +37,12 @@ L.Control.EarthLayer = L.Control.extend({
         .off('layerremove', this._onLayerChange, this);
   },
 
-
+  select: function(){
+	  
+  },
+  unselect: function(){
+	  
+  },
   _initLayout: function () {
     var className = 'leaflet-control-earth',
    // var className = 'leaflet-control-layers',
@@ -95,43 +101,24 @@ L.Control.EarthLayer = L.Control.extend({
     if (!this._container) {
       return;
     }
+    this.options.properties.observations = this._observations;
     this._form.innerHtml ="";
     var form = this._form;
     var lang = this.options.lang;
     var _selected = this._selected;
-    var _selected_layer = this._selected_layer;
+   
     var _layer = this;
-    this._observations.forEach( function( obs){
+    this._observations.forEach( function( obs, index){
     	var input = document.createElement("input");
 		input.setAttribute("type", "button");
 		input.setAttribute( "value", obs.title[ lang]);
+		input.setAttribute("data-index", index);
 		
 		form.appendChild( input);
-		function displayInfo(e){
-			console.log( "click et click");
-			
-			
-//			var event = new CustomEvent("unselectInput", { detail:{}});
-//      	  	 document.dispatchEvent(event);
-//      	  	// setTimeout( function(){
-//			 if(this != _selected){
-//				// if( _layer != _selected_layer)
-//				 //console.log( _selected.className);
-//				 if( _selected_layer != _layer)
-//				 _layer.toggle( );
-//				 var event = new CustomEvent("displayInfo", { detail:{ layer:_layer, observation: obs, index: index}});
-//	       	    document.dispatchEvent(event);
-//			 }else if(_selected_layer){
-//				    console.log( "className  selected => close");
-//					 _selected_layer.close();
-//			 }
-//			 _selected = toggle( this);
-//			 //
-//			 searchData( obs , _layer.options.query, _layer.options.cds);
-//      	  	//}, 1);
-		}
-		
-		input.addEventListener("click", displayInfo);
+	
+		input.addEventListener("click", function(){
+			_selected.change(this, _layer);
+	});
     })
 
   
