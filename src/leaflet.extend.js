@@ -2,6 +2,8 @@
  * 
  */
 var L = require("leaflet");
+
+
 L.isValidBbox = function( bbox){
 
 	if( bbox.north && bbox.east && bbox.west && bbox.south){
@@ -53,7 +55,7 @@ L.bbox2bounds = function( bbox ){
 	var sw = [ bbox.south, bbox.west];
 	return [ne, sw];
 }
-
+L.selectedLayer = require("./leaflet.selected-layer.js");
 
 L.selectArea = require("./leaflet.select-area-module.js");
 L.Control.groupedLayers = require("./leaflet.layergroup.js");
