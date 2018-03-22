@@ -357,7 +357,7 @@ L.Control.GroupedLayers = L.Control.extend({
   _expand: function () {
     L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
     // permits to have a scrollbar if overlays heighter than the map.
-    var acceptableHeight = this._map._size.y - (this._container.offsetTop * 4);
+    var acceptableHeight = this._map._size.y - (this._container.offsetTop );
     if (acceptableHeight < this._form.clientHeight) {
       L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
       this._form.style.height = acceptableHeight + 'px';
