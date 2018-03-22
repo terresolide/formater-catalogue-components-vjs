@@ -70,7 +70,7 @@ L.Control.EarthLayer = L.Control.extend({
         }
         var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
         link.href = '#';
-        link.title = 'Layers';
+        link.title = 'Earth';
 
         if (L.Browser.touch) {
           L.DomEvent
@@ -129,6 +129,7 @@ L.Control.EarthLayer = L.Control.extend({
     L.DomUtil.addClass(this._container, 'leaflet-control-earth-expanded');
     // permits to have a scrollbar if overlays heighter than the map.
     var acceptableHeight = this._map._size.y - (this._container.offsetTop * 4);
+    console.log( acceptableHeight);
     if (acceptableHeight < this._form.clientHeight) {
       L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
       this._form.style.height = acceptableHeight + 'px';
