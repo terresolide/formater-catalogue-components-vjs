@@ -38,10 +38,10 @@ L.Control.EarthLayer = L.Control.extend({
   },
 
   select: function(){
-	  
+	  this._container.className = this._container.className +" selected";
   },
   unselect: function(){
-	  
+	  this._container.className = this._container.className.replace(' selected', '');
   },
   _initLayout: function () {
     var className = 'leaflet-control-earth',

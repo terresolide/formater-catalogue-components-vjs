@@ -137,7 +137,8 @@ export default {
 #formatermap .leaflet-control-earth-list input[type="button"]:hover{
 	background:#f39b30;
 }
-#formatermap .leaflet-popup-content input[type="button"].selected{
+#formatermap .leaflet-popup-content input[type="button"].selected,
+#formatermap .leaflet-control-earth-list input[type="button"].selected{
 	background: #D53E2A;
 	border-color: #dd6555 #aa3222 #aa3222;
 	text-shadow: 0 -1px 1px #802519, 1px 0 1px #aa3222, 0 1px 1px #aa3222, -1px 0 1px #802519;
@@ -154,6 +155,9 @@ export default {
 
 	font-size: 30px;
 	padding: 5px 10px;
+}
+#formatermap .leaflet-control-earth.selected::before{
+	color: rgba(255,0,0,0.6)
 }
 #formatermap .leaflet-control-earth{
 	border: 2px solid rgba(0,0,0,0.2);
