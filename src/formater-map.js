@@ -36,6 +36,9 @@ module.exports = function( L ){
 	var _tooltip_timer = null;
 	var _global_observations = [];
 	var _selected = null;
+	var _selectArea = null;
+	var _layerControl = null;
+	var _earthControl = null;
 
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
@@ -64,7 +67,15 @@ module.exports = function( L ){
 		return find;
 	}
 	
-  
+    function _addSelectArea2LayerGroup( evt ){
+    	
+    	if( typeof evt.detail.query.bbox != "undefined" && _selectArea.rectangle){
+   
+    		var id = L.stamp( _selectArea.rectangle);
+    		if( ! _layerControl._getLayer( id))
+    		 _layerControl.addOverlay( _selectArea.rectangle, _t("selectArea"), _t("selectArea"),true);
+    	}
+    }
 
 	
 	this.handleReset = function(){
@@ -72,7 +83,7 @@ module.exports = function( L ){
 		var layers = this.layers;
 
 		layers.forEach( function(layer){
-			_this.layerControl.removeLayer(layer);
+			_layerControl.removeLayer(layer);
 			if( _this.map.hasLayer( layer)){
 				layer.remove();
 			}
@@ -94,7 +105,7 @@ module.exports = function( L ){
 		      minZoom:1
 		    }).addTo( this.map );
 		  this.map.on("resize", this.resize);
-		  this.selectArea = L.selectArea(
+		  _selectArea = L.selectArea(
 				  {
 					  map:this.map, 
 					  options:{
@@ -102,8 +113,8 @@ module.exports = function( L ){
 						  height:300, 
 						  color:"#DD9946"
 					  }});
-		  this.layerControl = L.control.groupedLayers();
-		  this.layerControl.addTo( this.map);
+		  _layerControl = L.control.groupedLayers();
+		  _layerControl.addTo( this.map);
 		  _tooltip = L.tooltip();
 		  _selected = L.selectedLayer({
 				options:{
@@ -116,8 +127,8 @@ module.exports = function( L ){
 					_selected.button.dispatchEvent(event);
 				}
 		  });
-		this.earthControl = L.control.earthLayer(_selected, { lang:lang});
-		this.earthControl.addTo( this.map);
+		_earthControl = L.control.earthLayer(_selected, { lang:lang});
+		_earthControl.addTo( this.map);
 		
 
 	}
@@ -130,6 +141,7 @@ module.exports = function( L ){
 		this.map.invalidateSize()
 	}
 	this.displayResults = function( event ){
+		_addSelectArea2LayerGroup( event );
 		 
 		if( _treatedEvents.indexOf( event.detail.id )>=0){
 			return;
@@ -225,13 +237,13 @@ module.exports = function( L ){
 			return;
 		}
 		
-		this.earthControl.addObservations( _global_observations);
+		_earthControl.addObservations( _global_observations);
 		switch( cds){
 		case "bcmt":
-			 this.layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));
+			 _layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));
 			 break;
 		case "isgi":
-			 this.layerControl.addOverlay( layer, _t("Geomagnetic_zones"), _t("Geomagnetism"));
+			 _layerControl.addOverlay( layer, _t("Geomagnetic_zones"), _t("Geomagnetism"));
 		     break;
 		}
 		this.layers.push( layer);

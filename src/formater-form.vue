@@ -126,6 +126,7 @@ export default {
 		callApiByCds( i, data){
 			if( i < this.cds.length){
 				var params = data;
+				
 				var cds = this.cds[i];
 			    params.cds = cds;
 				var _this = this;
@@ -139,8 +140,8 @@ export default {
 			}
 		},
 		handleSuccess(rep, data, cds){
-		  
-		    var event = new CustomEvent("findFeatureEvent", {detail: {result:rep.body , id:Math.random(), query:{ cds:cds, start: data.start, end:data.end}}});
+		   
+		    var event = new CustomEvent("findFeatureEvent", {detail: {result:rep.body , id:Math.random(), query:{ cds:cds, start: data.start, end:data.end, bbox:data.bbox}}});
 		    document.dispatchEvent(event);
 		    //var _searching = this.searching;
 		   // setTimeout( function(){this.searching = false;}, 1000);

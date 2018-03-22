@@ -141,7 +141,8 @@ L.SelectArea =   L.Evented.extend({
 	},
 	_disableSelectArea: function(e){
 		this._hideMarkers(e );
-		if(this.rectangle)
+
+		if(this.rectangle && e.detail.north != "")
 		this.map.fitBounds( this.rectangle.getBounds());
 	},
 	_showMarkers: function(e){
