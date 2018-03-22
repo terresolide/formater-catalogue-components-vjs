@@ -90,7 +90,8 @@ module.exports = function( L ){
 			
 		})
 		this.layers = [];
-		
+		_global_observations = [];
+		_earthControl.reset();
 	  }
 	  
 	this.initialize = function( container, lang){

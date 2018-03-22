@@ -36,6 +36,10 @@ L.Control.EarthLayer = L.Control.extend({
         .off('layeradd', this._onLayerChange, this)
         .off('layerremove', this._onLayerChange, this);
   },
+  reset(){
+	  this._observations = [];
+	  this._update();
+  },
 
   select: function(){
 	  this._container.className = this._container.className +" selected";
@@ -102,7 +106,7 @@ L.Control.EarthLayer = L.Control.extend({
       return;
     }
     this.options.properties.observations = this._observations;
-    this._form.innerHtml ="";
+    this._form.innerHTML ="";
     var form = this._form;
     var lang = this.options.lang;
     var _selected = this._selected;
