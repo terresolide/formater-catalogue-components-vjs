@@ -4,25 +4,29 @@
 /* global L */
 
 // A layer control which provides for layer groupings.
-// Author: Ishmael Smyrnow
+
 L.Control.EarthLayer = L.Control.extend({
+  _container: null,
 
   options: {
     collapsed:true,
     position: 'topleft',
     lang: 'fr',
-    properties:[]
+    properties:[],
+    title: 'Données globales'
   },
 
   initialize: function (_selected,options) {
+	  console.log( "initialize earth");
 	  this._selected = _selected;
 	  L.Util.setOptions(this, options);
-
+      
 	    this._observations = [];
 	    
   },
 
   onAdd: function (map) {
+	this._map = map;
     this._initLayout();
     this._update();
 
@@ -57,33 +61,30 @@ L.Control.EarthLayer = L.Control.extend({
   
     var form = this._form = L.DomUtil.create('form', className + '-list');
 
-    if (L.Browser.touch) {
-        L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
-      } else {
-        L.DomEvent.disableClickPropagation(container);
-        L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
-      }
+    
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
 
       var form = this._form = L.DomUtil.create('form', className + '-list');
 
       if (this.options.collapsed) {
-        if (!L.Browser.android) {
-          L.DomEvent
-              .on(container, 'mouseover', this._expand, this)
-              .on(container, 'mouseout', this._collapse, this);
-        }
-        var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
+
+        var link = this._layersLink = L.DomUtil.create('a', className + '-toggle fa fa-globe', container);
         link.href = '#';
         link.title = 'Earth';
 
-        if (L.Browser.touch) {
+        //add title
+        var span = L.DomUtil.create("h4", "leaflet-earth-popup-title", container );
+        span.innerHTML = this.options.title;
           L.DomEvent
               .on(link, 'click', L.DomEvent.stop)
-              .on(link, 'click', this._expand, this);
-        } else {
-          L.DomEvent.on(link, 'focus', this._expand, this);
-        }
-
+              .on(link, 'click', this._toggle, this);
+   
+        // add close button
+        var a = L.DomUtil.create('a', 'leaflet-popup-close-button', container);
+        a.innerHTML = 'x';
+        L.DomEvent.on( a, 'click', this._toggle, this);
+        
         this._map.on('click', this._collapse, this);
         // TODO keyboard accessibility
       } else {
@@ -92,6 +93,7 @@ L.Control.EarthLayer = L.Control.extend({
 
 
     container.appendChild(form);
+    this._container = container;
     return container;
   },
 
@@ -100,7 +102,13 @@ L.Control.EarthLayer = L.Control.extend({
 	  this._update();
     
   },
-
+_toggle: function(){
+	if( this._container.className.indexOf('leaflet-control-earth-expanded')>=0){
+		this._collapse();
+	}else{
+		this._expand();
+	}
+},
   _update: function () {
     if (!this._container) {
       return;
@@ -131,6 +139,7 @@ L.Control.EarthLayer = L.Control.extend({
 
   _expand: function () {
     L.DomUtil.addClass(this._container, 'leaflet-control-earth-expanded');
+    this._map.closePopup();
     // permits to have a scrollbar if overlays heighter than the map.
     var acceptableHeight = this._map._size.y - (this._container.offsetTop );
     console.log( "height form = "+this._form.clientHeight);

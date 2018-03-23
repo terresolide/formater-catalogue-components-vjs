@@ -113,27 +113,22 @@ L.Control.GroupedLayers = L.Control.extend({
   },
 
   _initLayout: function () {
+	  console.log( "initialize layers");
     var className = 'leaflet-control-layers',
       container = this._container = L.DomUtil.create('div', className);
 
     // Makes this work on IE10 Touch devices by stopping it from firing a mouseout event when the touch is released
     container.setAttribute('aria-haspopup', true);
 
-    if (L.Browser.touch) {
-      L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
-    } else {
+  
       L.DomEvent.disableClickPropagation(container);
       L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
-    }
+    
 
     var form = this._form = L.DomUtil.create('form', className + '-list');
 
     if (this.options.collapsed) {
-      if (!L.Browser.android) {
-        L.DomEvent
-            .on(container, 'mouseover', this._expand, this)
-            .on(container, 'mouseout', this._collapse, this);
-      }
+    
       var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
       link.href = '#';
       link.title = 'Layers';

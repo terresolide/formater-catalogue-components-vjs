@@ -34,6 +34,10 @@ module.exports = function( L ){
 		"Selected_area":{
 			fr: "Aire sélectionnée",
 			en: "Selected area"
+		},
+		"Global_data":{
+			fr: "Données globales",
+			en: "Global data"
 		}
 	}
 	var _tooltip = null;
@@ -132,7 +136,7 @@ module.exports = function( L ){
 					_selected.button.dispatchEvent(event);
 				}
 		  });
-		_earthControl = L.control.earthLayer(_selected, { lang:lang});
+		_earthControl = L.control.earthLayer(_selected, { lang:lang, title: _t('Global_data')});
 		_earthControl.addTo( this.map);
 		
 
@@ -281,7 +285,9 @@ module.exports = function( L ){
 
 	
 	L.Layer.prototype.createPopup = function( evt ){
+		_earthControl._collapse();
 		if( this.popup){
+			
 			return;
 		}
 		this.closeTooltip();
@@ -315,7 +321,6 @@ module.exports = function( L ){
 		});
 		this.popup = node;
 		this.bindPopup( node, );
-		
 		this.openPopup( evt.latlng);
 	}
 	

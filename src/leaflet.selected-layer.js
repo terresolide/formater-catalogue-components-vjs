@@ -5,6 +5,7 @@ L.SelectedLayer =   L.Evented.extend({
 	layer:null,
 	//selected button
 	button:null,
+	popup:null,
 	disabledUrl:[],
 	options:{
 		lang: "fr"

@@ -149,14 +149,41 @@ export default {
 #formatermap .leaflet-popup-content div > div{
 	margin-bottom:15px;
 }
-#formatermap .leaflet-control-earth::before{
-	font-family: FontAwesome;
-	content: "\f0ac";
+/**
+ style pour leaflet.earth-layer.js
+ **/
 
+#formatermap a.leaflet-control-earth-toggle{
+	font-family: FontAwesome;
+	text-decoration: none;
+	color:rgba(0,0,0,0.6);
 	font-size: 30px;
-	padding: 5px 10px;
+	padding:10px;
+
 }
-#formatermap .leaflet-control-earth.selected::before{
+#formatermap .leaflet-control-earth .leaflet-earth-popup-title{
+	display:none;
+	color: rgb(221, 153,70);
+	
+}
+#formatermap .leaflet-control-earth a.leaflet-popup-close-button{
+	display:none;
+}
+
+#formatermap .leaflet-control-earth.leaflet-control-earth-expanded a.leaflet-popup-close-button{
+	display:block;
+}
+#formatermap .leaflet-control-earth.leaflet-control-earth-expanded .leaflet-earth-popup-title{
+	display: inline-block;
+}
+#formatermap .leaflet-control-earth.leaflet-control-earth-expanded{
+	background: white;
+color: #333;
+box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+border: none;
+border-radius: 12px;
+}
+#formatermap .leaflet-control-earth.selected .leaflet-control-earth-toggle{
 	color: rgba(255,0,0,0.6)
 }
 #formatermap .leaflet-control-earth{
@@ -175,6 +202,7 @@ export default {
 }
 #formatermap .leaflet-control-earth.leaflet-control-earth-expanded form{
 	display:block;
+	padding-top:3px;
 }
 
 #formatermap .leaflet-control-layers-group-name{
