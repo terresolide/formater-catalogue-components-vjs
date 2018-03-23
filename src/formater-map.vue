@@ -176,4 +176,11 @@ export default {
 #formatermap .leaflet-control-earth.leaflet-control-earth-expanded form{
 	display:block;
 }
+
+#formatermap .leaflet-control-layers-group-name{
+	font-weight: bold;
+}
+#formatermap .leaflet-control-layers-selector{
+	margin-left:20px;
+}
 </style>

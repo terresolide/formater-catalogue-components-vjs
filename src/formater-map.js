@@ -30,6 +30,10 @@ module.exports = function( L ){
 		"Geomagnetic_zones":{
 			fr:"Zones géomagnétiques",
 			en: "Geomagnetic zones"
+		},
+		"Selected_area":{
+			fr: "Aire sélectionnée",
+			en: "Selected area"
 		}
 	}
 	var _tooltip = null;
@@ -73,7 +77,7 @@ module.exports = function( L ){
    
     		var id = L.stamp( _selectArea.rectangle);
     		if( ! _layerControl._getLayer( id))
-    		 _layerControl.addOverlay( _selectArea.rectangle, _t("selectArea"), _t("selectArea"),true);
+    		 _layerControl.addOverlay( _selectArea.rectangle, _t("Selected_area"), _t("Selected_area"),true);
     	}
     }
 
@@ -114,7 +118,7 @@ module.exports = function( L ){
 						  height:300, 
 						  color:"#DD9946"
 					  }});
-		  _layerControl = L.control.groupedLayers();
+		  _layerControl = L.control.groupedLayers(null, null,  {groupCheckboxes: true});
 		  _layerControl.addTo( this.map);
 		  _tooltip = L.tooltip();
 		  _selected = L.selectedLayer({

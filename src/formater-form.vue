@@ -201,7 +201,7 @@ export default {
 <style>
 .formater-container .formater-buttons input[type="button"]{
 /*	font-family:  "Dejavu serif";*/
-	margin: 0px 0px 3px 7px;
+  margin: 0px 0px 3px 7px;
   padding: 3px 12px;
   /*white-space: normal;*/
   text-align: center;

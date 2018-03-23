@@ -24,6 +24,7 @@ L.Control.GroupedLayers = L.Control.extend({
     this._handlingClick = false;
     this._groupList = [];
     this._domGroups = [];
+    this._selectedArea = null;
 
     for (i in baseLayers) {
       this._addLayer(baseLayers[i], i);
@@ -65,6 +66,12 @@ L.Control.GroupedLayers = L.Control.extend({
     return this;
   },
 
+  addSelectArea: function( layer, name){
+	  if( this._selectedArea){
+		  return this;
+	  }
+	  this._addLayer(layer, name, "selected_area", true);
+  },
   removeLayer: function (layer) {
     var id = L.Util.stamp(layer);
     var _layer = this._getLayer(id);
