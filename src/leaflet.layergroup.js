@@ -113,7 +113,7 @@ L.Control.GroupedLayers = L.Control.extend({
   },
 
   _initLayout: function () {
-	  console.log( "initialize layers");
+
     var className = 'leaflet-control-layers',
       container = this._container = L.DomUtil.create('div', className);
 

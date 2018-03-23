@@ -38,6 +38,10 @@ module.exports = function( L ){
 		"Global_data":{
 			fr: "Données globales",
 			en: "Global data"
+		},
+		"Earth":{
+			fr: "Terre",
+			en: "Earth"
 		}
 	}
 	var _tooltip = null;
@@ -136,7 +140,9 @@ module.exports = function( L ){
 					_selected.button.dispatchEvent(event);
 				}
 		  });
-		_earthControl = L.control.earthLayer(_selected, { lang:lang, title: _t('Global_data')});
+		  var options = {  lang:lang, title: _t('Global_data'), name: _t("Earth")};
+		  console.log( options);
+		_earthControl = L.control.earthLayer(_selected, options);
 		_earthControl.addTo( this.map);
 		
 

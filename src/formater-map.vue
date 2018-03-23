@@ -161,6 +161,12 @@ export default {
 	padding:10px;
 
 }
+#formatermap .leaflet-control-earth{
+	display:none;
+}
+#formatermap div.leaflet-control-earth.has-content{
+	display:block;
+}
 #formatermap .leaflet-control-earth .leaflet-earth-popup-title{
 	display:none;
 	color: rgb(221, 153,70);

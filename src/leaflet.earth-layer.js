@@ -13,14 +13,15 @@ L.Control.EarthLayer = L.Control.extend({
     position: 'topleft',
     lang: 'fr',
     properties:[],
-    title: 'Données globales'
+    title: 'Données globales',
+    name: 'Terre entière'
   },
 
-  initialize: function (_selected,options) {
-	  console.log( "initialize earth");
-	  this._selected = _selected;
+  initialize: function( selected, options) {
+	
+	  this._selected = selected;
 	  L.Util.setOptions(this, options);
-      
+      console.log( this.options);
 	    this._observations = [];
 	    
   },
@@ -30,7 +31,6 @@ L.Control.EarthLayer = L.Control.extend({
     this._initLayout();
     this._update();
 
-   
 
     return this._container;
   },
@@ -71,7 +71,7 @@ L.Control.EarthLayer = L.Control.extend({
 
         var link = this._layersLink = L.DomUtil.create('a', className + '-toggle fa fa-globe', container);
         link.href = '#';
-        link.title = 'Earth';
+        link.title = this.options.name;
 
         //add title
         var span = L.DomUtil.create("h4", "leaflet-earth-popup-title", container );
@@ -102,13 +102,13 @@ L.Control.EarthLayer = L.Control.extend({
 	  this._update();
     
   },
-_toggle: function(){
-	if( this._container.className.indexOf('leaflet-control-earth-expanded')>=0){
-		this._collapse();
-	}else{
-		this._expand();
-	}
-},
+  _toggle: function(){
+		if( this._container.className.indexOf('leaflet-control-earth-expanded')>=0){
+			this._collapse();
+		}else{
+			this._expand();
+		}
+  },
   _update: function () {
     if (!this._container) {
       return;
@@ -120,6 +120,12 @@ _toggle: function(){
     var _selected = this._selected;
    
     var _layer = this;
+    if( this._observations.length>0 ){
+    	if( this._container.className.indexOf('has-content')<0)
+    	this._container.className = this._container.className + " has-content";
+    }else{
+    	 this._container.className = this._container.className.replace(' has-content', '');
+    }
     this._observations.forEach( function( obs, index){
     	var input = document.createElement("input");
 		input.setAttribute("type", "button");
@@ -157,8 +163,8 @@ _toggle: function(){
  
 });
 
-L.control.earthLayer = function ( options) {
-  return new L.Control.EarthLayer(options);
+L.control.earthLayer = function ( selected, options) {
+  return new L.Control.EarthLayer( selected, options);
 };
 
-module.exports = L.Control.earthLayer;
+module.exports = L.control.earthLayer;
