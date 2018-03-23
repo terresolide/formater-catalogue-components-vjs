@@ -74,28 +74,28 @@ module.exports = function( L ){
     function _addSelectArea2LayerGroup( evt ){
     	
     	if( typeof evt.detail.query.bbox != "undefined" && _selectArea.rectangle){
+    		_selectArea.rectangle.remove();
    
-    		var id = L.stamp( _selectArea.rectangle);
-    		if( ! _layerControl._getLayer( id))
-    		 _layerControl.addOverlay( _selectArea.rectangle, _t("Selected_area"), _t("Selected_area"),true);
-    	}
+    		_layerControl.addSelectedArea( _selectArea.rectangle, _t("Selected_area"));
+        }
     }
 
 	
 	this.handleReset = function(){
 		var _this = this;
 		var layers = this.layers;
-
+		_layerControl.reset();
 		layers.forEach( function(layer){
-			_layerControl.removeLayer(layer);
+			//_layerControl.removeLayer(layer);
 			if( _this.map.hasLayer( layer)){
 				layer.remove();
-			}
-			
+			}		
 		})
+		
 		this.layers = [];
 		_global_observations = [];
 		_earthControl.reset();
+		
 	  }
 	  
 	this.initialize = function( container, lang){

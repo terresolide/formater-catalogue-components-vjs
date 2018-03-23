@@ -180,7 +180,16 @@ export default {
 #formatermap .leaflet-control-layers-group-name{
 	font-weight: bold;
 }
-#formatermap .leaflet-control-layers-selector{
+#formatermap .leaflet-control-layers-label{
 	margin-left:20px;
+}
+#formatermap .selected-area label{
+	font-weight:bold;
+}
+
+#formatermap .leaflet-control-layers-group.selected-area{
+	padding-bottom:5px;
+	margin-bottom: 5px;
+	border-bottom: 1px dotted grey;
 }
 </style>

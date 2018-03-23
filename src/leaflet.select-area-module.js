@@ -152,7 +152,9 @@ L.SelectArea =   L.Evented.extend({
 			//create rectangle and markers
 			this._createGeometries( bounds);
 		}else{
-		
+		    if( ! this.map.hasLayer(this.rectangle)){
+		    	this.rectangle.addTo( this.map);
+		    }
 			this.setBounds( bounds);
 		}
 		this.fire("change");
