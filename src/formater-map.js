@@ -55,7 +55,7 @@ module.exports = function( L ){
 	var _selectArea = null;
 	var _layerControl = null;
 	var _earthControl = null;
-
+    var _layerpopup = null;
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
 		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange'}),
@@ -293,11 +293,18 @@ module.exports = function( L ){
 		}
 	}
 
-	
+
 	L.Layer.prototype.createPopup = function( evt ){
+		
 		_earthControl._collapse();
-		if( this.popup){
+	
+		if( _layerpopup == this){
+			_layerpopup = null;
+			this.map.closePopup();
 			
+		}
+		if( this.popup){
+	
 			return;
 		}
 		this.closeTooltip();
@@ -330,8 +337,10 @@ module.exports = function( L ){
 			
 		});
 		this.popup = node;
+	
 		this.bindPopup( node, );
 		this.openPopup( evt.latlng);
+		_layerpopup = this;
 	}
 	
 		
