@@ -229,6 +229,12 @@ L.Control.GroupedLayers = L.Control.extend({
     }
 
     this._separator.style.display = overlaysPresent && baseLayersPresent && selectedAreaPresent ? '' : 'none';
+    if( this._layers.length>0 ){
+    	if( this._container.className.indexOf('has-content')<0)
+    	this._container.className = this._container.className + " has-content";
+    }else{
+    	 this._container.className = this._container.className.replace(' has-content', '');
+    }
   },
 
   _onLayerChange: function (e) {

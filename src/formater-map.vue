@@ -211,6 +211,12 @@ export default {
 	padding-top:3px;
 }
 /** layer grouped style**/
+#formatermap .leaflet-control-layers{
+	display:none;
+}
+#formatermap div.leaflet-control-layers.has-content{
+	display:block;
+}
 #formatermap .leaflet-control-layers h4{
     display:block;
 	background:white;
