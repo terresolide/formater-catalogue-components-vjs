@@ -42,6 +42,10 @@ module.exports = function( L ){
 		"Earth":{
 			fr: "Terre",
 			en: "Earth"
+		},
+		"Layers":{
+			fr: "Système de couches",
+			en: "Layers"
 		}
 	}
 	var _tooltip = null;
@@ -126,12 +130,12 @@ module.exports = function( L ){
 						  height:300, 
 						  color:"#DD9946"
 					  }});
-		  _layerControl = L.control.groupedLayers(null, null,  {groupCheckboxes: true});
+		  _layerControl = L.control.groupedLayers(null, null,  {groupCheckboxes: true, title: _t('Layers')});
 		  _layerControl.addTo( this.map);
 		  _tooltip = L.tooltip();
 		  _selected = L.selectedLayer({
 				options:{
-					lang: "fr"
+					lang: lang
 				}
 		  });
 		  document.addEventListener("closeSheet", function(e){
@@ -141,7 +145,6 @@ module.exports = function( L ){
 				}
 		  });
 		  var options = {  lang:lang, title: _t('Global_data'), name: _t("Global_data")};
-		  console.log( options);
 		_earthControl = L.control.earthLayer(_selected, options);
 		_earthControl.addTo( this.map);
 		
@@ -155,6 +158,7 @@ module.exports = function( L ){
 		this.map._container.style.height = Math.round(this.height ) +"px";
 		this.map.invalidateSize()
 	}
+
 	this.displayResults = function( event ){
 		_addSelectArea2LayerGroup( event );
 		 

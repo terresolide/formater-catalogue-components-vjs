@@ -184,10 +184,10 @@ export default {
 }
 #formatermap .leaflet-control-earth.leaflet-control-earth-expanded{
 	background: white;
-color: #333;
-box-shadow: 0 3px 14px rgba(0,0,0,0.4);
-border: none;
-border-radius: 12px;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	border: none;
+	border-radius: 12px;
 }
 #formatermap .leaflet-control-earth.selected .leaflet-control-earth-toggle{
 	color: rgba(255,0,0,0.6)
@@ -210,7 +210,38 @@ border-radius: 12px;
 	display:block;
 	padding-top:3px;
 }
+/** layer grouped style**/
+#formatermap .leaflet-control-layers h4{
+    display:block;
+	background:white;
+	margin:0;
+	padding:0;
+	height:auto;
+	vertical-align:middle;
+	font-size:16px;
+	
+}
+#formatermap .leaflet-control-layers h4 span{
+   
+	display:none;
+}
 
+#formatermap .leaflet-control-layers-expanded h4{
+	margin:-6px -10px 0px -6px;
+	background-color:red;
+	display:block;
+
+	height:40px;
+}
+#formatermap .leaflet-control-layers-expanded h4 span{
+    display:inline-block;
+    vertical-align:middle;
+	padding: 5px 10px 5px 5px;
+}
+#formatermap .leaflet-control-layers-expanded .leaflet-control-layers-toggle{
+  display:inline-block;
+  vertical-align:middle;
+}
 #formatermap .leaflet-control-layers-group-name{
 	font-weight: bold;
 }

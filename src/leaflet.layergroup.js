@@ -12,7 +12,8 @@ L.Control.GroupedLayers = L.Control.extend({
     position: 'topleft',
     autoZIndex: true,
     exclusiveGroups: [],
-    groupCheckboxes: false
+    groupCheckboxes: false,
+    title: 'Layers'
   },
 
   initialize: function (baseLayers, groupedOverlays, options) {
@@ -35,6 +36,11 @@ L.Control.GroupedLayers = L.Control.extend({
         this._addLayer(groupedOverlays[i][j], j, i, true);
       }
     }
+    this.aerisThemeListener = this.handleTheme.bind(this) 
+   document.addEventListener('aerisTheme', this.aerisThemeListener);
+    //search theme
+    var event = new CustomEvent('aerisThemeRequest', {});
+    document.dispatchEvent(event);
   },
 
   onAdd: function (map) {
@@ -75,6 +81,9 @@ L.Control.GroupedLayers = L.Control.extend({
 	  this._update();
 	  return this;
   },
+  handleTheme: function(evt){
+	  this._color = evt.detail.primary;
+  },
   removeSelectedArea: function(){
 	  this._selectedArea = false;
 	  this.removeLayer( this._selectedArea);
@@ -104,6 +113,9 @@ L.Control.GroupedLayers = L.Control.extend({
 	    this._selectedArea = false;
 	    this._update();
   },
+  setColor( color){
+	  this._container.querySelector('h4').style.background = color;
+  },
   _getLayer: function (id) {
     for (var i = 0; i < this._layers.length; i++) {
       if (this._layers[i] && L.stamp(this._layers[i].layer) === id) {
@@ -128,18 +140,21 @@ L.Control.GroupedLayers = L.Control.extend({
     var form = this._form = L.DomUtil.create('form', className + '-list');
 
     if (this.options.collapsed) {
+      var h4 = L.DomUtil.create('h4', '', container);
     
-      var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
+      var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', h4);
       link.href = '#';
-      link.title = 'Layers';
-
-      if (L.Browser.touch) {
+      link.title = this.options.title;
+    
+      var span = L.DomUtil.create('span','', h4);
+     span.innerHTML = this.options.title;
+     // if (L.Browser.touch) {
         L.DomEvent
             .on(link, 'click', L.DomEvent.stop)
-            .on(link, 'click', this._expand, this);
-      } else {
-        L.DomEvent.on(link, 'focus', this._expand, this);
-      }
+            .on(link, 'click', this._toggle, this);
+    //  } else {
+     //   L.DomEvent.on(link, 'focus', this._expand, this);
+    //  }
 
       this._map.on('click', this._collapse, this);
       // TODO keyboard accessibility
@@ -427,10 +442,21 @@ L.Control.GroupedLayers = L.Control.extend({
       L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
       this._form.style.height = acceptableHeight + 'px';
     }
+    if( this._color){
+  	  this.setColor( this._color);
+    }
   },
 
   _collapse: function () {
     this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
+    this.setColor( 'white');
+  },
+  _toggle: function(){
+		if( this._container.className.indexOf('leaflet-control-layers-expanded')>=0){
+			this._collapse();
+		}else{
+			this._expand();
+		}
   },
 
   _indexOf: function (arr, obj) {
