@@ -140,7 +140,7 @@ module.exports = function( L ){
 					_selected.button.dispatchEvent(event);
 				}
 		  });
-		  var options = {  lang:lang, title: _t('Global_data'), name: _t("Earth")};
+		  var options = {  lang:lang, title: _t('Global_data'), name: _t("Global_data")};
 		  console.log( options);
 		_earthControl = L.control.earthLayer(_selected, options);
 		_earthControl.addTo( this.map);
@@ -151,7 +151,7 @@ module.exports = function( L ){
 		if( !this.map) return;
 		 var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight;
 	     
-		this.height = hw - this.map._container.getBoundingClientRect().top -5;
+		this.height = hw - 30;// this.map._container.getBoundingClientRect().top -5;
 		this.map._container.style.height = Math.round(this.height ) +"px";
 		this.map.invalidateSize()
 	}

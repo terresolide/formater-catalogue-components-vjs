@@ -8,8 +8,9 @@ var Bcmt = require("./bcmt-chart.js");
 var bcmt = new Bcmt(Highcharts);
 var Isgi = require("../../isgi-component-vjs/src/isgi-indice-module.js");
 var isgi = new Isgi(Highcharts);
-console.log( isgi.tr);
-function FtChart(){
+
+
+function FtChart(Highcharts){
 	
 	/**
 	 * Override the reset function, we don't need to hide the tooltips and crosshairs.
@@ -61,10 +62,6 @@ function FtChart(){
 	}
 
 	
-
-	 
-	
-	
 	 /** public method **/
 	 this.init = function( lang){
 		 _lang =lang;
@@ -98,7 +95,7 @@ function FtChart(){
 	                chartTitle += " " + _t("to")+ " "+ moment(end, "YYYY-MM-DD").format("ll");
 	            }
 	    	 return chartTitle;
-	     }
+	 }
 	 this.destroyCharts = function(){
 		  
 		    if(! this.container ) return false;
@@ -115,7 +112,7 @@ function FtChart(){
 	    		}
 	    	
 	    	return true;
-	     },
+	 }
      this.createChart= function(container, cds, data0, code, query){
 	    	
 	     if(!data0 || !data0.collection){
@@ -142,7 +139,6 @@ function FtChart(){
         	 }
      	 }
     	
-     	
     	 	
     	this.container = container;
   	 	
@@ -166,4 +162,4 @@ function FtChart(){
 	     
 }
 
-module.exports = new FtChart();
+module.exports = new FtChart(Highcharts);
