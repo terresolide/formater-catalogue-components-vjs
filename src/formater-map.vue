@@ -47,7 +47,7 @@ export default {
   methods:{
 	  resize(){
 	      var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight;
-	      this.height = hw - this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
+	      this.height = hw -50 ;//- this.$el.querySelector(".formater-map > div").getBoundingClientRect().top -5;
 	      ftMap.resize( this.height);
 	  },
 	  handleReset(){
