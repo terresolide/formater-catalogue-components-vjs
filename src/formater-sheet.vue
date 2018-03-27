@@ -38,7 +38,8 @@
         "algorithms": "Algorithms",
         "method": "Method",
         "data_last_update": "Data last update",
-        "download": "Download"
+        "download": "Download",
+        "view_on_map": "View on the map"
     
        
         
@@ -81,8 +82,8 @@
         "algorithms": "Algorithmes",
         "method": "Méthode",
          "data_last_update": "Dernière mise à jour des données",
-          "download": "Téléchargement"
-          
+          "download": "Téléchargement",
+          "view_on_map": "Visualiser sur la carte"
    }
 }
 </i18n>
@@ -109,6 +110,12 @@
 		  <span v-html="chartTitle"></span>
 		  </h4>
 		  <div id="ftChartContainer"></div>
+		</div>
+		<div  class="formater-sheet-data-metablock" v-if="images">
+		  <h4 :style="styleTitle"><i class="fa fa-image"></i>
+		  {{ $t("view_on_map")}}
+		  </h4>
+		  <geotiff-visualizer :images="images"></geotiff-visualizer>
 		</div>
 		
 		
@@ -441,7 +448,8 @@ export default {
 			searched:false,
 			charts:null,
 			code:null,
-			hasGraph: false
+			hasGraph: false,
+			images:null
 			
 		}
 	},
@@ -504,7 +512,22 @@ export default {
 	    	 }
 	    			 
 	     },
+	     handleFindData( event){
+	    	 switch( event.detail.cds){
+	    	 case "bcmt":
+	    	 case "isgi":
+	    		 this.handleCreateChart(event);
+	    		 break;
+	    	 case "grenoble":
+	    		 this.handleDisplayImage(event);
+	    		 break;
+	    	 }
+	     },
+	     handleDisplayImage(event){
+	    	 this.images = event.detail.obs.data;
+	     },
 	     handleCreateChart(event){
+	    	
 	    	 if(!this.$el.querySelector ){
                  return;
              }
@@ -528,7 +551,6 @@ export default {
 	    	 var options = event.detail.layer.options;
 	    	 var observation = event.detail.observation;
 	    	 var query = observation.query != "undefined" ? observation.query:null;
-	    	 console.log( query);
 	         var code = observation.identifiers.customId;
 
 			
@@ -538,7 +560,6 @@ export default {
 	    	 }
 	    
 	         this.code = code;
-	         console.log( this.code);
 	         var _self = this;
 			 var next = function(){ 
 				 console.log("dans next");
@@ -560,7 +581,7 @@ export default {
 		document.addEventListener('aerisSearchEvent', this.aerisSearchEventListener);
 		this.displayInfoListener = this.displayInfo.bind(this) 
         document.addEventListener('displayInfo', this.displayInfoListener);
-		this.findDataListener = this.handleCreateChart.bind(this) 
+		this.findDataListener = this.handleFindData.bind(this) 
         document.addEventListener('findData', this.findDataListener);
 		this.unselectLayerListener = this.hide.bind(this);
 		document.addEventListener('unselectInput', this.unselectLayerListener);

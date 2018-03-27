@@ -16,6 +16,7 @@ import FormaterSpatialSearch from './formater-spatial-search.vue';
 import FormaterForm from './formater-form.vue';
 import FormaterMap from './formater-map.vue';
 import FormaterCatalogue from './formater-catalogue.vue';
+import GeotiffVisualizer from './geotiff-visualizer.vue';
 import FormaterSheet from './formater-sheet.vue';
 //@todo use aeris-mixins instead of isgi-tools.js
 /*import IsgiTools from './isgi-tools.js';
@@ -87,6 +88,7 @@ ljs.load('dep', function() {
      function load(){
          registerElement('formater-spatial-search', FormaterSpatialSearch);
          registerElement('formater-form', FormaterForm);
+         registerElement('geotiff-visualizer', GeotiffVisualizer);
          registerElement('formater-sheet', FormaterSheet);
          registerElement('formater-map', FormaterMap);
          registerElement('formater-catalogue', FormaterCatalogue);

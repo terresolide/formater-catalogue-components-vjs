@@ -48,6 +48,7 @@ L.SelectedLayer =   L.Evented.extend({
 		this.layer = null;
 	},
 	searchData( obs, query, cds){
+		
 		var _cds = cds;
         var _disabledUrl = this.disabledUrl;
 		if(!obs.process){
@@ -78,7 +79,9 @@ L.SelectedLayer =   L.Evented.extend({
 			   }else{
 				   obs.process.status = "DONE";
 				   obs.data = this.response;
-				   var links = obs.data.meta.get("FTP_DOWNLOAD_LINK");
+				   var links= [];
+				   if( obs.data.meta)
+				   links = obs.data.meta.get("FTP_DOWNLOAD_LINK");
 				
 			    	 //DELETE OLD LINK FTP
 			    	 if( obs.links){
@@ -97,7 +100,7 @@ L.SelectedLayer =   L.Evented.extend({
 			    	if(_cds == "isgi"){
 			    		//recuperation du lien archive
 			    		var url = obs.data.meta.get("isgi_url");
-			    		console.log(url);
+			    		
 			    		if( url){
 			    			var link = {
 			    					type: "HTTP_DOWNLOAD_DIRECT_LINK",

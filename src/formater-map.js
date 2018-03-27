@@ -23,6 +23,10 @@ module.exports = function( L ){
 			fr:"Géomagnétisme",
 			en: "Geomagnetism"
 		},
+		"Geodesy":{
+			fr:"Géodésie",
+			en:"Geodesy"
+		},
 		"Observatories":{
 			fr:"Observatoires",
 			en: "Observatories"
@@ -252,7 +256,7 @@ module.exports = function( L ){
         	  document.dispatchEvent( event);
           }).addTo( this.map);
 		
-		if( this._count == 0 ){
+		if( count == 0 ){
 			return;
 		}
 		
@@ -264,6 +268,8 @@ module.exports = function( L ){
 		case "isgi":
 			 _layerControl.addOverlay( layer, _t("Geomagnetic_zones"), _t("Geomagnetism"));
 		     break;
+		case "grenoble":
+			_layerControl.addOverlay( layer, _t("PEPS truc"), _t("Geodesy"));
 		}
 		this.layers.push( layer);
 

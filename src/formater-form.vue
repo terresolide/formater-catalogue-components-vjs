@@ -6,7 +6,8 @@
        "spatial_extents": "spatial extents",
        "output_format": "Output Format",
        "search": "Search",
-       "geomagnetisme": "Geomagnetism",
+       "geomagnetism": "Geomagnetism",
+       "geodesy": "Geodesy",
        "service_closed": "The service is closed"
    },
    "fr":{
@@ -15,7 +16,8 @@
         "spatial_extents": "zone géographique",
         "output_format": "Format de sortie",
         "search": "rechercher",
-      "geomagnetisme": "Geomagnétisme",
+      "geomagnetism": "Geomagnétisme",
+      "geodesy": "Geodésie",
       "service_closed": "Le service est fermé"
    }
 }
@@ -68,7 +70,8 @@ export default {
   computed:{
       dataType(){
           var interval = JSON.stringify({
-              geomagnetisme: this.$i18n.t('geomagnetisme')
+              geomagnetism: this.$i18n.t('geomagnetism'),
+              geodesy: this.$i18n.t('geodesy')
           }).replace(/"/g, "'");
           return interval;
       }
@@ -78,7 +81,8 @@ export default {
            aerisThemeListener:null,
            theme:null,
            searching:false,
-           cds: ["bcmt", "isgi"]
+           cds: [{ name:"bcmt", domain:"geomagnetism"},{name:"isgi", domain:"geomagnetism"}, {name:"grenoble", domain:"geodesy"}]
+         
       }
   },
   methods: {
@@ -126,15 +130,21 @@ export default {
 		callApiByCds( i, data){
 			if( i < this.cds.length){
 				var params = data;
-				
-				var cds = this.cds[i];
-			    params.cds = cds;
-				var _this = this;
-				var index = i;
-				this.$http.get( this.url, {params:params}).then(
-						response => {_this.handleSuccess( response, params, cds);  _this.callApiByCds( index+1, data);},
-	                    response => { _this.handleError( response ,  params, cds); _this.callApiByCds( index+1, data);}
-				);
+				//console.log( data);
+				var cds = this.cds[i].name;
+				console.log(data.DataType);
+				console.log(this.cds[i].domain);
+				if( data.DataType.indexOf(this.cds[i].domain)>=0){
+				    params.cds = cds;
+					var _this = this;
+					var index = i;
+					this.$http.get( this.url, {params:params}).then(
+							response => {_this.handleSuccess( response, params, cds);  _this.callApiByCds( index+1, data);},
+		                    response => { _this.handleError( response ,  params, cds); _this.callApiByCds( index+1, data);}
+					);
+				}else{
+					this.callApiByCds( i+1, data);
+				}
 			}else{
 				this.searching = false;
 			}
