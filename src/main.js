@@ -51,9 +51,8 @@ ljs.addAliases({
 		// composants formater de bases
 		//-----------------------------
 	    //'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
-	    'https://cdn.rawgit.com/terresolide/formater-commons-components-vjs/0.1.6/dist/formater-commons-components-vjs.js' ,
-	    //'https://cdn.rawgit.com/aeris-data/aeris-commons-components-vjs/0.1.23/dist/aeris-commons-components-vjs_0.1.23.js'
-		   
+	   // 'https://cdn.rawgit.com/terresolide/formater-commons-components-vjs/0.1.6/dist/formater-commons-components-vjs.js' ,
+	    "https://api.poleterresolide.fr/webcomponents/formater-commons-components-vjs_0.1.6.js"   
 	    
 	    ]
 })

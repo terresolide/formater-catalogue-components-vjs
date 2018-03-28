@@ -11,9 +11,9 @@
 <template>
 <span class="geotiff-visualizer">
 	<div>
-	<span @click="previous()"  class="geotiff-nav" :class="selected==first? 'disabled':''"><i class="fa fa-chevron-left"></i></span>
+	<span @click="previous()"  class="geotiff-nav" v-if="selected!=first"><i class="fa fa-chevron-left"></i></span>
 	<span v-for="(item, key) in list" :data-image="item.png" v-show="keys[selected]==key" style="display:inline-block;">{{ date2str(item.date) }}</span>
-	<span @click="next()" class="geotiff-nav"  :class="selected==first? 'disabled':''"><i class="fa fa-chevron-right"></i></span>
+	<span @click="next()" class="geotiff-nav"  v-if="selected!=last"><i class="fa fa-chevron-right"></i></span>
 	</div>
 </span>
 </template>
@@ -107,14 +107,24 @@ export default {
 }
 </script>
 <style>
+.geotiff-visualizer > div{
+	margin:30px;
+	text-align:center;
+	
+}
+
 .geotiff-visualizer .geotiff-nav{
-   font-family:FontAwesome;
    background:black;
    color: white;
    width:30px;
-   height:30px;
-   padding:8px;
+   min-height:60px;
+   padding:8px 12px;
+   margin: 20px 5px;
    border-radius:15px;
-   opacity:0.5;
+   opacity:0.3;
+   cursor:pointer;
 }
+ .geotiff-visualizer .geotiff-nav::hover{ 
+	opacity:0.8;
+} 
 </style>
