@@ -10,8 +10,11 @@
 </i18n>
 <template>
 <span class="geotiff-visualizer">
-	
-
+	<div>
+	<span @click="previous()"  class="geotiff-nav" :class="selected==first? 'disabled':''"><i class="fa fa-chevron-left"></i></span>
+	<span v-for="(item, key) in list" :data-image="item.png" v-show="keys[selected]==key" style="display:inline-block;">{{ date2str(item.date) }}</span>
+	<span @click="next()" class="geotiff-nav"  :class="selected==first? 'disabled':''"><i class="fa fa-chevron-right"></i></span>
+	</div>
 </span>
 </template>
 <script>
@@ -22,20 +25,38 @@ export default {
             default:'fr'
         },
         images:{
-        	type:String,
+        	type:[String, Array, Object],
         	default:""
         }
     },
     data(){
         return {
-         
+         	bbox:null,
+         	selected:null,
+         	first:null,
+         	last:null,
+         	keys:[]
         }
+    },
+    computed: {
+    	list(){
+    		var list = JSON.parse( this.images.replace(/'/g, '"'));
+    		this.bbox = list.bbox;
+    		console.log( list.result);
+    		this.keys = Object.keys(list.result);
+    		this.first = 0;
+    		this.last = this.keys.length-1;
+    		this.selected = this.first;
+    		return list.result;
+    	}
     },
     destroyed: function() {
 		
   },
   
   created: function () {
+	  console.log( "dans created geotiff");
+	  
 		this.$i18n.locale = this.lang;
 		this.resetEventListener = this.handleReset.bind(this) 
 		document.addEventListener('aerisResetEvent', this.resetEventListener);
@@ -45,7 +66,7 @@ export default {
   },
 
   mounted: function(){
-	  
+	  console.log( "dans mounted geotiff");
 	  console.log(this.images.bbox);
 	  console.log(this.images.result);
       var event = new CustomEvent('aerisThemeRequest', {});
@@ -54,7 +75,15 @@ export default {
   },
     methods:{
         
-  
+  		date2str( date){
+  			return moment(date).format("ll");
+  		},
+  		next(){
+  			this.selected += 1;
+  		},
+  		previous(){
+  			this.selected -=1;
+  		},
 		handleReset: function( ) {
 		   
 		
@@ -78,5 +107,14 @@ export default {
 }
 </script>
 <style>
-
+.geotiff-visualizer .geotiff-nav{
+   font-family:FontAwesome;
+   background:black;
+   color: white;
+   width:30px;
+   height:30px;
+   padding:8px;
+   border-radius:15px;
+   opacity:0.5;
+}
 </style>

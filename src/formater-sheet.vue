@@ -115,7 +115,7 @@
 		  <h4 :style="styleTitle"><i class="fa fa-image"></i>
 		  {{ $t("view_on_map")}}
 		  </h4>
-		  <geotiff-visualizer :images="images"></geotiff-visualizer>
+		  <geotiff-visualizer :images="JSON.stringify(images)"></geotiff-visualizer>
 		</div>
 		
 		
@@ -449,7 +449,7 @@ export default {
 			charts:null,
 			code:null,
 			hasGraph: false,
-			images:null
+			images:null,
 			
 		}
 	},
@@ -484,6 +484,9 @@ export default {
 	    	  
 	    	   this.title = observation.title[this.lang];
                this.data = observation;
+               if(cds === "grenoble"){
+            	   this.images = observation.data;
+               }
                
                if( observation.data && observation.query){
             	   var container = this.$el.querySelector("#ftChartContainer");
@@ -525,6 +528,7 @@ export default {
 	     },
 	     handleDisplayImage(event){
 	    	 this.images = event.detail.obs.data;
+	    	 console.log( this.images);
 	     },
 	     handleCreateChart(event){
 	    	
