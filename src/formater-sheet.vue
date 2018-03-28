@@ -468,6 +468,7 @@ export default {
 	    	 ftChart.destroyCharts();
 	    	 this.hasGraph = false;
 	    	 this.chartTitle = "";
+	    	 this.images = [];
 	    	// this.$el.querySelector("#container").style.display = "none";
 	    	 this.hidden = true;
 	    	 this.code ="";
@@ -486,6 +487,8 @@ export default {
                this.data = observation;
                if(cds === "grenoble"){
             	   this.images = observation.data;
+               }else{
+            	   this.images = null;
                }
                
                if( observation.data && observation.query){
