@@ -52,7 +52,7 @@ ljs.addAliases({
 		//-----------------------------
 	    //'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
 	   // 'https://cdn.rawgit.com/terresolide/formater-commons-components-vjs/0.1.6/dist/formater-commons-components-vjs.js' ,
-		 "https://api.poleterresolide.fr/webcomponents/formater-commons-components-vjs_0.1.7.js" 
+		 "https://api.poleterresolide.fr/webcomponents/formater-commons-components-vjs_0.1.8.js" 
 		     
 	    ]
 })
