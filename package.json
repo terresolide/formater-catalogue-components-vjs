@@ -3,7 +3,7 @@
   "version": "2.10.0",
   "description": "webcomponent for ForM@Ter catalogue",
   "preproduction": {
-    "url": "https://rawgit.com/terresolide/"
+    "url": "https://api.poleterresolide.fr/"
   },
   "production": {
     "url": "https://cdn.rawgit.com/terresolide/"
