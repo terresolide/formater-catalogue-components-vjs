@@ -113,6 +113,27 @@ module.exports = function( L ){
 		_earthControl.reset();
 		
 	  }
+	
+	function getDataUri(url, callback) {
+	    var image = new Image();
+
+	    image.onload = function () {
+	        var canvas = document.createElement('canvas');
+	        canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+	        canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+	        canvas.getContext('2d').drawImage(this, 0, 0);
+
+	        // Get raw image data
+	        callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
+
+	        // ... or get as Data URI
+	      //  callback(canvas.toDataURL('image/png'));
+	    };
+
+	    image.src = url;
+	}
+
 	  
 	this.initialize = function( container, lang){
 		 _lang = lang;
@@ -137,11 +158,7 @@ module.exports = function( L ){
 		  _layerControl = L.control.groupedLayers(null, null,  {groupCheckboxes: true, title: _t('Layers')});
 		  _layerControl.addTo( this.map);
 		  _tooltip = L.tooltip();
-		  _selected = L.selectedLayer({
-				options:{
-					lang: lang
-				}
-		  });
+		  _selected = L.selectedLayer( this.map,{lang: lang});
 		  document.addEventListener("closeSheet", function(e){
 				if( _selected.button){
 					var event = new MouseEvent("click", {});
@@ -151,6 +168,17 @@ module.exports = function( L ){
 		  var options = {  lang:lang, title: _t('Global_data'), name: _t("Global_data")};
 		_earthControl = L.control.earthLayer(_selected, options);
 		_earthControl.addTo( this.map);
+//		 var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
+//		 var _map = this.map;
+//		 var imageLayer = L.imageOverlay( "/geotiff/geo_TOT_20160513.unw.png", imageBounds,{crossOrigin:true});
+//		 imageLayer.addTo( _map);
+//		 imageLayer.bringToFront();
+//		getDataUri(  "/geotiff/geo_TOT_20160513.unw.png", function(dataUri){
+//			 var imageLayer = L.imageOverlay( dataUri, imageBounds,{crossOrigin:true});
+//			 imageLayer.addTo( _map);
+//			 imageLayer.bringToFront();
+//		});
+		
 		
 
 	}

@@ -6,15 +6,17 @@ L.SelectedLayer =   L.Evented.extend({
 	//selected button
 	button:null,
 	popup:null,
-	image:null,
+	imageLayer:null,
 	bbox:null,
 	imageListener:null,
 	disabledUrl:[],
+	map:null,
 	options:{
 		lang: "fr"
 	
 	},
-	initialize: function( options){
+	initialize: function( map,options){
+		this.map = map;
 		L.Util.setOptions(this, options);
 		this.imageListener = this.displayImage.bind( this);
 		document.addEventListener("selectedImage",this.imageListener);
@@ -43,6 +45,32 @@ L.SelectedLayer =   L.Evented.extend({
 	},
 	displayImage( evt ){
 		console.log( evt.detail);
+		var imageBounds = [[ evt.detail.bbox.west, evt.detail.bbox.south],
+						   [ evt.detail.bbox.east, evt.detail.bbox.north]];
+
+		//var imageBounds = this.layer.getBounds();
+		//this.layer.setOptions({opacity:0});
+		imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];
+		//var image = new Image( evt.detail.img);
+		// var imageLayer = L.imageOverlay( "/geotiff/geo_TOT_20160513.unw.png", imageBounds,{crossOrigin:true});
+//		 imageLayer.addTo( _map);
+//		 imageLayer.bringToFront();
+		if( this.layer){
+			this.layer.setStyle({opacity:0, fillOpacity:0});
+		}
+		if( ! this.imageLayer){
+			this.imageLayer = L.imageOverlay( evt.detail.img, imageBounds,{crossOrigin:true});
+		}else{
+			this.imageLayer.setUrl( evt.detail.img);
+		}//console.log( this.imageLayer);
+		var _map = this.map;
+		 this.imageLayer.bringToFront();
+		console.log( _map);
+		this.imageLayer.on( "load" , function(){
+			console.log( "image loaded");
+		})
+		this.imageLayer.addTo( this.map);
+		//this.imageLayer.setUrl( evt.detail.img);
 	},
 	close: function(){
 		if( this.layer == null){
@@ -173,7 +201,7 @@ L.SelectedLayer =   L.Evented.extend({
 	}
 
 });
-L.selectedLayer = function(options) {
-    return new L.SelectedLayer(options);
+L.selectedLayer = function(map, options) {
+    return new L.SelectedLayer(map, options);
 }
 module.exports = L.selectedLayer;

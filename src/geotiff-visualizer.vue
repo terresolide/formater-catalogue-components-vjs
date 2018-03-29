@@ -11,9 +11,14 @@
 <template>
 <span class="geotiff-visualizer">
 	<div>
-	<span @click="previous()"  class="geotiff-nav" v-if="selected!=first"><i class="fa fa-chevron-left"></i></span>
-	<span v-for="(item, key) in list" :data-image="item.png" v-show="keys[selected]==key" style="display:inline-block;">{{ date2str(item.date) }}</span>
-	<span @click="next()" class="geotiff-nav"  v-if="selected!=last"><i class="fa fa-chevron-right"></i></span>
+		<span @click="play()" class="geotiff-nav" v-if="selected==null"><i class="fa fa-play"></i></span>
+		<span class="geotiff-nav-content">
+			<span @click="previous()"  class="geotiff-nav" v-if="selected!=first"><i class="fa fa-chevron-left"></i></span>
+		</span>
+		<span v-for="(item, key) in list" :data-image="item.png" v-show="keys[selected]==key" style="display:inline-block;">{{ date2str(item.date) }}</span>
+		<span class="geotiff-nav-content">
+			<span @click="next()" class="geotiff-nav"  v-if="selected!=last"><i class="fa fa-chevron-right"></i></span>
+		</span>
 	</div>
 </span>
 </template>
@@ -40,14 +45,20 @@ export default {
     },
     computed: {
     	list(){
-    		var list = JSON.parse( this.images.replace(/'/g, '"'));
-    		this.bbox = list.bbox;
-    		console.log( list.result);
-    		this.keys = Object.keys(list.result);
-    		this.first = 0;
-    		this.last = this.keys.length-1;
-    		this.selected = this.first;
-    		return list.result;
+    		
+    		
+    		if( this.images){
+    			var list = JSON.parse( this.images.replace(/'/g, '"'));
+	    		this.bbox = list.bbox;
+	    		console.log( list.result);
+	    		this.keys = Object.keys(list.result);
+	    		this.first = 0;
+	    		this.last = this.keys.length-1;
+	    		
+	    		return list.result;
+    		}else{
+    			return [];
+    		}
     	}
     },
     destroyed: function() {
@@ -67,8 +78,8 @@ export default {
 
   mounted: function(){
 	  console.log( "dans mounted geotiff");
-	  console.log(this.images.bbox);
-	  console.log(this.images.result);
+	 // console.log(this.images.bbox);
+	 // console.log(this.images.result);
       var event = new CustomEvent('aerisThemeRequest', {});
       document.dispatchEvent(event);
 
@@ -80,9 +91,31 @@ export default {
   		},
   		next(){
   			this.selected += 1;
+  			if( this.selected < this.keys.length){
+  				this.triggerImageDisplay( this.keys[this.selected]);
+  			}else{
+  				this.selected = null;
+  			}
   		},
   		previous(){
   			this.selected -=1;
+  			if( this.selected < 0 ){
+  				this.selected = null;
+  			}else{
+  				this.triggerImageDisplay( this.keys[this.selected]);
+  			}
+  		},
+  		play(){
+  			this.selected = this.first;
+  		},
+  		triggerImageDisplay( index){
+  			if( this.list[index] == "undefined"){
+  				return;
+  			}
+  			var info = { bbox: this.bbox, img:this.list[index].png};
+  			var evt = new CustomEvent("selectedImage", {detail: info});
+  			document.dispatchEvent(evt);
+  			
   		},
 		handleReset: function( ) {
 		   
@@ -123,6 +156,9 @@ export default {
    border-radius:15px;
    opacity:0.3;
    cursor:pointer;
+}
+.geotiff-nav-content{
+	ùin-width:50px;
 }
  .geotiff-visualizer .geotiff-nav::hover{ 
 	opacity:0.8;
