@@ -743,6 +743,7 @@ export default {
     }
     .formater-sheet-container .formater-quicklook{
         max-width: 270px;
+        max-height:270px;
     }
     .formater-sheet-container .formater-function{
         margin-bottom:5px;

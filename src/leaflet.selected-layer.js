@@ -6,6 +6,9 @@ L.SelectedLayer =   L.Evented.extend({
 	//selected button
 	button:null,
 	popup:null,
+	image:null,
+	bbox:null,
+	imageListener:null,
 	disabledUrl:[],
 	options:{
 		lang: "fr"
@@ -13,6 +16,9 @@ L.SelectedLayer =   L.Evented.extend({
 	},
 	initialize: function( options){
 		L.Util.setOptions(this, options);
+		this.imageListener = this.displayImage.bind( this);
+		document.addEventListener("selectedImage",this.imageListener);
+		
 		
 	},
 	change:function( button,layer){
@@ -34,6 +40,9 @@ L.SelectedLayer =   L.Evented.extend({
 		}
 		
 
+	},
+	displayImage( evt ){
+		console.log( evt.detail);
 	},
 	close: function(){
 		if( this.layer == null){
