@@ -11,6 +11,7 @@ L.SelectedLayer =   L.Evented.extend({
 	imageListener:null,
 	disabledUrl:[],
 	map:null,
+	opacity:1,
 	options:{
 		lang: "fr"
 	
@@ -33,6 +34,7 @@ L.SelectedLayer =   L.Evented.extend({
 	
 			layer.select();
 			this.layer = layer;
+			this.opacity = this.layer.options.fillOpacity;
 			var obs = layer.options.properties.observations[ this.button.dataset.index];
 			var event = new CustomEvent("displayInfo", { detail:{ layer:layer, observation: obs, index: this.button.dataset.index}});
 	       	document.dispatchEvent(event);
@@ -43,33 +45,58 @@ L.SelectedLayer =   L.Evented.extend({
 		
 
 	},
+	isImagePlaying(layer){
+		if( layer == this.layer && this.imageLayer ){
+			return true;
+		}else{
+			return false;
+		}
+		
+	},
 	displayImage( evt ){
-		console.log( evt.detail);
-		var imageBounds = [[ evt.detail.bbox.west, evt.detail.bbox.south],
-						   [ evt.detail.bbox.east, evt.detail.bbox.north]];
 
-		//var imageBounds = this.layer.getBounds();
-		//this.layer.setOptions({opacity:0});
-		imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];
-		//var image = new Image( evt.detail.img);
-		// var imageLayer = L.imageOverlay( "/geotiff/geo_TOT_20160513.unw.png", imageBounds,{crossOrigin:true});
-//		 imageLayer.addTo( _map);
-//		 imageLayer.bringToFront();
+
+		this.map.closePopup();
+
+		 var imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];
+
 		if( this.layer){
-			this.layer.setStyle({opacity:0, fillOpacity:0});
+			this.layer.setStyle({fillOpacity:0});
 		}
 		if( ! this.imageLayer){
-			this.imageLayer = L.imageOverlay( evt.detail.img, imageBounds,{crossOrigin:true});
+			this.imageLayer = L.imageOverlay( 
+					  evt.detail.img, 
+					  imageBounds,
+					  {
+						  crossOrigin:true,
+						  zIndex:2000, 
+						  opacity:0.6, 
+						  interactive:true, 
+						  bubblingMouseEvents:false,
+						  alt: evt.detail.date,
+						  title: evt.detail.date
+				      });
+			this.imageLayer.on( "click", function( evt){
+				var event = new CustomEvent( "nextImageEvent");
+				document.dispatchEvent( event);
+			});
+			this.imageLayer.on( "dblclick", function( evt){
+				this.removeEventParent(evt);
+			});
+			this.imageLayer.addTo( this.map);
+		
 		}else{
 			this.imageLayer.setUrl( evt.detail.img);
+			var node = this.imageLayer.getElement();
+			node.setAttribute( "title", evt.detail.date);
+			node.setAttribute( "alt", evt.detail.date);
+			
 		}//console.log( this.imageLayer);
-		var _map = this.map;
+		
+		
+	
+		
 		 this.imageLayer.bringToFront();
-		console.log( _map);
-		this.imageLayer.on( "load" , function(){
-			console.log( "image loaded");
-		})
-		this.imageLayer.addTo( this.map);
 		//this.imageLayer.setUrl( evt.detail.img);
 	},
 	close: function(){
@@ -80,7 +107,14 @@ L.SelectedLayer =   L.Evented.extend({
 		document.dispatchEvent(event);
 		this.button.className = "";
 		this.button = null;
-		
+		if( this.imageLayer){
+			this.imageLayer.remove();
+			this.imageLayer = null;
+			
+		}
+		if( this.layer){
+			this.layer.setStyle({fillOpacity: this.opacity});
+		}
 		this.layer.unselect();
 		this.layer = null;
 	},

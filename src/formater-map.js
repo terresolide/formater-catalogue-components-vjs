@@ -239,7 +239,7 @@ module.exports = function( L ){
 	          			//  _map.openTooltip(_tooltip );
 	          			 if(evt.latlng);
 	          			  _tooltip.setLatLng( evt.latlng);
-	          			  if( typeof this.setStyle == "function")
+	          			  if( typeof this.setStyle == "function" && !_selected.isImagePlaying( this) )
 	          			 this.setStyle({ fillOpacity:0.6});
 	          		  }else{
 	          			  _map.closeTooltip(_tooltip);
@@ -253,7 +253,7 @@ module.exports = function( L ){
 	          		  
 	          	  })
 	          	  layer.on('mouseout', function(evt){
-	          		  if( typeof this.setStyle == "function")
+	          		  if( typeof this.setStyle == "function" && !_selected.isImagePlaying( this))
 	          		   this.setStyle({ fillOpacity:0.4});
 	          		   _map.closeTooltip(_tooltip);
 	          		   clearTimeout( _tooltip_timer);
@@ -331,10 +331,10 @@ module.exports = function( L ){
 	L.Layer.prototype.createPopup = function( evt ){
 		
 		_earthControl._collapse();
-	
+	   
 		if( _layerpopup == this){
 			_layerpopup = null;
-			this.map.closePopup();
+			this._map.closePopup();
 			
 		}
 		if( this.popup){
