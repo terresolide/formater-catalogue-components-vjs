@@ -27,7 +27,6 @@ L.SelectedLayer =   L.Evented.extend({
 	change:function( button,layer){
 		
 		if( this.button != button){
-			console.log("differents boutons");
 			this.close();
 			this.button = button;
 			this.button.className = "selected";
@@ -73,8 +72,7 @@ L.SelectedLayer =   L.Evented.extend({
 						  opacity:0.6, 
 						  interactive:true, 
 						  bubblingMouseEvents:false,
-						  alt: evt.detail.date,
-						  title: evt.detail.date
+						  alt: evt.detail.date
 				      });
 			this.imageLayer.on( "click", function( evt){
 				var event = new CustomEvent( "nextImageEvent");
@@ -84,16 +82,15 @@ L.SelectedLayer =   L.Evented.extend({
 				this.removeEventParent(evt);
 			});
 			this.imageLayer.addTo( this.map);
+			
 		
 		}else{
 			this.imageLayer.setUrl( evt.detail.img);
-			var node = this.imageLayer.getElement();
-			node.setAttribute( "title", evt.detail.date);
-			node.setAttribute( "alt", evt.detail.date);
-			
-		}//console.log( this.imageLayer);
-		
-		
+
+		}
+		var node = this.imageLayer.getElement();
+		node.setAttribute( "title", evt.detail.date);
+		node.setAttribute( "alt", evt.detail.date);
 	
 		
 		 this.imageLayer.bringToFront();
@@ -105,14 +102,16 @@ L.SelectedLayer =   L.Evented.extend({
 		}
 		var event = new CustomEvent("unselectInput", { detail:{}});
 		document.dispatchEvent(event);
+		if( this.button){
 		this.button.className = "";
-		this.button = null;
-		if( this.imageLayer){
-			this.imageLayer.remove();
-			this.imageLayer = null;
-			
+			this.button = null;
+			if( this.imageLayer){
+				this.imageLayer.remove();
+				this.imageLayer = null;
+				
+			}
 		}
-		if( this.layer){
+		if( typeof this.layer.setStyle == "function"){
 			this.layer.setStyle({fillOpacity: this.opacity});
 		}
 		this.layer.unselect();
