@@ -9,6 +9,7 @@ L.SelectedLayer =   L.Evented.extend({
 	imageLayer:null,
 	bbox:null,
 	imageListener:null,
+	showImageListener:null,
 	disabledUrl:[],
 	map:null,
 	opacity:1,
@@ -21,6 +22,8 @@ L.SelectedLayer =   L.Evented.extend({
 		L.Util.setOptions(this, options);
 		this.imageListener = this.displayImage.bind( this);
 		document.addEventListener("selectedImage",this.imageListener);
+		this.showImageListener = this.showImage.bind( this);
+		document.addEventListener("showImage", this.showImageListener);
 		
 		
 	},
@@ -50,6 +53,13 @@ L.SelectedLayer =   L.Evented.extend({
 		}else{
 			return false;
 		}
+		
+	},
+	showImage( evt){
+			if( this.imageLayer){
+				var opacity = evt.detail.show ? 0.6: 0;
+				this.imageLayer.setOpacity( opacity);
+			}
 		
 	},
 	displayImage( evt ){

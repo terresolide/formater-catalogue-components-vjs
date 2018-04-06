@@ -11,23 +11,30 @@
 <template>
 <span class="geotiff-visualizer">
 	<div>
-		<span @click="play()" class="geotiff-nav geotiff-play" v-if="selected==null"><i class="fa fa-play"></i></span>
+		
+		<div style="margin-bottom:5px;">
+			<a @click="view()" class="geotiff-nav geotiff-play"  ><i class="fa" :class="hidden?'fa-eye-slash':'fa-eye'"></i></a>
+				</div>
 		<div v-show="selected!=null">
-		<span class="geotiff-nav-content">
-			<span @click="goTo(first)"  class="geotiff-nav" v-if="first!=null && selected!=first" :title="index2strdate(first)"><i class="fa fa-angle-double-left"></i></span>
-		</span>
-		<span class="geotiff-nav-content">
-			<span @click="previous()"  class="geotiff-nav simple" v-if="selected!=first"><i class="fa fa-angle-left"></i></span>
-		</span>
-		<div class="geotiff-file" v-for="(item, key) in list" :data-image="item.png" v-show="keys[selected]==key" >{{ date2str(item.date) }}
-		<a :href="item.tiff" download >Download geotiff</a>
+			<span class="geotiff-nav-content">
+				<a @click="goTo(first)"  class="geotiff-nav" :class="(first!=null && selected!=first)?'':'unactive'" :title="index2strdate(first)"><i class="fa fa-angle-double-left"></i></a>
+			</span>
+			<span class="geotiff-nav-content">
+				<a @click="previous()"  class="geotiff-nav simple" :class="selected===first?'unactive':''"><i class="fa fa-angle-left"></i></a>
+			</span>
+			<div class="geotiff-file" v-for="(item, key) in list" :data-image="item.png" v-show="keys[selected]==key" >{{ date2str(item.date) }}
+			<a :href="item.tiff" download >Download geotiff</a>
+			</div>
+			<span class="geotiff-nav-content">
+				<a @click="next()" class="geotiff-nav simple"  :class="selected==last?'unactive':''"><i class="fa fa-angle-right"></i></a>
+			</span>
+			<span class="geotiff-nav-content">
+				<a @click="goTo(last)"  class="geotiff-nav" :class="selected==last?'unactive':''" :title="index2strdate(last)"><i class="fa fa-angle-double-right"></i></a>
+			</span>
 		</div>
-		<span class="geotiff-nav-content">
-			<span @click="next()" class="geotiff-nav simple"  v-if="selected!=last"><i class="fa fa-angle-right"></i></span>
-		</span>
-		<span class="geotiff-nav-content">
-			<span @click="goTo(last)"  class="geotiff-nav" v-if="last && selected!=last" :title="index2strdate(last)"><i class="fa fa-angle-double-right"></i></span>
-		</span>
+		<div style="margin-top:5px;" v-show="selected!=null">
+			<a @click="start()" class="geotiff-nav geotiff-play" :class="(playing || selected==last)?'unactive':''" ><i class="fa fa-play"></i></a>
+			<a @click="pause()" class="geotiff-nav geotiff-pause" :class="!playing?'unactive':''" ><i class="fa fa-pause"></i></a>
 		</div>
 	</div>
 </span>
@@ -52,7 +59,10 @@ export default {
          	last:null,
          	nextImageListener:null,
          	closeSheetListener:null,
-         	keys:[]
+         	keys:[],
+         	playing: false,
+         	hidden:true,
+         	hasBegin:false
         }
     },
     computed: {
@@ -125,8 +135,10 @@ export default {
   				 return "";
   			 }
   		},
-  		next(){
-  			console.log( "click next");
+  		next( auto){
+  			if(!auto){
+  				this.playing = false;
+  			}
   			this.selected += 1;
   			if( this.selected < this.keys.length){
   				this.triggerImageDisplay( this.keys[this.selected]);
@@ -135,6 +147,7 @@ export default {
   			}
   		},
   		previous(){
+  			this.playing = false;
   			this.selected -=1;
   			if( this.selected < 0 ){
   				this.selected = null;
@@ -143,13 +156,53 @@ export default {
   			}
   		},
   		goTo( index){
-  		
+  			this.playing = false;
   			this.selected = index;
   			this.triggerImageDisplay( this.keys[index]);
   		},
-  		play(){
+  		view(){
+  			if( ! this.hasBegin){
+  				this.begin();
+  			}
+  			
+  			
+  			var evt = new CustomEvent("showImage", {detail: { show: this.hidden}});
+  			document.dispatchEvent(evt);
+  			this.hidden = !this.hidden;
+  			if( this.hidden){
+  				this.playing = false;
+  			}
+  			
+  		},
+  		begin(){
+  			this.hasBegin = true;
   			this.selected = this.first -1;
   			this.next();
+  		},
+  		start(){
+  			this.playing = true;
+  			this.play();
+  			
+  		},
+  		play(){
+
+  			if(!this.playing){
+  				return;
+  			}
+			if( this.selected != null && this.selected < this.keys.length-1){
+  				
+	  			var _this = this;
+	  			this.next(true);
+	  			var next = function(){
+	  				_this.play();
+	  			}
+	  			setTimeout(next, 1000);
+  			}else{
+  				this.playing = false;
+  			}
+  		},
+  		pause(){
+  			this.playing = false;
   		},
   		triggerImageDisplay( index){
   			if( typeof this.list[index] == "undefined"){
@@ -166,6 +219,9 @@ export default {
          	this.first= null;
          	this.last  = null;
          	this.keys =[];
+        	this.playing = false;
+         	this.hidden = true;
+         	this.hasBegin = false;
 		
 			  
 		},
@@ -201,7 +257,7 @@ export default {
    width:30px;
    vertical-align:middle;
    padding:2px 12px;
-   opacity:0.3;
+   opacity:0.5;
    font-size:2rem;
    cursor:pointer;
 }
@@ -210,6 +266,9 @@ export default {
 }
 .geotiff-visualizer .geotiff-play{
 	padding: 2px 6px 2px 10px;
+}
+.geotiff-visualizer .geotiff-pause{
+	padding: 2px 8px 2px 8px;
 }
 .geotiff-nav-content{
 	min-width:50px;
@@ -227,5 +286,10 @@ export default {
 .geotiff-visualizer .geotiff-file a{
 	display:block;
 	margin-top:10px;
+}
+.geotiff-visualizer a.unactive{
+  pointer-events: none;
+  cursor: default;
+  opacity:0.2;
 }
 </style>
