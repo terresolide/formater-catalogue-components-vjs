@@ -119,7 +119,7 @@ export default {
   			return moment(date).format("ll");
   		},
   		index2strdate( index){
-  			 if( index && this.keys[index]){
+  			 if( index && this.keys[index] && this.list[this.keys[index]]){
   				 return this.date2str( this.list[ this.keys[index]].date);
   			 }else{
   				 return "";

@@ -124,7 +124,7 @@ L.SelectedLayer =   L.Evented.extend({
 		if(!obs.process){
 			obs.process = {}
 		}
-		if( !obs.api || !obs.api.url){
+		if( !obs.api || !obs.api.url ){
 			obs.process.status = "DONE";
 		}
 		if( obs.process.status == "DONE" || obs.process.status == "ERROR" || obs.process.status == "WAITING"){
