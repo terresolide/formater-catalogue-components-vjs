@@ -32,7 +32,7 @@
 		<formater-search-box header-icon-class="fa fa-calendar" :title="$t('time_slot')" deployed="true">	
 			 <formater-temporal-search :lang="lang" daymin="1868-01-01"></formater-temporal-search>
 		</formater-search-box>
-		<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" deployed="true">	
+		<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" deployed="false">	
 			<formater-spatial-search :lang="lang"></formater-spatial-search>
 		</formater-search-box>
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
