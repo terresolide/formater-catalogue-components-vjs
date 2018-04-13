@@ -117,11 +117,47 @@
 		  </h4>
 		  <geotiff-visualizer :images="JSON.stringify(images)"></geotiff-visualizer>
 		</div>
-		
+			<div class="formater-sheet-data-metablock"  v-if="existDownloadLink()">
+                   <h4 class="formater-important">
+                    <i class="fa fa-database"></i>
+                    {{ $t("data_access")}}
+                    </h4>
+                    
+                    <main>
+                   
+                    <div class="formater-sub">
+                    <span class="formater-important" v-if="data.links.existType('HTTP_DOWNLOAD_LINK')">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
+                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
+                        <a :href="link.url" target="_blank">{{ link.url}}</a>
+                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
+                     </div>
+                   </div>
+                   <div class="formater-sub" v-if="data.links.existType('FTP_DOWNLOAD_LINK')">
+                     <span class="formater-important" >{{$t('FTP_DOWNLOAD_LINK')}} :</span>
+                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'FTP_DOWNLOAD_LINK'">
+                        <a :href="link.url" target="_blank">{{link.description ? link.description[lang]: link.url}}</a>
+                        
+                     </div>
+                     </div>
+                    </main>
+               
+        </div>
 		
 		
 		 <div class="formater-information-container">
 		  <div class="formater-column">
+		   <div class="formater-sheet-data-metablock-50" v-if="data && data.links && data.links.existType('HTTP_DOWNLOAD_DIRECT_LINK')">
+                  <h4 class="formater-important">
+                    <i class="fa fa-download"></i>
+                    {{$t("download")}}
+                    </h4>
+                    <main>
+                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_DIRECT_LINK'">
+                        <a :href="link.url" >{{ link.description ? link.description[lang]: link.url}}</a>
+                       
+                     </div>
+                     </main>
+                 </div>
 			  	<div class="formater-sheet-data-metablock-50"  v-if="data && data.temporalExtents">
                    <h4 :style="styleTitle">
                     <i class="fa fa-clock-o"></i>
@@ -176,18 +212,7 @@
                     </main>
                    
                   </div>
-                 <div class="formater-sheet-data-metablock-50" v-if="data && data.links && data.links.existType('HTTP_DOWNLOAD_DIRECT_LINK')">
-                  <h4 :style="styleTitle">
-                    <i class="fa fa-download"></i>
-                    {{$t("download")}}
-                    </h4>
-                    <main>
-                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_DIRECT_LINK'">
-                        <a :href="link.url" >{{ link.description ? link.description[lang]: link.url}}</a>
-                       
-                     </div>
-                     </main>
-                 </div>
+                
 	             
 	            </div>
 	            <!-- fin de column 1 -->
@@ -206,31 +231,7 @@
 	           
 	        </div><!-- end column 2 -->
 		</div><!-- end information -->
-		<div class="formater-sheet-data-metablock"  v-if="existDownloadLink()">
-                   <h4 :style="styleTitle">
-                    <i class="fa fa-database"></i>
-                    {{ $t("data_access")}}
-                    </h4>
-                    
-                    <main>
-                   
-                    <div class="formater-sub">
-                    <span :style="styleTitle" v-if="data.links.existType('HTTP_DOWNLOAD_LINK')">{{$t('HTTP_DOWNLOAD_LINK')}} :</span>
-                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'HTTP_DOWNLOAD_LINK'">
-                        <a :href="link.url" target="_blank">{{ link.url}}</a>
-                        <div class="formater-paragraph" v-if="link.description">{{link.description[lang]}}</div>
-                     </div>
-                   </div>
-                   <div class="formater-sub" v-if="data.links.existType('FTP_DOWNLOAD_LINK')">
-                     <span :style="styleTitle" >{{$t('FTP_DOWNLOAD_LINK')}} :</span>
-                     <div class="formater-paragraph" v-for="link in data.links" v-if="link['type'] == 'FTP_DOWNLOAD_LINK'">
-                        <a :href="link.url" target="_blank">{{link.description ? link.description[lang]: link.url}}</a>
-                        
-                     </div>
-                     </div>
-                    </main>
-               
-        </div>
+	
 	             
 		<!-- debut -->
 		<div class="formater-information-container">
@@ -442,6 +443,7 @@ export default {
 			displayInfoListener:null,
 			findDataListener:null,
 			unselectLayerListener:null,
+			aerisThemeListener:null,
 			hidden: true,
 			color: "#D53E2A",
 			data:null,
@@ -576,14 +578,19 @@ export default {
 	         setTimeout( next, 300);
 	    	
 	    	 
+	     },
+	     handleTheme:function(evt){
+	    	 if(evt.detail){
+	    		 this.color = evt.detail.primary;
+	    	 }
 	     }
 		
 	},
 	created(){
 		this.$i18n.locale = this.lang;
 		moment.locale(this.lang);
-		//this.aerisThemeListener = this.handleTheme.bind(this) 
-       // document.addEventListener('aerisTheme', this.aerisThemeListener);
+		this.aerisThemeListener = this.handleTheme.bind(this) 
+        document.addEventListener('aerisTheme', this.aerisThemeListener);
 		this.aerisSearchEventListener = this.close.bind(this);
 		document.addEventListener('aerisSearchEvent', this.aerisSearchEventListener);
 		this.displayInfoListener = this.displayInfo.bind(this) 
@@ -607,10 +614,10 @@ export default {
 	     document.dispatchEvent(event);
 	},
 	destroyed(){
-		 document.removeEventListener('aerisTheme', this.aerisSearchEventListener);
+		 document.removeEventListener('aerisTheme', this.aerisThemeEventListener);
+         this.aerisThemeEventListener = null;
+         document.removeEventListener('aerisSearchEvent', this.aerisSearchEventListener);
          this.aerisSearchEventListener = null;
-         document.removeEventListener('aerisSearchEvent', this.findDataListener);
-         this.findDataListener = null;
          document.removeEventListener('displayInfo', this.displayInfoListener);
          this.displayInfoListener = null;
          document.removeEventListener('findData', this.findDataListener);
@@ -670,7 +677,12 @@ export default {
     color:#fff;
     background-color:#D53E2A;
 }
-
+.formater-layout .formater-sheet-container main h4.formater-important{
+	color: #D53E2A;
+}
+.formater-layout .formater-sheet-container main span.formater-important{
+	color: #D53E2A;
+}
 .formater-layout .formater-sheet-container main  h4{
     color:#000;
 }
