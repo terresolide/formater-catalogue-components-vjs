@@ -144,7 +144,7 @@ module.exports = function( L ){
 			{
 			  attribution: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
 		      maxZoom: 18,
-		      minZoom:1
+		      minZoom:2
 		    }).addTo( this.map );
 		  this.map.on("resize", this.resize);
 		  _selectArea = L.selectArea(
