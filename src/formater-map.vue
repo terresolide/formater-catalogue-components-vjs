@@ -105,7 +105,7 @@ export default {
   min-height:300px;
 }
 #formatermap .leaflet-popup-content h4{
-	color: rgb(221, 153,70);
+	color: #D53E2A;
 }
 #formatermap .leaflet-popup-content input[type="button"],
 #formatermap .leaflet-control-earth-list input[type="button"]{
