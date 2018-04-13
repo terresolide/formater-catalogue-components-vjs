@@ -24,6 +24,9 @@ L.SelectedLayer =   L.Evented.extend({
 		document.addEventListener("selectedImage",this.imageListener);
 		this.showImageListener = this.showImage.bind( this);
 		document.addEventListener("showImage", this.showImageListener);
+		this.escapeListener = this.escape.bind(this);
+		document.addEventListener("keydown", this.escapeListener);
+		
 		
 		
 	},
@@ -61,6 +64,20 @@ L.SelectedLayer =   L.Evented.extend({
 				this.imageLayer.setOpacity( opacity);
 			}
 		
+	},
+	escape( evt ){
+		evt = evt || window.event;
+	    var isEscape = false;
+	    if ("key" in evt) {
+	        isEscape = (evt.key == "Escape" || evt.key == "Esc");
+	    } else {
+	        isEscape = (evt.keyCode == 27);
+	    }
+	    if( this.layer != null){
+	    	this.close();
+	    }else{
+	    	this.map.closePopup();
+	    }
 	},
 	displayImage( evt ){
 
