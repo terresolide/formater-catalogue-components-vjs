@@ -138,13 +138,14 @@ module.exports = function( L ){
 	this.initialize = function( container, lang){
 		 _lang = lang;
 		
-		 this.map = L.map( container, {selectArea:true}).setView([51.505, -0.09], 3);
+		 this.map = L.map( container, {selectArea:true, closePopupOnClick : true}).setView([51.505, -0.09], 3);
 		
 		 L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
 			{
 			  attribution: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
 		      maxZoom: 18,
 		      minZoom:2
+		      
 		    }).addTo( this.map );
 		  this.map.on("resize", this.resize);
 		  _selectArea = L.selectArea(
@@ -220,13 +221,15 @@ module.exports = function( L ){
 	          			  properties: feature.properties,
 	          			  query: query,
 	          			  title: feature.properties.name[_lang],
-	          			  cds:cds
+	          			  cds:cds,
+	          			closePopupOnClick : true
 	          	  }
 	          	  L.setOptions( layer, options);
 	          	 
 	          	 
 	          	  layer.on('click', function(e){
-	          		  this.createPopup(e);
+	          		  this.showPopup(e);
+	          		 
 	          	  })
 	         	 
 	          	 // layer.bingTooltip( feature.properties.name[lang]).addTo(_map);
@@ -326,22 +329,7 @@ module.exports = function( L ){
 			}
 		}
 	}
-
-
-	L.Layer.prototype.createPopup = function( evt ){
-		
-		_earthControl._collapse();
-	   
-		if( _layerpopup == this){
-			_layerpopup = null;
-			this._map.closePopup();
-			
-		}
-		if( this.popup){
-	
-			return;
-		}
-		this.closeTooltip();
+	L.Layer.prototype.createPopup = function( ){
 		var _layer = this;
 		var node = document.createElement("div");
 		var h4 = document.createElement("h4");
@@ -373,9 +361,57 @@ module.exports = function( L ){
 		});
 		this.popup = node;
 	
-		this.bindPopup( node, );
-		this.openPopup( evt.latlng);
+		var lpopup = this.bindPopup( node);
+		lpopup.on("popupclose", function(){
+			_selected.close();
+			
+		})
+		lpopup.on("popupopen", function(){
+			var evt = new MouseEvent('click', {
+				bubbles: true,
+				cancelable: true,
+				view: window
+			});
+			node.querySelector("input").dispatchEvent(evt);
+		})
+		
+		
+	}
+
+	L.Layer.prototype.showPopup = function( evt ){
+
+		// close earth layer
+		_earthControl._collapse();
+	   
+		console.log( _layerpopup);
+		if( _layerpopup == this){
+			_layerpopup = null;
+		
+	
+			if(!(this instanceof L.Marker)){
+			  //trouble with popup on polygon, when click always open??!
+			  this.closePopup();
+			  this._map.originalEvent.preventDefault();
+			}
+			
+			return;
+			
+		}
+
 		_layerpopup = this;
+		
+		if( this.popup){
+	
+			return;
+		}
+	
+		this.createPopup();
+		this.openPopup( evt.latlng);
+		//this._map.fire("click");
+		
+		this.closeTooltip();
+		
+		
 	}
 	
 		
