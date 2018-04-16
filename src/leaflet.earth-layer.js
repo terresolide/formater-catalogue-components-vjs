@@ -148,12 +148,19 @@ L.Control.EarthLayer = L.Control.extend({
     this._map.closePopup();
     // permits to have a scrollbar if overlays heighter than the map.
     var acceptableHeight = this._map._size.y - (this._container.offsetTop );
-    console.log( "height form = "+this._form.clientHeight);
-    console.log( "acceptableHeight="+acceptableHeight);
     if (acceptableHeight < this._form.clientHeight) {
       L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
       this._form.style.height = acceptableHeight + 'px';
     }
+    //open first sheet
+    var evt = new MouseEvent('click', {
+		bubbles: true,
+		cancelable: true,
+		view: window
+	});
+    var node = this._form.querySelector("input");
+    console.log(node);
+	node.dispatchEvent(evt);
   },
 
   _collapse: function () {

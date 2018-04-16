@@ -60,6 +60,7 @@ module.exports = function( L ){
 	var _layerControl = null;
 	var _earthControl = null;
     var _layerpopup = null;
+    var _eventClosed = null;
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
 		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange'}),
@@ -221,13 +222,13 @@ module.exports = function( L ){
 	          			  properties: feature.properties,
 	          			  query: query,
 	          			  title: feature.properties.name[_lang],
-	          			  cds:cds,
-	          			closePopupOnClick : true
+	          			  cds:cds
 	          	  }
 	          	  L.setOptions( layer, options);
 	          	 
 	          	 
 	          	  layer.on('click', function(e){
+	          		  L.DomEvent.stopPropagation(e);
 	          		  this.showPopup(e);
 	          		 
 	          	  })
@@ -360,13 +361,18 @@ module.exports = function( L ){
 			
 		});
 		this.popup = node;
-	
+	 
 		var lpopup = this.bindPopup( node);
-		lpopup.on("popupclose", function(){
+		lpopup.on("popupclose", function(evt){
+			//_eventclosed = Object.values(evt._eventParents)[0];
+			
 			_selected.close();
+	
+			 
 			
 		})
-		lpopup.on("popupopen", function(){
+		lpopup.on("popupopen", function(evt){
+			
 			var evt = new MouseEvent('click', {
 				bubbles: true,
 				cancelable: true,
@@ -383,15 +389,13 @@ module.exports = function( L ){
 		// close earth layer
 		_earthControl._collapse();
 	   
-		console.log( _layerpopup);
 		if( _layerpopup == this){
 			_layerpopup = null;
-		
-	
 			if(!(this instanceof L.Marker)){
 			  //trouble with popup on polygon, when click always open??!
+				//this._map.closePopup( this.);
 			  this.closePopup();
-			  this._map.originalEvent.preventDefault();
+			  throw "exit";
 			}
 			
 			return;
@@ -399,16 +403,12 @@ module.exports = function( L ){
 		}
 
 		_layerpopup = this;
-		
 		if( this.popup){
-	
 			return;
 		}
 	
 		this.createPopup();
 		this.openPopup( evt.latlng);
-		//this._map.fire("click");
-		
 		this.closeTooltip();
 		
 		
