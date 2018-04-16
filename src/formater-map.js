@@ -61,6 +61,7 @@ module.exports = function( L ){
 	var _earthControl = null;
     var _layerpopup = null;
     var _eventClosed = null;
+    var _bounds = [];
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
 		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange'}),
@@ -210,6 +211,7 @@ module.exports = function( L ){
 
 		//var _layerControl = this.layerControl;
         var _map = this.map;
+        
 		var layer = L.geoJSON(event.detail.result, {
 
             pointToLayer: function (feature, latlng) {
@@ -307,8 +309,9 @@ module.exports = function( L ){
 			_layerControl.addOverlay( layer, _t("PEPS truc"), _t("Geodesy"));
 		}
 		this.layers.push( layer);
+		_bounds.concat( layer.getBounds());
 
-          
+        this.map.fitBounds(_bounds);
       }
 	L.Layer.prototype.select = function(){
 		if(this instanceof L.Marker){

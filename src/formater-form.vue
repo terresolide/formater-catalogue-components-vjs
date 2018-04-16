@@ -111,7 +111,7 @@ export default {
 			  var _this = this;
 			  var data = e.detail;
 
-	
+			  console.log(data);
 			  if(data.box ){
 				  if(data.box.west){
 				  	data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
@@ -132,8 +132,8 @@ export default {
 				var params = data;
 				//console.log( data);
 				var cds = this.cds[i].name;
-				console.log(data.DataType);
-				console.log(this.cds[i].domain);
+				//console.log(data.DataType);
+				//console.log(this.cds[i].domain);
 				if( data.DataType.indexOf(this.cds[i].domain)>=0){
 				    params.cds = cds;
 					var _this = this;
@@ -199,6 +199,11 @@ export default {
    
      var event = new CustomEvent('aerisThemeRequest', {});
      document.dispatchEvent(event);
+     
+     //call api for the first time
+     var _this = this;
+     var next = function(){ _this.search();}
+     setTimeout( next, 1000);
   },
   destroyed(){
       document.removeEventListener('aerisTheme', this.aerisThemeListener);
