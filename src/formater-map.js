@@ -364,6 +364,7 @@ module.exports = function( L ){
 			input.setAttribute("type", "button");
 			input.setAttribute( "value", obs.title[_lang]);
 			input.setAttribute("data-index", index);
+			input.setAttribute("title", obs.abstract[_lang]);
 			node.appendChild( input);
 			input.addEventListener("click", function(){
 					_selected.change(this, _layer);
