@@ -76,12 +76,16 @@ L.SelectedLayer =   L.Evented.extend({
 	    if( this.layer != null){
 	    	this.close();
 	    }else{
+	    	//cas earth-control : earth-control collapse
+	    	this.earthControl._collapse();
+	    	//other only popup to close
 	    	this.map.closePopup();
+	    	
 	    }
 	},
 	displayImage( evt ){
 
-
+		// close popup under image
 		this.map.closePopup();
 
 		 var imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];

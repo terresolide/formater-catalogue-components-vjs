@@ -18,11 +18,11 @@ L.Control.EarthLayer = L.Control.extend({
   },
 
   initialize: function( selected, options) {
-	
+	  //cross reference between selected-layer and earth-layer
 	  this._selected = selected;
+	  this._selected.earthControl = this;
 	  L.Util.setOptions(this, options);
-      console.log( this.options);
-	    this._observations = [];
+	  this._observations = [];
 	    
   },
 
@@ -65,31 +65,27 @@ L.Control.EarthLayer = L.Control.extend({
     L.DomEvent.disableClickPropagation(container);
     L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
 
-      var form = this._form = L.DomUtil.create('form', className + '-list');
+   var form = this._form = L.DomUtil.create('form', className + '-list');
 
-      if (this.options.collapsed) {
+    var link = this._layersLink = L.DomUtil.create('a', className + '-toggle fa fa-globe', container);
+    link.href = '#';
+    link.title = this.options.name;
 
-        var link = this._layersLink = L.DomUtil.create('a', className + '-toggle fa fa-globe', container);
-        link.href = '#';
-        link.title = this.options.name;
-
-        //add title
-        var span = L.DomUtil.create("h4", "leaflet-earth-popup-title", container );
-        span.innerHTML = this.options.title;
-          L.DomEvent
-              .on(link, 'click', L.DomEvent.stop)
-              .on(link, 'click', this._toggle, this);
+    //add title
+    var span = L.DomUtil.create("h4", "leaflet-earth-popup-title", container );
+    span.innerHTML = this.options.title;
+    L.DomEvent
+      .on(link, 'click', L.DomEvent.stop)
+      .on(link, 'click', this._toggle, this);
    
         // add close button
-        var a = L.DomUtil.create('a', 'leaflet-popup-close-button', container);
-        a.innerHTML = 'x';
-        L.DomEvent.on( a, 'click', this._toggle, this);
-        
-        this._map.on('click', this._collapse, this);
-        // TODO keyboard accessibility
-      } else {
-        this._expand();
-      }
+    var a = L.DomUtil.create('a', 'leaflet-popup-close-button', container);
+    a.innerHTML = 'x';
+    L.DomEvent.on( a, 'click', this._toggle, this);
+    
+    this._map.on('click', this._collapse, this);
+    // TODO keyboard accessibility
+     
 
 
     container.appendChild(form);
@@ -164,6 +160,7 @@ L.Control.EarthLayer = L.Control.extend({
   },
 
   _collapse: function () {
+    this._selected.close();
     this._container.className = this._container.className.replace(' leaflet-control-earth-expanded', '');
   },
 

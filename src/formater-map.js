@@ -160,16 +160,19 @@ module.exports = function( L ){
 		  _layerControl = L.control.groupedLayers(null, null,  {groupCheckboxes: true, title: _t('Layers')});
 		  _layerControl.addTo( this.map);
 		  _tooltip = L.tooltip();
-		  _selected = L.selectedLayer( this.map,{lang: lang});
+		
 		  document.addEventListener("closeSheet", function(e){
 				if( _selected.button){
 					var event = new MouseEvent("click", {});
 					_selected.button.dispatchEvent(event);
 				}
 		  });
+		  
+		  _selected = L.selectedLayer( this.map,{lang: lang});
 		  var options = {  lang:lang, title: _t('Global_data'), name: _t("Global_data")};
 		_earthControl = L.control.earthLayer(_selected, options);
 		_earthControl.addTo( this.map);
+		
 //		 var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 //		 var _map = this.map;
 //		 var imageLayer = L.imageOverlay( "/geotiff/geo_TOT_20160513.unw.png", imageBounds,{crossOrigin:true});
@@ -394,7 +397,7 @@ module.exports = function( L ){
 			if(!(this instanceof L.Marker)){
 			  //trouble with popup on polygon, when click always open??!
 				//this._map.closePopup( this.);
-			  this.closePopup();
+			  this._map.closePopup();
 			  throw "exit";
 			}
 			
