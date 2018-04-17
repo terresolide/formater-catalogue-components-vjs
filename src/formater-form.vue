@@ -15,10 +15,10 @@
         "time_slot": 	"intervalle de temps",
         "spatial_extents": "zone géographique",
         "output_format": "Format de sortie",
-        "search": "rechercher",
-      "geomagnetism": "Geomagnétisme",
-      "geodesy": "Geodésie",
-      "service_closed": "Le service est fermé"
+        "search": "Rechercher",
+      	"geomagnetism": "Geomagnétisme",
+      	"geodesy": "Geodésie",
+      	"service_closed": "Le service est fermé"
    }
 }
 </i18n>
@@ -27,17 +27,17 @@
 	<div class="formater-container">
 	<div id="formater-form" >
 		<formater-search-box header-icon-class="fa fa-bars" :title="$t('data_type')" deployed="true">
-			<formater-select type="associative" name="DataType" :options="dataType" multiple="true" width="260px"></formater-select>
+			<formater-select type="associative" name="DataType" :options="jsonDataType()" :defaut="dataType" multiple="true" width="260px"></formater-select>
 		</formater-search-box>
 		<formater-search-box header-icon-class="fa fa-calendar" :title="$t('time_slot')" deployed="true">	
-			 <formater-temporal-search :lang="lang" daymin="1868-01-01"></formater-temporal-search>
+			 <formater-temporal-search :lang="lang" :daymin="daymin"></formater-temporal-search>
 		</formater-search-box>
 		<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" deployed="false">	
 			<formater-spatial-search :lang="lang"></formater-spatial-search>
 		</formater-search-box>
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
 	    <div class= "formater-buttons" >
-	    <input class="formater-search-button" type="button" :value="$t('search')" @click="search" :disabled="searching"/>
+	    <input class="formater-search-button" type="button" :value="textSearch()" @click="search" :disabled="searching"/>
 	    </div>
 	</div>
 	</div>
@@ -55,6 +55,10 @@ export default {
 	      type:String,
 	      default:null
 	  },
+	  daymin:{
+		  type:String,
+		  default:"1868-01-01"
+	  },
       lang: {
           type: String,
           default: 'fr'
@@ -67,18 +71,12 @@ export default {
       }
       
   },
-  computed:{
-      dataType(){
-          var interval = JSON.stringify({
-              geomagnetism: this.$i18n.t('geomagnetism'),
-              geodesy: this.$i18n.t('geodesy')
-          }).replace(/"/g, "'");
-          return interval;
-      }
-  },
+ 
   data(){
       return {
+    	   dataType:["geomagnetism", "geodesy"],
            aerisThemeListener:null,
+           temporalChangeListener:null,
            theme:null,
            searching:false,
            cds: [{ name:"bcmt", domain:"geomagnetism"},{name:"isgi", domain:"geomagnetism"}, {name:"grenoble", domain:"geodesy"}]
@@ -89,17 +87,37 @@ export default {
 	    reset(e){
 	    	
 	    },
-      	
+	   
+        status( event){
+	    	console.log( event);
+	    	return this.searching;
+	    },
+	    jsonDataType(){
+	    	var arrType = {};
+	    	var _this = this;
+	    	this.dataType.forEach( function( type){
+	    		arrType[ type] = _this.$i18n.t(type);
+	    	})
+	    
+	    	return JSON.stringify( arrType).replace(/"/g, "'");
+	    },
+
+	    textSearch(){
+	    	  
+	    	return this.$i18n.t('search');
+	    },
+	    
 		search(){
 	    	this.searching = true;
 		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
 			document.dispatchEvent(e);
 			if( e.detail.error){
-				var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('error')}});
+				this.searching = false;
+				var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('input error')}});
 				document.dispatchEvent(event);
 				return;
 			}else{
-
+				
 				//var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
               //  document.dispatchEvent(event);
                 var result = this.callApi(e);
@@ -110,6 +128,10 @@ export default {
 			  
 			  var _this = this;
 			  var data = e.detail;
+			  
+			  //@todo evenement différent (detail à paramétrer) 
+			  var e = new CustomEvent("callApiEvent", { detail: {}});
+				document.dispatchEvent(e);
 
 			  console.log(data);
 			  if(data.box ){
@@ -117,6 +139,12 @@ export default {
 				  	data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
 				  }
 				  delete data.box;
+			  }
+			  if(!data.start){
+				  data.start = this.daymin;
+			  }
+			  if(!data.end){
+				  data.end = moment().format("YYYY-MM-DD");
 			  }
 			 
 			  this.callApiByCds(0, data);
@@ -149,13 +177,17 @@ export default {
 				this.searching = false;
 			}
 		},
+		defaultRequest(){
+			var data = { 
+					DataType: this.dataType
+					}
+			this.callApi( {detail:data});
+		},
 		handleSuccess(rep, data, cds){
 		   
 		    var event = new CustomEvent("findFeatureEvent", {detail: {result:rep.body , id:Math.random(), query:{ cds:cds, start: data.start, end:data.end, bbox:data.bbox}}});
 		    document.dispatchEvent(event);
-		    //var _searching = this.searching;
-		   // setTimeout( function(){this.searching = false;}, 1000);
-			//this.searching = false;
+
 		   
 		},
 		handleError(rep, data){
@@ -193,6 +225,10 @@ export default {
  
       this.aerisThemeListener = this.handleTheme.bind(this) 
       document.addEventListener('aerisTheme', this.aerisThemeListener);
+      
+      this.temporalChangeListener = this.status.bind( this);
+      document.addEventListener('temporalChangeEvent', this.temporalChangeListener);
+      
  
   },
   mounted(){
@@ -205,13 +241,16 @@ export default {
     	 // mounted est exécuté 2 fois!!
     	 // ce qui pose un problème car ma fonction est exécuté 2 fois!!
     	 window.firstCall = true;
-	     this.callApi( {detail:{ DataType:["geomagnetism"]}});
+	    this.defaultRequest();
 
   	}
   },
   destroyed(){
       document.removeEventListener('aerisTheme', this.aerisThemeListener);
       this.aerisThemeListener = null;
+      
+      document.removeEventListener('temporalChangeEvent', this.temporalChangeListener);
+      this.temporalChangeListener = null;
   }
 }
 

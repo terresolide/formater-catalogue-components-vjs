@@ -198,6 +198,9 @@ module.exports = function( L ){
 		this.map.invalidateSize()
 	}
 
+	this.updateObservations = function(event){
+		
+	}
 	this.displayResults = function( event ){
 		_addSelectArea2LayerGroup( event );
 		 
@@ -381,7 +384,7 @@ module.exports = function( L ){
 		var lpopup = this.bindPopup( node);
 		lpopup.on("popupclose", function(evt){
 			//_eventclosed = Object.values(evt._eventParents)[0];
-			
+			if(_selected.mode != "visualisation")
 			_selected.close();
 	
 			 

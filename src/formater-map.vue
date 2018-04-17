@@ -39,6 +39,9 @@ export default {
 
           findFeatureListener:null,
           closeSheetListener: null,
+          updateObservationsListener:null,
+         // selectAreaEndListener:null,
+         callApiListener:null,
           resizeListener:null,
           height: 600,
           selected: null
@@ -51,6 +54,7 @@ export default {
 	      ftMap.resize( this.height);
 	  },
 	  handleReset(){
+		  console.log("reset map");
 		  ftMap.handleReset();
 	  },
 	
@@ -58,16 +62,22 @@ export default {
 		  ftMap.displayResults(event);
 
          
+      },
+      updateObservations(event){
+    	  ftMap.updateObservations(event);
       }
   },
   created(){
       this.$i18n.locale = this.lang;
       this.findFeatureListener = this.displayResults.bind(this) 
       document.addEventListener('findFeatureEvent', this.findFeatureListener);
-      this.aerisResetListener = this.handleReset.bind(this) ;
-      document.addEventListener('selectAreaDrawEnd', this.handleReset);
-      this.aerisResetListener = this.handleReset.bind(this) ;
-      document.addEventListener('aerisSearchEvent', this.handleReset);
+      this.updateObservationsListener = this.updateObservations.bind(this) 
+      document.addEventListener('updateObservationsEvent', this.updateObservationsListener);
+      
+//       this.selectAreaEndListener = this.handleReset.bind(this) ;
+//       document.addEventListener('selectAreaDrawEnd', this.selectAreaEndListener);
+      this.callApiListener = this.handleReset.bind(this) ;
+      document.addEventListener('callApiEvent', this.callApiListener);
       
   	this.resizeListener = this.resize.bind(this);
 	window.addEventListener("resize", this.resizeListener);
@@ -83,10 +93,14 @@ export default {
 
   },
   destroyed(){
+	  document.removeEventListener('updateObservationsEvent', this.updateObservationsListener);
+	  this.updateObservationsListener = null;
 	  document.removeEventListener('findFeatureEvent', this.findFeatureListener);
       this.findObservatoriesListener = null;
-      document.removeEventListener('selectAreaDrawEnd', this.aeraResetListener);
-      this.areaResetListener = null;
+//       document.removeEventListener('selectAreaDrawEnd', this.selectAreaEndListener);
+//       this.selectAreaEndListener = null;
+	 document.removeEventListener('callApiEvent', this.callApiListener);
+	 this.callApiListener = null;
       window.removeEventListener("resize", this.resizeListener);
       this.resizeListener = null;
   }

@@ -10,6 +10,7 @@ L.SelectedLayer =   L.Evented.extend({
 	bbox:null,
 	imageListener:null,
 	showImageListener:null,
+	mode: "current",
 	disabledUrl:[],
 	map:null,
 	opacity:1,
@@ -47,6 +48,7 @@ L.SelectedLayer =   L.Evented.extend({
 		}else{
 			this.close();
 		}
+		this.mode = "current";
 		
 
 	},
@@ -86,6 +88,7 @@ L.SelectedLayer =   L.Evented.extend({
 	displayImage( evt ){
 
 		// close popup under image
+		this.mode = "visualisation";
 		this.map.closePopup();
 
 		 var imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];
@@ -129,6 +132,9 @@ L.SelectedLayer =   L.Evented.extend({
 	},
 	close: function(){
 		if( this.layer == null){
+			return;
+		}
+		if( this.mode == "visualisation"){
 			return;
 		}
 		var event = new CustomEvent("unselectInput", { detail:{}});
