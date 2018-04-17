@@ -309,6 +309,7 @@ module.exports = function( L ){
 		}
 		
 		_earthControl.addObservations( _global_observations);
+		console.log(_global_observations);
 		switch( cds){
 		case "bcmt":
 			 _layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));

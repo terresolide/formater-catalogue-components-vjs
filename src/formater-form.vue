@@ -201,9 +201,13 @@ export default {
      document.dispatchEvent(event);
      
      //call api for the first time
-     var _this = this;
-     var next = function(){ _this.search();}
-     setTimeout( next, 1000);
+     if(!window.firstCall){ //@todo pas très propre d'utiliser une globale...
+    	 // mounted est exécuté 2 fois!!
+    	 // ce qui pose un problème car ma fonction est exécuté 2 fois!!
+    	 window.firstCall = true;
+	     this.callApi( {detail:{ DataType:["geomagnetism"]}});
+
+  	}
   },
   destroyed(){
       document.removeEventListener('aerisTheme', this.aerisThemeListener);

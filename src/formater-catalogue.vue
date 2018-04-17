@@ -46,6 +46,9 @@ export default {
     },
     created(){
         this.$i18n.locale = this.lang;
+    },
+    mounted(){
+    	
     }
 }
 </script>
