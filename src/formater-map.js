@@ -113,6 +113,7 @@ module.exports = function( L ){
 		this.layers = [];
 		_global_observations = [];
 		_earthControl.reset();
+		_bounds = [];
 		
 	  }
 	
@@ -231,6 +232,16 @@ module.exports = function( L ){
 	          	  }
 	          	  L.setOptions( layer, options);
 	          	 
+	          	  //bounds
+	          	  if( layer instanceof L.Marker){
+	          		  _bounds.push( layer.getLatLng());
+	          	  }else{
+	          		  var bounds = layer.getBounds();
+	          		 for( var i in bounds){
+	          			 _bounds.push( bounds[i]);
+	          		 }
+	          	  }
+	          	  
 	          	 
 	          	  layer.on('click', function(e){
 	          		  L.DomEvent.stopPropagation(e);
@@ -309,9 +320,7 @@ module.exports = function( L ){
 			_layerControl.addOverlay( layer, _t("PEPS truc"), _t("Geodesy"));
 		}
 		this.layers.push( layer);
-		_bounds.concat( layer.getBounds());
-
-        this.map.fitBounds(_bounds);
+		this.map.fitBounds(_bounds);
       }
 	L.Layer.prototype.select = function(){
 		if(this instanceof L.Marker){
