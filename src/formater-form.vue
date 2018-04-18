@@ -30,7 +30,7 @@
 			<formater-select type="associative" name="DataType" :options="jsonDataType()" :defaut="dataType" multiple="true" width="260px"></formater-select>
 		</formater-search-box>
 		<formater-search-box header-icon-class="fa fa-calendar" :title="$t('time_slot')" deployed="true">	
-			 <formater-temporal-search :lang="lang" :daymin="daymin"></formater-temporal-search>
+			 <formater-temporal-search :lang="lang" :daymin="daymin" @update="change"></formater-temporal-search>
 		</formater-search-box>
 		<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" deployed="false">	
 			<formater-spatial-search :lang="lang"></formater-spatial-search>
@@ -87,7 +87,10 @@ export default {
 	    reset(e){
 	    	
 	    },
-	   
+	    change( event){
+	    	console.log( event);
+	    	return this.searching;
+	    },
         status( event){
 	    	console.log( event);
 	    	return this.searching;

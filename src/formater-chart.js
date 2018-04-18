@@ -127,12 +127,16 @@ function FtChart(Highcharts){
       	}
     	 // specifique isgi et bcmt!!
     	 var datacode = data0.meta.get("IAGA Code");
+    	 
     	 console.log( this.code);
     	 console.log( datacode);
      	 if( this.cds == "bcmt"){
      		var dataType = data0.meta.get("Data Type");
+     		
      		if(dataType)
-     		 datacode += "-"+ dataType.toUpperCase();
+     		 datacode += "-"+ dataType.toUpperCase().replace("-", "_");
+     		console.log(datacode);
+     		console.log(this.code);
      		 if(  this.code != datacode ){
 
         		 return false;
@@ -150,7 +154,7 @@ function FtChart(Highcharts){
 	    	break;
 	    case "isgi":
 
-	    	var collection = new isgi.Collection({result:data0, query:query}, code, code, _lang);
+	    	var collection = new isgi.Collection({result:data0, query:query}, code, code, _lang, "catalog");
 	    	hasChart = collection.createChart( container, 580);
 	    	break;
 	    }

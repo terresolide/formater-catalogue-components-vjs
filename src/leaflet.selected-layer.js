@@ -209,10 +209,11 @@ L.SelectedLayer =   L.Evented.extend({
 			    		var url = obs.data.meta.get("isgi_url");
 			    		
 			    		if( url){
+			    			var size = parseFloat(obs.data.meta.get("filesize"));
 			    			var link = {
 			    					type: "HTTP_DOWNLOAD_DIRECT_LINK",
 			    					url: url,
-			    					description:{fr:"archive.zip", en:"archive.zip"},
+			    					description:{fr:"archive.zip ("+ size/1000+"ko)", en:"archive.zip ("+ size/1000+" ko)"},
 			    					prov:true
 			    			}
 			    			obs.links.push(link);
