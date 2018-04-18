@@ -77,7 +77,7 @@ module.exports= function ( Highcharts){
     		  _addListeners(container);
 	    	
     	 }
-	
+	     console.log( "create Chart BCMT");
 		var dataType = data0.meta.get("Data Type");
 	    var interval = this.intervalType(data0.meta.get("Data Interval Type"), dataType);
      
