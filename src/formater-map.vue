@@ -147,9 +147,27 @@ export default {
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
 	/*border-color: rgb(224, 163, 89) rgb(199, 138, 63) rgb(199, 138, 63);*/
 }
+#formatermap .leaflet-popup-content input[type="button"].ft-empty,
+#formatermap .leaflet-control-earth-list input[type="button"].ft-empty{
+
+	 background: #788f98;
+
+  border-radius: 3px;
+  border-color: #95a7ae #60757d #60757d;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px #4a5a60, 1px 0 1px #60757d, 0 1px 1px #60757d, -1px 0 1px #4a5a60;
+
+	/*border-color: rgb(224, 163, 89) rgb(199, 138, 63) rgb(199, 138, 63);*/
+}
 #formatermap .leaflet-popup-content input[type="button"]:hover,
 #formatermap .leaflet-control-earth-list input[type="button"]:hover{
 	background:#f39b30;
+}
+#formatermap .leaflet-popup-content input[type="button"].ft-empty:hover,
+#formatermap .leaflet-control-earth-list input[type="button"].ft-empty:hover {
+  background: #6099b0;
+  text-decoration: none;
 }
 #formatermap .leaflet-popup-content input[type="button"].selected,
 #formatermap .leaflet-control-earth-list input[type="button"].selected{
@@ -158,8 +176,9 @@ export default {
 	text-shadow: 0 -1px 1px #802519, 1px 0 1px #aa3222, 0 1px 1px #aa3222, -1px 0 1px #802519;
 }
 #formatermap .leaflet-popup-content input[type="button"].selected:hover{
-  	ackground: #ef2a10;
+  	background: #ef2a10;
 }
+
 #formatermap .leaflet-popup-content div > div{
 	margin-bottom:15px;
 }
@@ -277,4 +296,11 @@ export default {
 	margin-bottom: 5px;
 	border-bottom: 1px dotted grey;
 }
+#formatermap div + .ft-empty-obs{
+	opacity:0.5;
+}
+#formatermap .ft-icon{
+	font-weight:700;
+}
+
 </style>

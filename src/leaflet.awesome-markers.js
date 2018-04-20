@@ -15,7 +15,9 @@
             extraClasses: '',
             icon: 'home',
             markerColor: 'blue',
-            iconColor: 'white'
+            iconColor: 'white',
+            html:"",
+            opacity:1
         },
 
         initialize: function (options) {
@@ -38,7 +40,7 @@
             this._setIconStyles(div, 'icon-' + options.markerColor);
             return div;
         },
-
+      
         _createInner: function() {
             var iconClass, iconSpinClass = "", iconColorClass = "", iconColorStyle = "", options = this.options;
 
@@ -59,8 +61,13 @@
                     iconColorStyle = "style='color: " + options.iconColor + "' ";
                 }
             }
-
-            return "<i " + iconColorStyle + "class='" + options.extraClasses + " " + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'></i>";
+            if( options.html!= ''){
+            	   return "<i " + iconColorStyle + "class='ft-icon " + iconColorClass + " " + options.extraClasses+ "'>"
+                   +options.html+"</i>";
+            }else{
+            	   return "<i " + iconColorStyle + "class='" + options.extraClasses + " " + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'></i>";
+            }
+         
         },
 
         _setIconStyles: function (img, name) {
@@ -78,7 +85,7 @@
                 anchor = size.divideBy(2, true);
             }
 
-            img.className = 'awesome-marker-' + name + ' ' + options.className;
+            img.className = 'awesome-marker-' + name + ' ' + options.className + ' ' + options.iconClass;
 
             if (anchor) {
                 img.style.marginLeft = (-anchor.x) + 'px';

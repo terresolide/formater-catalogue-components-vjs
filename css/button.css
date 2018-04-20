@@ -10,14 +10,14 @@ input.lfh-button + input[type="button"] {
   line-height: 1.43;
   white-space: normal;
   text-align: center;
-  background: #DD9946;
+  background: #788f98;
   border-width: 1px;
   border-style: solid;
   border-radius: 3px;
-  border-color: #e5b171 #cb8025 #cb8025;
+  border-color: #95a7ae #60757d #60757d;
   color: #fff;
   text-decoration: none;
-  text-shadow: 0 -1px 1px #a0651d, 1px 0 1px #cb8025, 0 1px 1px #cb8025, -1px 0 1px #a0651d;
+  text-shadow: 0 -1px 1px #4a5a60, 1px 0 1px #60757d, 0 1px 1px #60757d, -1px 0 1px #4a5a60;
   vertical-align: top;
   cursor: pointer;
   pointer-events: auto;
@@ -27,6 +27,6 @@ input.lfh-button + input[type="button"] {
 input.lfh-button:hover,
 #content input.lfh-button:hover,
 .main input.lfh-button:hover {
-  background: #f39b30;
+  background: #6099b0;
   text-decoration: none;
 }

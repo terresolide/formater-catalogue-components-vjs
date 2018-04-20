@@ -64,7 +64,7 @@ module.exports = function( L ){
     var _bounds = [];
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
-		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange'}),
+		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange', html:'2/3'}),
 		selectedMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'red'})
 	}
 	
@@ -219,9 +219,25 @@ module.exports = function( L ){
 		var layer = L.geoJSON(event.detail.result, {
 
             pointToLayer: function (feature, latlng) {
-          	 
-                var marker = new L.Marker( latlng, {icon: bcmt.iconMarker });
-
+            	
+            	var iconClass = "";
+          	    if( feature.properties.inTemporal == 0){
+          	    	//grey marker
+          	    	var color = "cadetblue";
+          	    	var iconClass = "ft-empty-obs";
+          	    }else{
+          	    	var color = "orange";
+          	    	
+          	    }
+          	    var html = feature.properties.inTemporal +"/"+ feature.properties.observations.length;
+          	    var icon =  new L.AwesomeMarkers.icon( { 
+	    			icon: 'magnet', 
+	    			prefix: 'fa', 
+	    			markerColor: color,
+	    			iconClass:iconClass,
+	    			html:html});
+                var marker = new L.Marker( latlng, {icon: icon });
+                
                 return marker;
             },
             onEachFeature: function( feature, layer){
@@ -333,7 +349,11 @@ module.exports = function( L ){
       }
 	L.Layer.prototype.select = function(){
 		if(this instanceof L.Marker){
-			this.setIcon( bcmt.selectedMarker);
+			var icon = this.options.icon;
+			this.options.defColor = icon.options.markerColor;
+			icon.options.markerColor = "red";
+		   // var icon =  new L.AwesomeMarkers.icon( );
+			this.setIcon( icon);
 		}else if( this instanceof L.Control){
 			
 		}else if( this instanceof L.Layer){
@@ -344,7 +364,10 @@ module.exports = function( L ){
 	}
 	L.Layer.prototype.unselect = function(){
 		if(this instanceof L.Marker){
-			this.setIcon( bcmt.iconMarker);
+			var icon = this.options.icon;
+			icon.options.markerColor = this.options.defColor;
+		   // var icon =  new L.AwesomeMarkers.icon( );
+			this.setIcon( icon);
 		}else if( this instanceof L.Control){
 			
 		}else if( this instanceof L.Layer){
@@ -383,6 +406,9 @@ module.exports = function( L ){
 			//ou obs.formaterDataCenter.name
 			input.setAttribute("data-cds", cds);
 			input.setAttribute("title", obs.abstract[_lang]);
+			if( ! obs.inTemporal){
+				input.setAttribute("class", "ft-empty");
+			}
 			node.appendChild( input);
 			input.addEventListener("click", function(){
 					_selected.change(this, _layer);

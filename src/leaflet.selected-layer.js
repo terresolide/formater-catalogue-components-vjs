@@ -36,7 +36,7 @@ L.SelectedLayer =   L.Evented.extend({
 		if( this.button != button){
 			this.close();
 			this.button = button;
-			this.button.className = "selected";
+			this.button.className =  this.button.className + " selected";
 	
 			layer.select();
 			this.layer = layer;
@@ -140,7 +140,7 @@ L.SelectedLayer =   L.Evented.extend({
 		var event = new CustomEvent("unselectInput", { detail:{}});
 		document.dispatchEvent(event);
 		if( this.button){
-		this.button.className = "";
+		this.button.className = this.button.className.replace(" selected", "");
 			this.button = null;
 			if( this.imageLayer){
 				this.imageLayer.remove();
