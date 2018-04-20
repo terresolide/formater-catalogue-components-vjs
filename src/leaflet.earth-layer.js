@@ -129,6 +129,10 @@ L.Control.EarthLayer = L.Control.extend({
 		input.setAttribute("type", "button");
 		input.setAttribute( "value", obs.title[ lang]);
 		input.setAttribute("data-index", index);
+		console.log( "obs ="+obs);
+		if( !obs.inTemporal){
+			input.setAttribute("class", "ft-empty");
+		}
 		//@todo cds devrait être dans observation en retour ou calculer à partir de obs.formaterDataCenter.code 
 		//ou obs.formaterDataCenter.name
 		input.setAttribute("data-cds", "isgi");
