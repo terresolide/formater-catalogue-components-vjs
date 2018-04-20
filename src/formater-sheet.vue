@@ -492,7 +492,8 @@ export default {
                }else{
             	   this.images = null;
                }
-               
+               console.log( "dans open "+cds);
+               console.log( observation.query);
                if( observation.data && observation.query){
             	   var container = this.$el.querySelector("#ftChartContainer");
             	  
@@ -546,7 +547,7 @@ export default {
 	    	 var data0 = event.detail.obs.data;
 	    	 var query = event.detail.obs.query;
 // 	    	 console.log( "ft-sheet handle create chart");
-// 	    	 console.log( event.detail);
+	    	 console.log( event.detail);
 	    	
 	    	 this.hasGraph = ftChart.createChart( container, event.detail.cds,data0, this.code, query);
 	    	if( this.hasGraph){
@@ -561,8 +562,8 @@ export default {
 	    	 var observation = event.detail.observation;
 	    	 var query = observation.query != "undefined" ? observation.query:null;
 	         var code = observation.identifiers.customId;
-
 			
+		
 	    	 if( this.code == code){
 	    		 this.hide();
 	    		 return;
@@ -570,10 +571,10 @@ export default {
 	    
 	         this.code = code;
 	         var _self = this;
+	         //@todo dépend d'où est enregistré le cds: niveau layer ou niveau observation
+	         var cds =  options.cds ? options.cds:observation.cds;
 			 var next = function(){ 
-				 console.log("dans next");
-				 console.log(query);
-				 _self.open(  observation, options.cds, query);
+				 _self.open(  observation, cds, query);
 			 }
 	         setTimeout( next, 300);
 	    	

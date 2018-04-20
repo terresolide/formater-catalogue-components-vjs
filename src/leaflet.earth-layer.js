@@ -14,8 +14,9 @@ L.Control.EarthLayer = L.Control.extend({
     lang: 'fr',
     properties:[],
     title: 'Données globales',
-    name: 'Terre entière'
-  },
+    name: 'Terre entière',
+    query:null
+    },
 
   initialize: function( selected, options) {
 	  //cross reference between selected-layer and earth-layer
@@ -93,7 +94,8 @@ L.Control.EarthLayer = L.Control.extend({
     return container;
   },
 
-  addObservations: function ( observations) {
+  addObservations: function ( observations, query ){
+	  this.options.query = query;
 	  this._observations = observations;
 	  this._update();
     
@@ -127,7 +129,9 @@ L.Control.EarthLayer = L.Control.extend({
 		input.setAttribute("type", "button");
 		input.setAttribute( "value", obs.title[ lang]);
 		input.setAttribute("data-index", index);
-		
+		//@todo cds devrait être dans observation en retour ou calculer à partir de obs.formaterDataCenter.code 
+		//ou obs.formaterDataCenter.name
+		input.setAttribute("data-cds", "isgi");
 		form.appendChild( input);
 	
 		input.addEventListener("click", function(){

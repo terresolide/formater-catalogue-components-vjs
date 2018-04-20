@@ -44,7 +44,7 @@ L.SelectedLayer =   L.Evented.extend({
 			var obs = layer.options.properties.observations[ this.button.dataset.index];
 			var event = new CustomEvent("displayInfo", { detail:{ layer:layer, observation: obs, index: this.button.dataset.index}});
 	       	document.dispatchEvent(event);
-	       	this.searchData( obs , layer.options.query, layer.options.cds);
+	       	this.searchData( obs , layer.options.query, this.button.dataset.cds);
 		}else{
 			this.close();
 		}
@@ -155,7 +155,7 @@ L.SelectedLayer =   L.Evented.extend({
 		this.layer = null;
 	},
 	searchData( obs, query, cds){
-		
+		console.log("dans searchData "+cds);
 		var _cds = cds;
         var _disabledUrl = this.disabledUrl;
 		if(!obs.process){
@@ -189,7 +189,7 @@ L.SelectedLayer =   L.Evented.extend({
 				   var links= [];
 				   if( obs.data.meta)
 				   links = obs.data.meta.get("FTP_DOWNLOAD_LINK");
-				
+				   	 
 			    	 //DELETE OLD LINK FTP
 			    	 if( obs.links){
 			    		 var i = obs.links.length-1;
@@ -205,6 +205,7 @@ L.SelectedLayer =   L.Evented.extend({
 			    		}
 			    	 }
 			    	if(_cds == "isgi"){
+			    		console.log( "isgi reponse");
 			    		//recuperation du lien archive
 			    		var url = obs.data.meta.get("isgi_url");
 			    		

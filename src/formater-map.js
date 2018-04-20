@@ -231,7 +231,7 @@ module.exports = function( L ){
 	          			  properties: feature.properties,
 	          			  query: query,
 	          			  title: feature.properties.name[_lang],
-	          			  cds:cds
+	          			  cds:cds //cds devrait être un niveau en  dessous ou bien extrait des metadatas
 	          	  }
 	          	  L.setOptions( layer, options);
 	          	 
@@ -287,6 +287,8 @@ module.exports = function( L ){
               filter: function(feature){
             	  if( feature.properties.name.fr == "Global"){
             		  feature.properties.observations.forEach( function( obs){
+            			  obs.cds = cds;
+            			  obs.query = query;
             			  _global_observations.push(obs);
             		  })
             		  return false;
@@ -311,8 +313,11 @@ module.exports = function( L ){
 			return;
 		}
 		
-		_earthControl.addObservations( _global_observations);
-		console.log(_global_observations);
+		_earthControl.addObservations( _global_observations ,query);
+	
+		//@todo pour le moment on fait les requêtes par cds, mais il est possible
+		// que un même layer accueille les observations de différents cds.
+		// comment s'organiser??
 		switch( cds){
 		case "bcmt":
 			 _layerControl.addOverlay( layer, _t("Observatories"), _t("Geomagnetism"));
@@ -367,11 +372,16 @@ module.exports = function( L ){
 			});
 			node.appendChild(ul);
 		}
+		//@todo voir plus loin
+		var cds = this.options.cds;
 		this.options.properties.observations.forEach( function( obs, index){
 			var input = document.createElement("input");
 			input.setAttribute("type", "button");
 			input.setAttribute( "value", obs.title[_lang]);
 			input.setAttribute("data-index", index);
+			//@todo cds devrait être dans observation en retour ou calculer à partir de obs.formaterDataCenter.code 
+			//ou obs.formaterDataCenter.name
+			input.setAttribute("data-cds", cds);
 			input.setAttribute("title", obs.abstract[_lang]);
 			node.appendChild( input);
 			input.addEventListener("click", function(){

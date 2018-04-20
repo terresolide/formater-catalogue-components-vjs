@@ -114,7 +114,7 @@ function FtChart(Highcharts){
 	    	return true;
 	 }
      this.createChart= function(container, cds, data0, code, query){
-	    	
+	    console.log( "create chart " + code);
 	     if(!data0 || !data0.collection){
 	    	 return false
 	     }
@@ -147,13 +147,13 @@ function FtChart(Highcharts){
     	this.container = container;
   	 	
     	var hasChart = false;
-	    
+    	
 	    switch( this.cds){
 	    case "bcmt":
 	    	hasChart = bcmt.createChart( container, data0);
 	    	break;
 	    case "isgi":
-
+	    	console.log( code);
 	    	var collection = new isgi.Collection({result:data0, query:query}, code, code, _lang, "catalog");
 	    	hasChart = collection.createChart( container, 580);
 	    	break;
