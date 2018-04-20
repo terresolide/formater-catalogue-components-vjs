@@ -129,7 +129,7 @@ L.Control.EarthLayer = L.Control.extend({
 		input.setAttribute("type", "button");
 		input.setAttribute( "value", obs.title[ lang]);
 		input.setAttribute("data-index", index);
-		console.log( "obs ="+obs);
+
 		if( !obs.inTemporal){
 			input.setAttribute("class", "ft-empty");
 		}
