@@ -320,10 +320,11 @@ module.exports = function( L ){
        
         	 
         	 
-          }).on( "remove", function(){
-        	  var event = new CustomEvent("closeSheet", {});
-        	  document.dispatchEvent( event);
-          }).addTo( this.map);
+          })//.on( "remove", function(){
+        	 // var event = new CustomEvent("closeSheet", {});
+        	 // document.dispatchEvent( event);
+         // })
+          .addTo( this.map);
 		
 		if( count == 0 ){
 			return;
@@ -421,7 +422,7 @@ module.exports = function( L ){
 		lpopup.on("popupclose", function(evt){
 			//_eventclosed = Object.values(evt._eventParents)[0];
 			//if(_selected.mode != "visualisation")
-			_selected.close();
+				_selected.close();
 	
 			 
 			

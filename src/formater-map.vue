@@ -38,7 +38,6 @@ export default {
       return {
 
           findFeatureListener:null,
-          closeSheetListener: null,
           updateObservationsListener:null,
          // selectAreaEndListener:null,
          callApiListener:null,
@@ -145,6 +144,7 @@ export default {
 	pointer-events: auto;
 	box-sizing: border-box;
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+	opacity:1;
 	/*border-color: rgb(224, 163, 89) rgb(199, 138, 63) rgb(199, 138, 63);*/
 }
 #formatermap .leaflet-popup-content input[type="button"].ft-empty,
@@ -157,6 +157,7 @@ export default {
   color: #fff;
   text-decoration: none;
   text-shadow: 0 -1px 1px #4a5a60, 1px 0 1px #60757d, 0 1px 1px #60757d, -1px 0 1px #4a5a60;
+  opacity:0.7;
 
 	/*border-color: rgb(224, 163, 89) rgb(199, 138, 63) rgb(199, 138, 63);*/
 }

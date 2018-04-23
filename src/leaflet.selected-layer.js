@@ -32,7 +32,12 @@ L.SelectedLayer =   L.Evented.extend({
 		
 	},
 	change:function( button,layer){
-		
+		if( this.mode == "visualisation"){
+			var event = new CustomEvent("stopVisualisation");
+			document.dispatchEvent( event);
+			this.mode = "current";
+			return;
+		}
 		if( this.button != button){
 			this.close();
 			this.button = button;
@@ -90,6 +95,7 @@ L.SelectedLayer =   L.Evented.extend({
 		// close popup under image
 		this.mode = "visualisation";
 		this.map.closePopup();
+		//closePopup trigger closeSheet
 
 		 var imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];
 
@@ -130,11 +136,27 @@ L.SelectedLayer =   L.Evented.extend({
 		 this.imageLayer.bringToFront();
 		//this.imageLayer.setUrl( evt.detail.img);
 	},
+	stopVisualisation(){
+		if( this.mode == "visualisation"){
+			
+	       	    this.mode = 'current';
+	       	  
+		}
+		
+	},
 	close: function(){
 		if( this.layer == null){
 			return;
 		}
+//		if( this.mode == "visualisation"){
+//			console.log("ici");
+//			this.stopVisualisation();
+//			return;
+//		}
 		if( this.mode == "visualisation"){
+			var event = new CustomEvent("stopVisualisation");
+			document.dispatchEvent( event);
+			this.mode = "current";
 			return;
 		}
 		var event = new CustomEvent("unselectInput", { detail:{}});

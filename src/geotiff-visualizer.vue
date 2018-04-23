@@ -58,7 +58,7 @@ export default {
          	first:null,
          	last:null,
          	nextImageListener:null,
-         	closeSheetListener:null,
+         	stopListener:null,
          	keys:[],
          	playing: false,
          	hidden:true,
@@ -94,8 +94,8 @@ export default {
          
          document.removeEventListener('aerisResetEvent', this.resetEventListener);
          this.resetEventListener = null;
-         document.removeEventListener('closeSheet', this.closeSheetListener);
-         this.closeSheetListener = null;
+         document.removeEventListener('stopVisualisation', this.stopListener);
+         this.stopListener = null;
          document.removeEventListener('nextImageEvent', this.nextImageListener);
          this.nextImageListener = null;
 		
@@ -106,8 +106,8 @@ export default {
 		this.$i18n.locale = this.lang;
 		this.nextImageListener = this.next.bind(this) 
 		document.addEventListener('nextImageEvent', this.nextImageListener);
-		this.closeSheetListener = this.handleReset.bind(this);
-		document.addEventListener('closeSheet', this.closeSheetListener);
+		this.stopListener = this.pause.bind(this);
+		document.addEventListener('stopVisualisation', this.stopListener);
 		this.resetEventListener = this.handleReset.bind(this) ;
 		document.addEventListener('aerisResetEvent', this.resetEventListener);
 
@@ -214,7 +214,9 @@ export default {
   			document.dispatchEvent(evt);
   			
   		},
+  
 		handleReset: function( ) {
+			console.log( "handle reset from stop visualisation");
 			this.selected = null;
          	this.first= null;
          	this.last  = null;
