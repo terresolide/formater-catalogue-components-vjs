@@ -189,6 +189,25 @@ module.exports = function( L ){
 		
 
 	}
+	
+	this.createTriangles = function( latlngBounds, style){
+		
+		var centerG = latlngBounds.getCenter();
+		var center = this.map.latLngToLayerPoint(latlngBounds.getCenter());
+		console.log( center);
+		
+		var top = this.map.latLngToLayerPoint( latlngBounds.getNorthWest());
+		console.log( top);
+		var pointTop = L.point( center.x, top.y - 10);
+		var latlng = this.map.layerPointToLatLng( pointTop);
+		var path = [latlngBounds.getNorthWest(), latlng, latlngBounds.getNorthEast()];
+		console.log(path);
+		var polygon = L.polygon( path, style).addTo( this.map);
+		
+		
+		//var bounds = [ latlngBounds.getNorthEast(), latlngBounds.getNorthWest()];
+		//L.marker( bounds.getCenter()).addTo( this.map);
+	}
 	this.resize = function( ){
 		if( !this.map) return;
 		 var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight;
@@ -215,7 +234,7 @@ module.exports = function( L ){
 
 		//var _layerControl = this.layerControl;
         var _map = this.map;
-        
+        var _this = this;
 		var layer = L.geoJSON(event.detail.result, {
 
             pointToLayer: function (feature, latlng) {
@@ -256,12 +275,16 @@ module.exports = function( L ){
 	          		  _bounds.push( layer.getLatLng());
 	          	  }else{
 	          		  var bounds = layer.getBounds();
+	          		
 	          		 for( var i in bounds){
 	          			 _bounds.push( bounds[i]);
 	          		 }
 	          	  }
 	          	  
-	          	 
+	          	 if( feature.properties.style && feature.properties.style.border == "triangle"){
+            		 //create triangles around!
+            		 _this.createTriangles( layer.getBounds() , feature.properties.style);
+            	 }
 	          	  layer.on('click', function(e){
 	          		  L.DomEvent.stopPropagation(e);
 	          		  this.showPopup(e);
@@ -312,9 +335,14 @@ module.exports = function( L ){
             		  return true;
             	  }
               },
-              style: function(feature) {
-                 if( typeof feature.properties.style != "undefined")
-                 return  {color:feature.properties.style.fill, fillOpacity:0.4};
+              style: function(feature, layer) {
+                 if( typeof feature.properties.style != "undefined"){
+                	
+                	 return  {color:feature.properties.style.fill, fillOpacity:feature.properties.style.fillOpacity, weight: feature.properties.style.strokeWidth};
+                 
+                 }
+                 
+                 
               }
           }).on("add", function(){
        
