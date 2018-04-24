@@ -40,7 +40,7 @@ L.Polygon.include({
 			var _this = this;
 			["North", "East", "South", "West"].forEach( function( side ){
 				var path = _this._buildSide( side );
-				var polygon = L.polygon( path, { color: _this.options.color, fillOpacity:1, stroke:false}).addTo(_this._map);
+				var polygon = L.polygon( path, { title: _this.title, color: _this.options.color, fillOpacity:1, stroke:false}).addTo(_this._map);
 				_this.triangles[ side] = polygon;
 			})
 //			var center = this._map.latLngToLayerPoint( this.centerG);
