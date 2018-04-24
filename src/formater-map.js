@@ -143,6 +143,7 @@ module.exports = function( L ){
 		
 		 this.map = L.map( container, {selectArea:true, closePopupOnClick : true}).setView([51.505, -0.09], 3);
 		
+		 this.map.on( "zoom", function(e){ this.updateAllPolygons();})
 		 L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
 			{
 			  attribution: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
@@ -281,10 +282,17 @@ module.exports = function( L ){
 	          		 }
 	          	  }
 	          	  
-	          	 if( feature.properties.style && feature.properties.style.border == "triangle"){
+	          	  if( layer instanceof L.Polygon)
+	          	  layer.addFramed( feature.properties.style);
+	          	/* if( feature.properties.style && feature.properties.style.border == "triangle"){
             		 //create triangles around!
-            		 _this.createTriangles( layer.getBounds() , feature.properties.style);
-            	 }
+	          		 console.log(layer);
+	          		 layer.addFramed();
+	          		console.log( layer);
+	          		
+            		// _this.createTriangles( layer.getBounds() , feature.properties.style);
+            	 }*/
+	          	 
 	          	  layer.on('click', function(e){
 	          		  L.DomEvent.stopPropagation(e);
 	          		  this.showPopup(e);
@@ -345,14 +353,19 @@ module.exports = function( L ){
                  
               }
           }).on("add", function(){
-       
+        	  
         	 
         	 
           })//.on( "remove", function(){
         	 // var event = new CustomEvent("closeSheet", {});
         	 // document.dispatchEvent( event);
-         // })
-          .addTo( this.map);
+        // })
+          .addTo( this.map)
+          .eachLayer( function(layer){
+        	  if( typeof layer.buildFramed != "undefined")
+        	  layer.buildFramed();
+        	  
+          });
 		
 		if( count == 0 ){
 			return;
@@ -385,7 +398,10 @@ module.exports = function( L ){
 			this.setIcon( icon);
 		}else if( this instanceof L.Control){
 			
+		}else if( this instanceof L.Polygon){
+			 this.select();
 		}else if( this instanceof L.Layer){
+
 			if(! this.options.defColor)
 				this.options.defColor = this.options.color;
 				this.setStyle( { color:"red"});
@@ -399,6 +415,8 @@ module.exports = function( L ){
 			this.setIcon( icon);
 		}else if( this instanceof L.Control){
 			
+		}else if( this instanceof L.Polygon){
+			this.unselect();
 		}else if( this instanceof L.Layer){
 			if( this.options.defColor){
 
