@@ -170,45 +170,24 @@ module.exports = function( L ){
 					_selected.button.dispatchEvent(event);
 				}
 		  });
+		  var _this = this;
+		  document.addEventListener("updateObservations", function(e){
+			
+				_this.updateObservations(e);
+		  });
 		  
 		  _selected = L.selectedLayer( this.map,{lang: lang});
 		  var options = {  lang:lang, title: _t('Global_data'), name: _t("Global_data")};
 		_earthControl = L.control.earthLayer(_selected, options);
 		_earthControl.addTo( this.map);
 		
-//		 var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
-//		 var _map = this.map;
-//		 var imageLayer = L.imageOverlay( "/geotiff/geo_TOT_20160513.unw.png", imageBounds,{crossOrigin:true});
-//		 imageLayer.addTo( _map);
-//		 imageLayer.bringToFront();
-//		getDataUri(  "/geotiff/geo_TOT_20160513.unw.png", function(dataUri){
-//			 var imageLayer = L.imageOverlay( dataUri, imageBounds,{crossOrigin:true});
-//			 imageLayer.addTo( _map);
-//			 imageLayer.bringToFront();
-//		});
+
 		
 		
 
 	}
 	
-	this.createTriangles = function( latlngBounds, style){
-		
-		var centerG = latlngBounds.getCenter();
-		var center = this.map.latLngToLayerPoint(latlngBounds.getCenter());
-		console.log( center);
-		
-		var top = this.map.latLngToLayerPoint( latlngBounds.getNorthWest());
-		console.log( top);
-		var pointTop = L.point( center.x, top.y - 10);
-		var latlng = this.map.layerPointToLatLng( pointTop);
-		var path = [latlngBounds.getNorthWest(), latlng, latlngBounds.getNorthEast()];
-		console.log(path);
-		var polygon = L.polygon( path, style).addTo( this.map);
-		
-		
-		//var bounds = [ latlngBounds.getNorthEast(), latlngBounds.getNorthWest()];
-		//L.marker( bounds.getCenter()).addTo( this.map);
-	}
+
 	this.resize = function( ){
 		if( !this.map) return;
 		 var hw = window.innerHeight || document.documentElement.clientHeight|| document.body.clientHeight;
@@ -219,7 +198,8 @@ module.exports = function( L ){
 	}
 
 	this.updateObservations = function(event){
-		
+		console.log( event);
+		_selected.updateObservation( event);
 	}
 	this.displayResults = function( event ){
 		_addSelectArea2LayerGroup( event );
@@ -363,7 +343,7 @@ module.exports = function( L ){
           .addTo( this.map)
           .eachLayer( function(layer){
         	  if( typeof layer.buildFramed != "undefined")
-        	  layer.buildFramed();
+        	  layer.buildFramed( _tooltip);
         	  
           });
 		

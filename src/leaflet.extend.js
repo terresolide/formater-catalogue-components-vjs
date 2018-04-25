@@ -18,19 +18,18 @@ L.Map.include({
 L.Polygon.include({
 	triangles:[],
 	framed: false,
+	tooltip:null,
 	addFramed:function( style){
-		console.log( style);
 		if( style && style.border == "triangle"){
 			this.framed = true;
 		
 		}
 	},
-	buildFramed: function(){
+	buildFramed: function( tooltip){
 		if( ! this.framed ){
 			return;
 		}
-
-		console.log( "buildFramed");
+		this.tooltip = tooltip;
 		if( this._map){
 			this.centerG = this.getCenter();
 			this.nw = this.getBounds().getNorthWest();
@@ -40,19 +39,23 @@ L.Polygon.include({
 			var _this = this;
 			["North", "East", "South", "West"].forEach( function( side ){
 				var path = _this._buildSide( side );
-				var polygon = L.polygon( path, { title: _this.title, color: _this.options.color, fillOpacity:1, stroke:false}).addTo(_this._map);
+				var polygon = L.polygon( path, { 
+					title: _this.title,
+					color: _this.options.color,
+					fillOpacity:1, 
+					stroke:false})
+					.addTo(_this._map)
+					.on("mouseover", function( e){
+						 _this.tooltip.setContent( this.options.title);
+						 _this._map.openTooltip( _this.tooltip);
+					})
+					.on("mouseout", function(e){
+						_this._map.closeTooltip( _this.tooltip);
+					});
+				
 				_this.triangles[ side] = polygon;
 			})
-//			var center = this._map.latLngToLayerPoint( this.centerG);
-//			var top = this._map.latLngToLayerPoint( this.nw);
-//            
-//			var pointTop = L.point( center.x, top.y - 10);
-//			var latlng = this._map.layerPointToLatLng( pointTop);
-//			var path = [this.nw, latlng, this.ne];
-//
-//			var polygon = L.polygon( path, { color: this.options.color, fillOpacity:1, stroke:false}).addTo(this._map);
-//			this.triangles[0] = polygon;
-			console.log( "passé dans buildFramed");
+
 		}
 		
 	},
@@ -81,10 +84,10 @@ L.Polygon.include({
 			var delta = 1;
 			break;
 		}
-		console.log( "buildside step next" + side);
+
 		var center = this._map.latLngToLayerPoint( this.centerG);
 		var lg = this._map.latLngToLayerPoint( latlng0);
-		console.log( lg);
+
 		switch( side ){
 		case "North":
 		case "South":
@@ -92,13 +95,10 @@ L.Polygon.include({
 			break;
 		case "West":
 		case "East":
-			console.log( lg.x);
-			console.log( delta);
-			console.log( lg.x + delta*10);
 			var point = L.point( lg.x + delta *10, center.y);
 			break;
 		}
-		console.log( point );
+		
 		var latlng = this._map.layerPointToLatLng( point);
 		var path = [latlng0, latlng, latlng1];
 		return path;
@@ -107,14 +107,14 @@ L.Polygon.include({
 	onRemove: function(){
 		console.log( "remove");
 		if( this.framed){
-			this._map.removeLayer( this.triangles[0]);
+			var _this = this;
+			["North", "East", "South", "West"].forEach( function( side ){
+				_this._map.removeLayer( _this.triangles[ side]);
+			});
 		}
 		this._renderer._removePath(this);
 	},
-	removeListener(){
-		//this._map.off( zoomend, update);
-		//this.listener = null;
-	},
+
 	change(){
 	
 	
@@ -124,15 +124,6 @@ L.Polygon.include({
 				var path = _this._buildSide( side );
 				_this.triangles[ side].setLatLngs( path);
 			})
-//			
-//			var center = this._map.latLngToLayerPoint( this.centerG);
-//			var top = this._map.latLngToLayerPoint( this.nw);
-//            
-//			var pointTop = L.point( center.x, top.y - 10);
-//			var latlng = this._map.layerPointToLatLng( pointTop);
-//			var path = [this.nw, latlng, this.ne];
-//		
-//			this.triangles[0].setLatLngs(path);
 			
 		}
 	},

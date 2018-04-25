@@ -6,6 +6,7 @@
        "spatial_extents": "spatial extents",
        "output_format": "Output Format",
        "search": "Search",
+       "update": "Update",
        "geomagnetism": "Geomagnetism",
        "geodesy": "Geodesy",
        "service_closed": "The service is closed"
@@ -16,6 +17,7 @@
         "spatial_extents": "zone géographique",
         "output_format": "Format de sortie",
         "search": "Rechercher",
+        "update": "Mettre à jour",
       	"geomagnetism": "Geomagnétisme",
       	"geodesy": "Geodésie",
       	"service_closed": "Le service est fermé"
@@ -36,8 +38,9 @@
 			<formater-spatial-search :lang="lang"></formater-spatial-search>
 		</formater-search-box>
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
+	    <input type="hidden" v-model="searching" />
 	    <div class= "formater-buttons" >
-	    <input class="formater-search-button" type="button" :value="textSearch()" @click="search" :disabled="searching"/>
+	    <input class="formater-search-button" type="button"  @click="search" :disabled="disableSearch" :value="$t('update')"/>
 	    </div>
 	</div>
 	</div>
@@ -71,30 +74,83 @@ export default {
       }
       
   },
- 
+  
+//   computed:{
+// 	  textSearch(){
+// 	    	if( this.hasChanged > 1){
+// 	    		return this.$i18n.t('search');
+// 	    	}else{
+// 	    		return this.$i18n.t('update');
+// 	    	}
+	    	
+// 	    }
+//   },
   data(){
       return {
     	   dataType:["geomagnetism", "geodesy"],
            aerisThemeListener:null,
            temporalChangeListener:null,
            theme:null,
-           searching:false,
+           searching:true,
+           hasChanged:0,
+           disableSearch: true,
+           //searchText: 'update',
+          // disableSearch: this.searching || this.hasChanged == 0,
            cds: [{ name:"bcmt", domain:"geomagnetism"},{name:"isgi", domain:"geomagnetism"}, {name:"grenoble", domain:"geodesy"}]
          
       }
+  },
+  watch:{
+ 	 searching( val ){
+ 		 console.log( "searching = " + val);
+ 		 this.disableSearch = val;
+		
+ 	 }
   },
   methods: {
 	    reset(e){
 	    	
 	    },
+// 	    disableSearch(){
+// 	    	return (this.hasChanged == 0 || this.searching)? true : false;
+// 	    },
+	    /*disableSearch(){
+			  var bool = (this.hasChanged == 0 || this.searching)? true : false;
+			  console.log( bool);
+			  return bool;
+		  },*/
 	    change( event){
-	    	console.log( event);
-	    	return this.searching;
+			  //@todo depend de la profondeur apparemment l'événement n'est pas déclenché...
+	    	console.log( "change");
+	    	this.searching = false;
+
 	    },
-        status( event){
+	    status( event){
+	    	//@todo en considérant la remarque précédente: comme le @update n'est pas déclenché
+	    	// on utilise un evenement global 'temporalChangeEvent'
 	    	console.log( event);
-	    	return this.searching;
+	    	if( this.hasChanged === 0){
+	    		this.hasChanged = 1;
+	    	}
+	    	this.searching = false;
+
 	    },
+// 	    dependencies(){
+// 	    	console.log("ici");
+// 	    	console.log( this.searching);
+// 	    	return [ this.searching, this.hasChanged];
+// 	    },
+// 	    set(){
+// 	    	this.disableSearch = this.searching || ( this.hasChanged === 0);
+	    	 
+// 	    	if( this.hasChanged > 1){
+	    		
+// 	    		this.searchText = this.$i18n.t('search');
+// 	    	}else{
+// 	    		this.searchText = this.$i18n.t('update');
+// 	    	}
+// 	    },
+    
 	    jsonDataType(){
 	    	var arrType = {};
 	    	var _this = this;
@@ -105,26 +161,27 @@ export default {
 	    	return JSON.stringify( arrType).replace(/"/g, "'");
 	    },
 
-	    textSearch(){
-	    	  
-	    	return this.$i18n.t('search');
-	    },
-	    
+	
 		search(){
 	    	this.searching = true;
+	  
 		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
 			document.dispatchEvent(e);
 			if( e.detail.error){
 				this.searching = false;
 				var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('input error')}});
 				document.dispatchEvent(event);
-				return;
+				//return;
 			}else{
 				
 				//var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
               //  document.dispatchEvent(event);
-                var result = this.callApi(e);
-                return;
+               if( this.hasChanged < 2){
+            	   this.update(e);
+               }else{
+                	var result = this.callApi(e);
+               }
+               // return;
 			}
 		},
 		callApi(e){
@@ -136,7 +193,7 @@ export default {
 			  var e = new CustomEvent("callApiEvent", { detail: {}});
 				document.dispatchEvent(e);
 
-			  console.log(data);
+			  
 			  if(data.box ){
 				  if(data.box.west){
 				  	data.bbox = data.box.west+","+data.box.south +"," +data.box.east+","+data.box.north;
@@ -170,15 +227,21 @@ export default {
 					var _this = this;
 					var index = i;
 					this.$http.get( this.url, {params:params}).then(
-							response => {_this.handleSuccess( response, params, cds);  _this.callApiByCds( index+1, data);},
+							response => { _this.handleSuccess( response, params, cds);  _this.callApiByCds( index+1, data);},
 		                    response => { _this.handleError( response ,  params, cds); _this.callApiByCds( index+1, data);}
 					);
 				}else{
 					this.callApiByCds( i+1, data);
 				}
 			}else{
-				this.searching = false;
+		
+				this.searching = true;
+			
 			}
+		},
+		update( evt){
+			var event = new CustomEvent( "updateObservations", {detail: evt.detail});
+			document.dispatchEvent( event);
 		},
 		defaultRequest(){
 			var data = { 
@@ -226,11 +289,14 @@ export default {
   created(){
       this.$i18n.locale = this.lang;
  
+      this.searchText = this.$i18n.t('update');
       this.aerisThemeListener = this.handleTheme.bind(this) 
       document.addEventListener('aerisTheme', this.aerisThemeListener);
       
       this.temporalChangeListener = this.status.bind( this);
       document.addEventListener('temporalChangeEvent', this.temporalChangeListener);
+      // solution pour double dépendances @see https://forum.vuejs.org/t/computed-not-updating-when-data-changes/27797/17
+     
       
  
   },

@@ -176,6 +176,13 @@ L.SelectedLayer =   L.Evented.extend({
 		this.layer.unselect();
 		this.layer = null;
 	},
+	updateObservation( event){
+		if( this.button){
+			var obs = this.layer.options.properties.observations[ this.button.dataset.index];
+			this.layer.options.query = event.detail;
+	       	this.searchData( obs , event.detail, this.button.dataset.cds);
+		}
+	},
 	searchData( obs, query, cds){
 		console.log("dans searchData "+cds);
 		var _cds = cds;
