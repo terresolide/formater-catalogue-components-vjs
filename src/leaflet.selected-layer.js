@@ -38,20 +38,22 @@ L.SelectedLayer =   L.Evented.extend({
 		
 	},
 	toggleLayer( layer){
+		//if( this.layer)
+		//this.layer.unselect();
 		if( this.layer == layer){
 			console.log( "close layer");
-			this.close();
+			//this.layer.unselect();
 		}else{
 			console.log( "select nouveau layer");
-			this.close();
+		
 			this.selectLayer( layer);
 		}
 		
 	},
 	selectLayer: function( layer){
+		
 		this.layer = layer;
 		this.layer.select();
-		console.log( this.layer);
 		
 	},
 	change:function( button,layer){

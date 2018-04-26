@@ -117,7 +117,7 @@ L.Polygon.include({
 
 	change(){
 	
-	
+	    console.log("change de L.polygon");
 		if( this._map && this.framed){
 			var _this = this;
 			["North", "East", "South", "West"].forEach( function( side ){
