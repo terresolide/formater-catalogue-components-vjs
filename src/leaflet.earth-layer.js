@@ -7,7 +7,7 @@
 
 L.Control.EarthLayer = L.Control.extend({
   _container: null,
-
+  
   options: {
     collapsed:true,
     position: 'topleft',
@@ -91,6 +91,7 @@ L.Control.EarthLayer = L.Control.extend({
 
     container.appendChild(form);
     this._container = container;
+   
     return container;
   },
 
@@ -100,6 +101,34 @@ L.Control.EarthLayer = L.Control.extend({
 	  this._update();
     
   },
+  /** copy de la fonction dans formater-map.js**/
+  
+ /* isInTemporal( obs, start, end){
+		var obsStart = obs.temporalExtents.start;
+		var obsEnd = obs.temporalExtents.end;
+		if( obsEnd == "now"){
+			obsEnd = moment().format("YYYY-MM-DD");
+		}
+		if( obs.dataLastUpdate && obs.dataLastUpdate < obsEnd){
+			obsEnd = obs.dataLastUpdate;
+		}
+		if( start > obsEnd){
+			obs.inTemporal = false;
+			return false;
+		}
+		if( end < obsStart ){
+			obs.inTemporal = false;
+			return false;
+		}
+		obs.inTemporal = true;
+		return true;
+	},*/
+	updateObservations( observations, query){
+		this.options.query.start = query.start;
+		this.options.query.end = query.end;
+		this._observations = observations;
+		
+	},
   _toggle: function(){
 		if( this._container.className.indexOf('leaflet-control-earth-expanded')>=0){
 			this._collapse();
@@ -165,6 +194,7 @@ L.Control.EarthLayer = L.Control.extend({
     var node = this._form.querySelector("input");
     console.log(node);
 	node.dispatchEvent(evt);
+	this._selected.popup = this._container;
   },
 
   _collapse: function () {

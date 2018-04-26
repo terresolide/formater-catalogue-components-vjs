@@ -1,6 +1,8 @@
 /**
  * 
  */
+
+
 L.SelectedLayer =   L.Evented.extend({
 	layer:null,
 	//selected button
@@ -10,25 +12,46 @@ L.SelectedLayer =   L.Evented.extend({
 	bbox:null,
 	imageListener:null,
 	showImageListener:null,
+	updateObservationListener:null,
 	mode: "current",
 	disabledUrl:[],
 	map:null,
 	opacity:1,
+	popup:null,
 	options:{
 		lang: "fr"
 	
 	},
 	initialize: function( map,options){
 		this.map = map;
+		console.log( "mounted selected layer = " + this.mounted);
 		L.Util.setOptions(this, options);
+
 		this.imageListener = this.displayImage.bind( this);
 		document.addEventListener("selectedImage",this.imageListener);
 		this.showImageListener = this.showImage.bind( this);
 		document.addEventListener("showImage", this.showImageListener);
 		this.escapeListener = this.escape.bind(this);
 		document.addEventListener("keydown", this.escapeListener);
+		//this.updateObservationListener = this.updateObservation.bind(this);
+		// document.addEventListener("updateObservations", this.updateObservationListener);
 		
+	},
+	toggleLayer( layer){
+		if( this.layer == layer){
+			console.log( "close layer");
+			this.close();
+		}else{
+			console.log( "select nouveau layer");
+			this.close();
+			this.selectLayer( layer);
+		}
 		
+	},
+	selectLayer: function( layer){
+		this.layer = layer;
+		this.layer.select();
+		console.log( this.layer);
 		
 	},
 	change:function( button,layer){
@@ -72,6 +95,29 @@ L.SelectedLayer =   L.Evented.extend({
 			}
 		
 	},
+	setPopup( node ){
+		if( !this.popup){
+			this.popup = this.layer.bindPopup( node, {closeOnEscapeKey:false});
+			this.popup.on("popupclose", function(evt){
+				//_eventclosed = Object.values(evt._eventParents)[0];
+				//if(_selected.mode != "visualisation")
+					_selected.close();
+		
+				 
+				
+			});
+			this.popup.setContent( node );
+			/*this.popup.on("popupopen", function(evt){
+				
+				var evt = new MouseEvent('click', {
+					bubbles: true,
+					cancelable: true,
+					view: window
+				});
+				node.querySelector("input").dispatchEvent(evt);
+			})*/
+		}
+	},
 	escape( evt ){
 		evt = evt || window.event;
 	    var isEscape = false;
@@ -80,12 +126,17 @@ L.SelectedLayer =   L.Evented.extend({
 	    } else {
 	        isEscape = (evt.keyCode == 27);
 	    }
+
 	    if( this.layer != null){
+	    	//close sheet
 	    	this.close();
 	    }else{
 	    	//cas earth-control : earth-control collapse
 	    	this.earthControl._collapse();
 	    	//other only popup to close
+	    	console.log( "close popup");
+	    	this.popup = null;
+	    	
 	    	this.map.closePopup();
 	    	
 	    }
@@ -94,7 +145,8 @@ L.SelectedLayer =   L.Evented.extend({
 
 		// close popup under image
 		this.mode = "visualisation";
-		this.map.closePopup();
+		this.layer.closePopup();
+		//this.map.closePopup();
 		//closePopup trigger closeSheet
 
 		 var imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];
@@ -102,6 +154,7 @@ L.SelectedLayer =   L.Evented.extend({
 		if( this.layer){
 			this.layer.setStyle({fillOpacity:0});
 		}
+	
 		if( ! this.imageLayer){
 			this.imageLayer = L.imageOverlay( 
 					  evt.detail.img, 
@@ -121,6 +174,7 @@ L.SelectedLayer =   L.Evented.extend({
 			this.imageLayer.on( "dblclick", function( evt){
 				this.removeEventParent(evt);
 			});
+			console.log( "add to map");
 			this.imageLayer.addTo( this.map);
 			
 		
@@ -131,10 +185,10 @@ L.SelectedLayer =   L.Evented.extend({
 		var node = this.imageLayer.getElement();
 		node.setAttribute( "title", evt.detail.date);
 		node.setAttribute( "alt", evt.detail.date);
-	
-		
-		 this.imageLayer.bringToFront();
-		//this.imageLayer.setUrl( evt.detail.img);
+
+	     
+	     this.imageLayer.bringToFront();
+	     //this.imageLayer.setUrl( evt.detail.img);
 	},
 	stopVisualisation(){
 		if( this.mode == "visualisation"){
@@ -145,6 +199,7 @@ L.SelectedLayer =   L.Evented.extend({
 		
 	},
 	close: function(){
+	
 		if( this.layer == null){
 			return;
 		}
@@ -159,16 +214,20 @@ L.SelectedLayer =   L.Evented.extend({
 			this.mode = "current";
 			return;
 		}
-		var event = new CustomEvent("unselectInput", { detail:{}});
-		document.dispatchEvent(event);
+		
 		if( this.button){
-		this.button.className = this.button.className.replace(" selected", "");
-			this.button = null;
 			if( this.imageLayer){
 				this.imageLayer.remove();
 				this.imageLayer = null;
 				
 			}
+			var event = new CustomEvent("unselectInput", { detail:{}});
+			document.dispatchEvent(event);
+			this.button.className = this.button.className.replace(" selected", "");
+	
+			this.button = null;
+		
+			
 		}
 		if( typeof this.layer.setStyle == "function"){
 			this.layer.setStyle({fillOpacity: this.opacity});
@@ -176,9 +235,33 @@ L.SelectedLayer =   L.Evented.extend({
 		this.layer.unselect();
 		this.layer = null;
 	},
+	update( e){
+		this.updatePopup(e);
+		this.updateObservation(e);
+	},
+	updatePopup( event){
+		if( ! this.layer){
+			return;
+		}
+		console.log( this.popup);
+		var observations = this.layer.options.properties.observations;
+		var nodes = this.popup.querySelectorAll( "input");
+		for( var i = 0; i< nodes.length; i++){
+			console.log( nodes[i]);
+			if( observations[i].inTemporal){
+				nodes[i].className = nodes[i].className.replace("ft-empty","");
+			}else{
+				nodes[i].className = nodes[i].className +" ft-empty";
+			}
+		}
+	},
 	updateObservation( event){
+		console.log( "dans selected updateObservation");
+		console.log( this.button);
 		if( this.button){
 			var obs = this.layer.options.properties.observations[ this.button.dataset.index];
+			console.log( obs);
+			obs.process.status = "NONE";
 			this.layer.options.query = event.detail;
 	       	this.searchData( obs , event.detail, this.button.dataset.cds);
 		}

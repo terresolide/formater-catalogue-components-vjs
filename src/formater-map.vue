@@ -21,8 +21,12 @@
 <script>
 
 var L = require('./leaflet.extend.js');
+
 import FtMap from "./formater-map.js";
+
+
 var ftMap = new FtMap(L);
+
 
 export default {
 
@@ -85,7 +89,8 @@ export default {
  
   mounted(){
 	  var node = this.$el.querySelector(".formater-map > div");
-	
+	  console.log( "mounted map");
+	  
       ftMap.initialize( node, this.lang);
       this.resize();
 	  

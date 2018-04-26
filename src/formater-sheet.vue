@@ -592,8 +592,8 @@ export default {
 		moment.locale(this.lang);
 		this.aerisThemeListener = this.handleTheme.bind(this) 
         document.addEventListener('aerisTheme', this.aerisThemeListener);
-		this.aerisSearchEventListener = this.close.bind(this);
-		document.addEventListener('aerisSearchEvent', this.aerisSearchEventListener);
+		//this.aerisSearchEventListener = this.close.bind(this);
+		//document.addEventListener('aerisSearchEvent', this.aerisSearchEventListener);
 		this.displayInfoListener = this.displayInfo.bind(this) 
         document.addEventListener('displayInfo', this.displayInfoListener);
 		this.findDataListener = this.handleFindData.bind(this) 
@@ -617,8 +617,8 @@ export default {
 	destroyed(){
 		 document.removeEventListener('aerisTheme', this.aerisThemeEventListener);
          this.aerisThemeEventListener = null;
-         document.removeEventListener('aerisSearchEvent', this.aerisSearchEventListener);
-         this.aerisSearchEventListener = null;
+        // document.removeEventListener('aerisSearchEvent', this.aerisSearchEventListener);
+        // this.aerisSearchEventListener = null;
          document.removeEventListener('displayInfo', this.displayInfoListener);
          this.displayInfoListener = null;
          document.removeEventListener('findData', this.findDataListener);

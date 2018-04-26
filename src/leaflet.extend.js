@@ -128,6 +128,7 @@ L.Polygon.include({
 		}
 	},
 	select(){
+		console.log( "le select de polygon");
 		
 		if( !this.options.defColor){
 			this.options.defColor = this.options.color;
@@ -144,6 +145,7 @@ L.Polygon.include({
 	
 	},
 	unselect(){
+		console.log( "le unselect de polygon");
 		if( this.options.defColor){
 
 			this.setStyle( { color:this.options.defColor});

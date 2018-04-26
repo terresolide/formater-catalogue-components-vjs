@@ -40,7 +40,7 @@
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
 	    <input type="hidden" v-model="searching" />
 	    <div class= "formater-buttons" >
-	    <input class="formater-search-button" type="button"  @click="search" :disabled="disableSearch" :value="$t('update')"/>
+	    <input class="formater-search-button" type="button"  @click="search" :disabled="searching || hasChanged == 0" :value="searchText"/>
 	    </div>
 	</div>
 	</div>
@@ -93,20 +93,13 @@ export default {
            theme:null,
            searching:true,
            hasChanged:0,
-           disableSearch: true,
            //searchText: 'update',
           // disableSearch: this.searching || this.hasChanged == 0,
            cds: [{ name:"bcmt", domain:"geomagnetism"},{name:"isgi", domain:"geomagnetism"}, {name:"grenoble", domain:"geodesy"}]
          
       }
   },
-  watch:{
- 	 searching( val ){
- 		 console.log( "searching = " + val);
- 		 this.disableSearch = val;
-		
- 	 }
-  },
+
   methods: {
 	    reset(e){
 	    	
@@ -177,11 +170,19 @@ export default {
 				//var event = new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$i18n.t('service_closed')}});
               //  document.dispatchEvent(event);
                if( this.hasChanged < 2){
+            	   console.log( "update in search");
             	   this.update(e);
                }else{
                 	var result = this.callApi(e);
                }
                // return;
+			}
+		},
+		searchText(){
+			if( this.hasChanged > 1){
+				return this.$i18n.t('search');
+			}else{
+				return this.$i18n.t('update');
 			}
 		},
 		callApi(e){
@@ -236,6 +237,7 @@ export default {
 			}else{
 		
 				this.searching = true;
+				this.hasChanged = 0;
 			
 			}
 		},

@@ -14,7 +14,7 @@
 module.exports = function( L ){
 	this.map = null;
 	this.layers = [];
-	
+	this.mounted = false;
 	var _disabledUrl = new Array();
 	var _lang ="fr";
 	var _treatedEvents = new Array();
@@ -60,8 +60,9 @@ module.exports = function( L ){
 	var _layerControl = null;
 	var _earthControl = null;
     var _layerpopup = null;
-    var _eventClosed = null;
+
     var _bounds = [];
+  
 	/** @todo changer de méthode pour les marqueurs et couleurs (fichier configuration globale???)**/
 	var bcmt = {
 		iconMarker: new L.AwesomeMarkers.icon( { icon: 'magnet', prefix: 'fa', markerColor: 'orange', html:'2/3'}),
@@ -163,27 +164,31 @@ module.exports = function( L ){
 		  _layerControl = L.control.groupedLayers(null, null,  {groupCheckboxes: true, title: _t('Layers')});
 		  _layerControl.addTo( this.map);
 		  _tooltip = L.tooltip();
-		
-		  document.addEventListener("closeSheet", function(e){
-				if( _selected.button){
-					var event = new MouseEvent("click", {});
-					_selected.button.dispatchEvent(event);
-				}
-		  });
-		  var _this = this;
-		  document.addEventListener("updateObservations", function(e){
-			
-				_this.updateObservations(e);
-		  });
-		  
-		  _selected = L.selectedLayer( this.map,{lang: lang});
+		  if( !this.mounted){
+			  //formater-map est initialisé deux fois donc pour ne pas avoir de doublon...
+			  //@todo comprendre pourquoi format-map est "mounted" 2 fois
+			  document.addEventListener("closeSheet", function(e){
+				  console.log( "close sheet event");
+					if( _selected.button){
+						var event = new MouseEvent("click", {});
+						_selected.button.dispatchEvent(event);
+					}
+			  });
+			  var _this = this;
+			  document.addEventListener("updateObservations", function(e){
+				
+					_this.updateObservations(e);
+			  });
+		 
+			  _selected = L.selectedLayer( this.map,{lang: lang});
+		  }
 		  var options = {  lang:lang, title: _t('Global_data'), name: _t("Global_data")};
 		_earthControl = L.control.earthLayer(_selected, options);
 		_earthControl.addTo( this.map);
+		 
 		
+		this.mounted = true;
 
-		
-		
 
 	}
 	
@@ -196,11 +201,61 @@ module.exports = function( L ){
 		this.map._container.style.height = Math.round(this.height ) +"px";
 		this.map.invalidateSize()
 	}
+	function isInTemporal( obs, start, end){
+		var obsStart = obs.temporalExtents.start;
+		var obsEnd = obs.temporalExtents.end;
+		if( obsEnd == "now"){
+			obsEnd = moment().format("YYYY-MM-DD");
+		}
+		if( obs.dataLastUpdate && obs.dataLastUpdate < obsEnd){
+			obsEnd = obs.dataLastUpdate;
+		}
+		if( start > obsEnd){
+			obs.inTemporal = false;
+			return false;
+		}
+		if( end < obsStart ){
+			obs.inTemporal = false;
+			return false;
+		}
+		obs.inTemporal = true;
+		return true;
+	}
 
 	this.updateObservations = function(event){
-		console.log( event);
-		_selected.updateObservation( event);
+		console.log( "update observations");
+		
+		// update layer and observations
+	    var start = event.detail.start;
+	    var end = event.detail.end;
+		this.map.eachLayer( function(layer){
+			if( layer.feature && layer.feature.properties.observations){
+				layer.updateObservations( start, end);
+				//console.log( layer);
+			}
+			
+		})
+		// update global observations
+		this.updateGlobal( event);
+		
+		// update graph of selected observations
+		_selected.update( event);
+	},
+	this.updateGlobal = function( event ){
+		var start = event.detail.start;
+		var end = event.detail.end;
+		_global_observations.forEach( function( obs){
+			obs.inTemporal = isInTemporal(obs, start, end);
+			if( obs.process){
+				obs.process.status = "NONE"; // doit rechercher les données
+			}
+			obs.query.start = start;
+			obs.query.end = end;
+			console.log(obs.query);
+		})
+		_earthControl.updateObservations( _global_observations, {start:start, end:end});
 	}
+
 	this.displayResults = function( event ){
 		_addSelectArea2LayerGroup( event );
 		 
@@ -274,8 +329,9 @@ module.exports = function( L ){
             	 }*/
 	          	 
 	          	  layer.on('click', function(e){
-	          		  L.DomEvent.stopPropagation(e);
-	          		  this.showPopup(e);
+	          		 // L.DomEvent.stopPropagation(e);
+	          		  _selected.toggleLayer( this);
+	          		 // this.showPopup(e);
 	          		 
 	          	  })
 	         	 
@@ -369,7 +425,10 @@ module.exports = function( L ){
 		this.layers.push( layer);
 		this.map.fitBounds(_bounds);
       }
+	
+	/** parties à ajouter dans selected layer **/
 	L.Layer.prototype.select = function(){
+		console.log( "selection de ce layer");
 		if(this instanceof L.Marker){
 			var icon = this.options.icon;
 			this.options.defColor = icon.options.markerColor;
@@ -387,6 +446,7 @@ module.exports = function( L ){
 				this.setStyle( { color:"red"});
 		}
 	}
+
 	L.Layer.prototype.unselect = function(){
 		if(this instanceof L.Marker){
 			var icon = this.options.icon;
@@ -422,6 +482,7 @@ module.exports = function( L ){
 			});
 			node.appendChild(ul);
 		}
+		
 		//@todo voir plus loin
 		var cds = this.options.cds;
 		this.options.properties.observations.forEach( function( obs, index){
@@ -442,26 +503,28 @@ module.exports = function( L ){
 			});
 			
 		});
-		this.popup = node;
+//		this.popup = true;
+		
+	//	_selected.setPopup( node );
 	 
-		var lpopup = this.bindPopup( node);
-		lpopup.on("popupclose", function(evt){
-			//_eventclosed = Object.values(evt._eventParents)[0];
-			//if(_selected.mode != "visualisation")
-				_selected.close();
-	
-			 
-			
-		})
-		lpopup.on("popupopen", function(evt){
-			
-			var evt = new MouseEvent('click', {
-				bubbles: true,
-				cancelable: true,
-				view: window
-			});
-			node.querySelector("input").dispatchEvent(evt);
-		})
+//		var lpopup = this.bindPopup( node);
+//		lpopup.on("popupclose", function(evt){
+//			//_eventclosed = Object.values(evt._eventParents)[0];
+//			//if(_selected.mode != "visualisation")
+//				_selected.close();
+//	
+//			 
+//			
+//		})
+//		lpopup.on("popupopen", function(evt){
+//			
+//			var evt = new MouseEvent('click', {
+//				bubbles: true,
+//				cancelable: true,
+//				view: window
+//			});
+//			node.querySelector("input").dispatchEvent(evt);
+//		})
 		
 		
 	}
@@ -471,29 +534,80 @@ module.exports = function( L ){
 		// close earth layer
 		_earthControl._collapse();
 	   
-		if( _layerpopup == this){
-			_layerpopup = null;
-			if(!(this instanceof L.Marker)){
-			  //trouble with popup on polygon, when click always open??!
-				//this._map.closePopup( this.);
-			  this._map.closePopup();
-			  throw "exit";
-			}
-			
-			return;
-			
-		}
+//		if( _selected.layer == this){
+//			_selected.layer.openPopup();
+//			return;
+//		}
+//		if( _layerpopup == this){
+//			_layerpopup = null;
+//			//if(!(this instanceof L.Marker)){
+//			  //trouble with popup on polygon, when click always open??!
+//				//this._map.closePopup( this.);
+//			  this._map.closePopup();
+//			  //throw "exit";
+//			//}
+//			
+//			return;
+//		}
 
-		_layerpopup = this;
-		if( this.popup){
-			return;
-		}
+		//_layerpopup = this;
+//		if( this.popup){
+//			return;
+//		}
 	
 		this.createPopup();
-		this.openPopup( evt.latlng);
+		//this.openPopup( evt.latlng);
 		this.closeTooltip();
 		
 		
+	}
+	/** Mise à jour des layers suivant les dates */
+	L.Layer.prototype.updateObservations = function( start, end){
+		var inTemporal = 0;
+
+		this.options.query.start = start;
+		this.options.query.end = end;
+		this.feature.properties.observations.forEach( function( obs){
+			
+			if( obs.process){
+				obs.process.status = "NONE"; // doit rechercher les données
+			}
+			//console.log( obs );
+			if( isInTemporal( obs, start, end)){
+				inTemporal++;
+			}
+			
+		});
+		this.feature.properties.inTemporal = inTemporal;
+		if( this instanceof L.Marker){
+			this.updateIcon();
+		}
+		
+	}
+	/** Mise à jour de l'icone */
+	L.Marker.prototype.updateIcon = function(){
+		if( this.feature.properties.inTemporal == 0){
+  	    	//grey marker
+  	    	var color = "cadetblue";
+  	    	var iconClass = "ft-empty-obs";
+  	    }else{
+  	    	var color = "orange";
+  	    	
+  	    }
+		this.options.defColor = color;
+		if( this == _selected.layer){
+			var color = "red";
+			
+		}
+		
+  	    var html = this.feature.properties.inTemporal +"/"+ this.feature.properties.observations.length;
+  	    var icon =  new L.AwesomeMarkers.icon( { 
+			icon: 'magnet', 
+			prefix: 'fa', 
+			markerColor: color,
+			iconClass:iconClass,
+			html:html});
+  	    this.setIcon( icon);
 	}
 	
 		
