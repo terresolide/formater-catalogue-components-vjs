@@ -311,8 +311,13 @@ L.SelectedLayer =   L.Evented.extend({
 		if( ! this.layer){
 			return;
 		}
-		console.log( this.layer.getPopup());
-		var content = this.layer.getPopup().getContent();
+		console.log( typeof this.layer.getPopup);
+		if( typeof this.layer.getPopup == "function"){
+			var content = this.layer.getPopup().getContent();
+		}else if( typeof this.layer.getContent == "function"){
+			/** etendre earth layer avec une popup **/
+			var content = this.layer.getContent();
+		}
 		var observations = this.layer.options.properties.observations;
 		var nodes = content.querySelectorAll( "input");
 		for( var i = 0; i< nodes.length; i++){

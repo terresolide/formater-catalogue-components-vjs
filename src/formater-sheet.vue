@@ -439,7 +439,7 @@ export default {
 		return {
 			title: 'le titre',
 			chartTitle: 'graph',
-			aerisSearchEventListener:null,
+			//aerisSearchEventListener:null,
 			displayInfoListener:null,
 			findDataListener:null,
 			unselectLayerListener:null,
@@ -617,8 +617,8 @@ export default {
 	destroyed(){
 		 document.removeEventListener('aerisTheme', this.aerisThemeEventListener);
          this.aerisThemeEventListener = null;
-         document.removeEventListener('aerisSearchEvent', this.aerisSearchEventListener);
-         this.aerisSearchEventListener = null;
+      //   document.removeEventListener('aerisSearchEvent', this.aerisSearchEventListener);
+      //   this.aerisSearchEventListener = null;
          document.removeEventListener('displayInfo', this.displayInfoListener);
          this.displayInfoListener = null;
          document.removeEventListener('findData', this.findDataListener);

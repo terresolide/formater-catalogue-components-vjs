@@ -252,7 +252,7 @@ module.exports = function( L ){
 			
 		})
 		// update global observations
-		//this.updateGlobal( event);
+		this.updateGlobal( event);
 		
 		// update graph of selected observations
 		_selected.update( event);
@@ -269,7 +269,7 @@ module.exports = function( L ){
 				obs.query.end = end;
 				console.log(obs.query);
 			})
-			//_earthControl.updateObservations( _global_observations, {start:start, end:end});
+			_earthControl.updateObservations( _global_observations, {start:start, end:end});
 	}
 	this.displayResults = function( event ){
 		_addSelectArea2LayerGroup( event );
