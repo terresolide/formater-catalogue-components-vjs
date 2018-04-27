@@ -91,7 +91,7 @@ L.SelectedLayer =   L.Evented.extend({
 	    }
 	},
 	displayImage( evt ){
-
+		console.log( "display image");
 		// close popup under image
 		this.mode = "visualisation";
 		this.map.closePopup();
@@ -103,6 +103,7 @@ L.SelectedLayer =   L.Evented.extend({
 			this.layer.setStyle({fillOpacity:0});
 		}
 		if( ! this.imageLayer){
+			console.log( "create imageLayer");
 			this.imageLayer = L.imageOverlay( 
 					  evt.detail.img, 
 					  imageBounds,
@@ -129,6 +130,8 @@ L.SelectedLayer =   L.Evented.extend({
 
 		}
 		var node = this.imageLayer.getElement();
+		console.log( node);
+		this.imageLayer.addTo( this.map);
 		node.setAttribute( "title", evt.detail.date);
 		node.setAttribute( "alt", evt.detail.date);
 	
@@ -299,7 +302,39 @@ L.SelectedLayer =   L.Evented.extend({
 		}
 		
 		
-	}
+	},
+	update( e){
+				this.updatePopup(e);
+				this.updateObservation(e);
+	},
+	updatePopup( event){
+		if( ! this.layer){
+			return;
+		}
+		console.log( this.layer.getPopup());
+		var content = this.layer.getPopup().getContent();
+		var observations = this.layer.options.properties.observations;
+		var nodes = content.querySelectorAll( "input");
+		for( var i = 0; i< nodes.length; i++){
+			console.log( nodes[i]);
+			if( observations[i].inTemporal){
+				nodes[i].className = nodes[i].className.replace("ft-empty","");
+			}else{
+				nodes[i].className = nodes[i].className +" ft-empty";
+			}
+		}
+	},
+ 	updateObservation( event){
+		console.log( "dans selected updateObservation");
+		console.log( this.button);
+ 		if( this.button){
+ 			var obs = this.layer.options.properties.observations[ this.button.dataset.index];
+			console.log( obs);
+			obs.process.status = "NONE";
+ 			this.layer.options.query = event.detail;
+ 	       	this.searchData( obs , event.detail, this.button.dataset.cds);
+ 		}
+ 	}
 
 });
 L.selectedLayer = function(map, options) {

@@ -40,7 +40,7 @@
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
 	    <input type="hidden" v-model="searching" />
 	    <div class= "formater-buttons" >
-	    <input class="formater-search-button" type="button"  @click="search" :disabled="disableSearch" :value="$t('update')"/>
+	    <input class="formater-search-button" type="button"  @click="search" :disabled="searching || hasChanged == 0" :value="$t('update')"/>
 	    </div>
 	</div>
 	</div>
@@ -100,13 +100,7 @@ export default {
          
       }
   },
-  watch:{
- 	 searching( val ){
- 		 console.log( "searching = " + val);
- 		 this.disableSearch = val;
-		
- 	 }
-  },
+
   methods: {
 	    reset(e){
 	    	
@@ -184,6 +178,13 @@ export default {
                // return;
 			}
 		},
+		searchText(){
+						if( this.hasChanged > 1){
+							return this.$i18n.t('search');
+						}else{
+							return this.$i18n.t('update');
+						}
+		},
 		callApi(e){
 			  
 			  var _this = this;
@@ -236,6 +237,7 @@ export default {
 			}else{
 		
 				this.searching = true;
+				this.hasChanged = 0;
 			
 			}
 		},
