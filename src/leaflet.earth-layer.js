@@ -7,7 +7,7 @@
 
 L.Control.EarthLayer = L.Control.extend({
   _container: null,
-
+  popup:null,
   options: {
     collapsed:true,
     position: 'topleft',
@@ -94,6 +94,7 @@ L.Control.EarthLayer = L.Control.extend({
 
     container.appendChild(form);
     this._container = container;
+    this.popup = true;
     return container;
   },
 

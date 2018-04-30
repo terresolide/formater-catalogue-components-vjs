@@ -239,14 +239,17 @@ module.exports = function( L ){
 		return true;
 	}
 	this.updateObservations = function(event){
-		console.log( event);
+		
 		//_selected.updateObservation( event);
 		// update layer and observations
 	    var start = event.detail.start;
 	    var end = event.detail.end;
+	    var _this = this;
 		this.map.eachLayer( function(layer){
 			if( layer.feature && layer.feature.properties.observations){
 				layer.updateObservations( start, end);
+				//@todo créer une méthode updatePopup pour leslayers
+				_this.updatePopup( layer);
 				//console.log( layer);
 			}
 			
@@ -258,15 +261,18 @@ module.exports = function( L ){
 		_selected.update( event);
 	}
 	this.updatePopup =  function( layer){
-		if( layer == null){
+		if( layer == null || layer.popup == null){
 			return;
 		}
-		if( typeof layer.getPopup == "function"){
+		if( typeof layer.getPopup == "function" ){
 			var content = layer.getPopup().getContent();
 		}else if( typeof layer.getContent == "function"){
 			/** etendre earth layer avec une popup **/
 			var content = layer.getContent();
+		}else{
+			return;
 		}
+	
 		var observations = layer.options.properties.observations;
 		//var count = 0;
 		var nodes = content.querySelectorAll( "input");
@@ -280,7 +286,6 @@ module.exports = function( L ){
 		}
 	}
 	this.updateGlobal = function( event ){
-			console.log( "update global");
 			var start = event.detail.start;
 			var end = event.detail.end;
 			_global_observations.forEach( function( obs){
@@ -290,7 +295,7 @@ module.exports = function( L ){
 				}
 				obs.query.start = start;
 				obs.query.end = end;
-				console.log(obs.query);
+				obs.data = null;
 			})
 			_earthControl.updateObservations( _global_observations, {start:start, end:end});
 			this.updatePopup( _earthControl);
