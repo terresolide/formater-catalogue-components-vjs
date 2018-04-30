@@ -127,6 +127,7 @@ L.Control.EarthLayer = L.Control.extend({
   		this.options.query.start = query.start;
   		this.options.query.end = query.end;
   		this._observations = observations;
+  		//this._updateButtons();
   		
   	},
   _toggle: function(){
@@ -136,6 +137,13 @@ L.Control.EarthLayer = L.Control.extend({
 			this._expand();
 		}
   },
+//  _updateButtons: function(){
+//	  var form = this._form;
+//	  this._observations.forEach( function( obs, index){
+//		  var node = form.querySelector('input[data-index="'+ index +'"]');
+//		  console.log( node);
+//	  });
+//  },
   _update: function () {
     if (!this._container) {
       return;
@@ -153,6 +161,7 @@ L.Control.EarthLayer = L.Control.extend({
     }else{
     	 this._container.className = this._container.className.replace(' has-content', '');
     }
+    var count = 0;
     this._observations.forEach( function( obs, index){
     	var input = document.createElement("input");
 		input.setAttribute("type", "button");
@@ -161,6 +170,8 @@ L.Control.EarthLayer = L.Control.extend({
 
 		if( !obs.inTemporal){
 			input.setAttribute("class", "ft-empty");
+		}else{
+			count++;
 		}
 		//@todo cds devrait être dans observation en retour ou calculer à partir de obs.formaterDataCenter.code 
 		//ou obs.formaterDataCenter.name
@@ -169,10 +180,15 @@ L.Control.EarthLayer = L.Control.extend({
 	
 		input.addEventListener("click", function(){
 			_selected.change(this, _layer);
-	});
+		});
+	
     })
 
-  
+    if( count == 1 ){
+    	this._container.className = this._container.className + " ft-empty";
+    }else{
+    	this._container.className = this._container.className.replace(' ft-empty', '');
+    }
   },
 
 

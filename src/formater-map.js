@@ -257,7 +257,30 @@ module.exports = function( L ){
 		// update graph of selected observations
 		_selected.update( event);
 	}
+	this.updatePopup =  function( layer){
+		if( layer == null){
+			return;
+		}
+		if( typeof layer.getPopup == "function"){
+			var content = layer.getPopup().getContent();
+		}else if( typeof layer.getContent == "function"){
+			/** etendre earth layer avec une popup **/
+			var content = layer.getContent();
+		}
+		var observations = layer.options.properties.observations;
+		//var count = 0;
+		var nodes = content.querySelectorAll( "input");
+		for( var i = 0; i< nodes.length; i++){
+			if( observations[i].inTemporal){
+				nodes[i].className = nodes[i].className.replace(" ft-empty","");
+				//count++;
+			}else{
+				nodes[i].className = nodes[i].className +" ft-empty";
+			}
+		}
+	}
 	this.updateGlobal = function( event ){
+			console.log( "update global");
 			var start = event.detail.start;
 			var end = event.detail.end;
 			_global_observations.forEach( function( obs){
@@ -270,6 +293,8 @@ module.exports = function( L ){
 				console.log(obs.query);
 			})
 			_earthControl.updateObservations( _global_observations, {start:start, end:end});
+			this.updatePopup( _earthControl);
+			this.updatePopup( _selected.layer);
 	}
 	this.displayResults = function( event ){
 		_addSelectArea2LayerGroup( event );
@@ -584,8 +609,24 @@ module.exports = function( L ){
 		this.feature.properties.inTemporal = inTemporal;
 		if( this instanceof L.Marker){
 			this.updateIcon();
+		}else if( this instanceof L.Layer){
+			this.update();
 		}
 		
+	}
+	L.Layer.prototype.update = function(){
+		if( this.feature.properties.inTemporal == 0){
+			var color = "cadetblue";
+		}else{
+			var color = this.feature.properties.style.fill;
+			
+		}
+		this.options.defColor = color;
+		if( this == _selected.layer ){
+			color = "red";
+		}
+		this.setStyle({ color: color});
+		return color;
 	}
 	/** Mise à jour de l'icone */
 	L.Marker.prototype.updateIcon = function(){

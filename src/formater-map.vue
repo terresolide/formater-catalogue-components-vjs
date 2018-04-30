@@ -190,9 +190,15 @@ export default {
 #formatermap a.leaflet-control-earth-toggle{
 	font-family: FontAwesome;
 	text-decoration: none;
-	color:rgba(0,0,0,0.6);
+	color:rgba(3,96,186,0.6);
 	font-size: 30px;
 	padding:10px;
+
+}
+#formatermap a.leaflet-control-earth-toggle.ft-empty{
+
+	color:rgba(0,0,0,0.6);
+
 
 }
 #formatermap .leaflet-control-earth{

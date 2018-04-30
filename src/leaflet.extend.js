@@ -25,6 +25,21 @@ L.Polygon.include({
 		
 		}
 	},
+	update: function(){
+		//parent update (layer?)
+		 var color = L.Layer.prototype.update.call( this);
+		if( this.framed && this.triangles != "undefined"){
+			var _this = this;
+			["North", "East", "South", "West"].forEach( function( side ){
+				console.log( "dans update triangle");
+				_this.triangles[ side].feature.properties.inTemporal = _this.feature.properties.inTemporal;
+				_this.triangles[ side ].update();
+				if( color == "red"){
+					_this.triangles[side].select();
+				}
+			})
+		}
+	},
 	buildFramed: function( tooltip){
 		if( ! this.framed ){
 			return;
@@ -54,6 +69,10 @@ L.Polygon.include({
 					});
 				
 				_this.triangles[ side] = polygon;
+				
+				_this.triangles[ side].feature = { 
+						properties: { style: _this.feature.properties.style}
+				}
 			})
 
 		}

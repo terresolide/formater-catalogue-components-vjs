@@ -16,7 +16,6 @@ L.SelectedLayer =   L.Evented.extend({
 	opacity:1,
 	options:{
 		lang: "fr"
-	
 	},
 	initialize: function( map,options){
 		this.map = map;
@@ -27,9 +26,6 @@ L.SelectedLayer =   L.Evented.extend({
 		document.addEventListener("showImage", this.showImageListener);
 		this.escapeListener = this.escape.bind(this);
 		document.addEventListener("keydown", this.escapeListener);
-		
-		
-		
 	},
 	change:function( button,layer){
 		if( this.mode == "visualisation"){
@@ -304,31 +300,53 @@ L.SelectedLayer =   L.Evented.extend({
 		
 	},
 	update( e){
-				this.updatePopup(e);
+				//this.updatePopup(this.layer);
+				
 				this.updateObservation(e);
 	},
-	updatePopup( event){
-		if( ! this.layer){
-			return;
-		}
-		console.log( typeof this.layer.getPopup);
-		if( typeof this.layer.getPopup == "function"){
-			var content = this.layer.getPopup().getContent();
-		}else if( typeof this.layer.getContent == "function"){
-			/** etendre earth layer avec une popup **/
-			var content = this.layer.getContent();
-		}
-		var observations = this.layer.options.properties.observations;
-		var nodes = content.querySelectorAll( "input");
-		for( var i = 0; i< nodes.length; i++){
-			console.log( nodes[i]);
-			if( observations[i].inTemporal){
-				nodes[i].className = nodes[i].className.replace("ft-empty","");
-			}else{
-				nodes[i].className = nodes[i].className +" ft-empty";
-			}
-		}
-	},
+//	updatePopup( layer){
+//		
+//		if( typeof layer.getPopup == "function"){
+//			var content = layer.getPopup().getContent();
+//		}else if( typeof layer.getContent == "function"){
+//			/** etendre earth layer avec une popup **/
+//			var content = layer.getContent();
+//		}
+//		var observations = layer.options.properties.observations;
+//		//var count = 0;
+//		var nodes = content.querySelectorAll( "input");
+//		for( var i = 0; i< nodes.length; i++){
+//			if( observations[i].inTemporal){
+//				nodes[i].className = nodes[i].className.replace(" ft-empty","");
+//				//count++;
+//			}else{
+//				nodes[i].className = nodes[i].className +" ft-empty";
+//			}
+//		}
+//	},
+//	updatePopup( event){
+//		if( ! this.layer){
+//			return;
+//		}
+//		console.log( typeof this.layer.getPopup);
+//		if( typeof this.layer.getPopup == "function"){
+//			var content = this.layer.getPopup().getContent();
+//		}else if( typeof this.layer.getContent == "function"){
+//			/** etendre earth layer avec une popup **/
+//			var content = this.layer.getContent();
+//		}
+//		var observations = this.layer.options.properties.observations;
+//		var count = 0;
+//		var nodes = content.querySelectorAll( "input");
+//		for( var i = 0; i< nodes.length; i++){
+//			if( observations[i].inTemporal){
+//				nodes[i].className = nodes[i].className.replace(" ft-empty","");
+//				count++;
+//			}else{
+//				nodes[i].className = nodes[i].className +" ft-empty";
+//			}
+//		}
+//	},
  	updateObservation( event){
 		console.log( "dans selected updateObservation");
 		console.log( this.button);
