@@ -77,7 +77,8 @@ module.exports= function ( Highcharts){
     		  _addListeners(container);
 	    	
     	 }
-	     console.log( "create Chart BCMT");
+		 container.innerHTML = "";
+
 		var dataType = data0.meta.get("Data Type");
 	    var interval = this.intervalType(data0.meta.get("Data Interval Type"), dataType);
      
@@ -166,7 +167,16 @@ module.exports= function ( Highcharts){
 	        return true;
 	 }
 	 this.destroy = function(){
-		 return true;
+			this.data = null;
+			this.indice = null;
+			this.error = null;
+			this.kp = null;
+			this.colors = null;
+			if( this.chart ){
+				this.chart.destroy();
+			    this.chart = null;
+		    }
+
 	 }
 	return this;
 }

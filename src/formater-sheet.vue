@@ -27,7 +27,7 @@
         "type":"Data type",
         "GeomagneticData": "Geomagnetism",
         "time series": "time series",
-        "timeResolution": "Time resolution",
+        "timeResolution": "Temporal resolutions",
         "processingLevel": "Processing Level",
         "shortName": "Variables",
         "domainOfInterest": "Domain of interest",
@@ -71,7 +71,7 @@
          "type":"Type de données",
           "GeomagneticData": "Géomagnétisme",
          "time series": "Séries temporelles",
-         "timeResolution": "Résolution temporelle",
+         "timeResolution": "Résolutions temporelles",
           "processingLevel": "Niveau de traitement",
           "shortName": "Variables",
         "domainOfInterest": "Domaines",
@@ -401,8 +401,6 @@ export default {
 	},
 	watch: {
 		maxheight(newVal, oldVal){
-			//console.log("watch");
-			console.log( "height" + newVal);
 			if(this.$el && this.$el.querySelector ){
 				var header = this.$el.querySelector(".formater-sheet-header").offsetHeight;
 				this.$el.querySelector(".formater-sheet-main").style.maxHeight = newVal +"px";
@@ -444,6 +442,7 @@ export default {
 			findDataListener:null,
 			unselectLayerListener:null,
 			aerisThemeListener:null,
+			updateObservationsListener:null,
 			hidden: true,
 			color: "#D53E2A",
 			data:null,
@@ -451,7 +450,7 @@ export default {
 			charts:null,
 			code:null,
 			hasGraph: false,
-			images:null,
+			images:null
 			
 		}
 	},
@@ -470,8 +469,7 @@ export default {
 	    	 ftChart.destroyCharts();
 	    	 this.hasGraph = false;
 	    	 this.chartTitle = "";
-	    	 this.images = [];
-	    	// this.$el.querySelector("#container").style.display = "none";
+	    	 this.images = null;
 	    	 this.hidden = true;
 	    	 this.code ="";
 	     },
@@ -487,13 +485,13 @@ export default {
 	    	  
 	    	   this.title = observation.title[this.lang];
                this.data = observation;
-               if(cds === "grenoble"){
+               if(cds === "grenoble" && observation.data && observation.data.result ){
             	   this.images = observation.data;
                }else{
+            	   console.log( "images null");
             	   this.images = null;
                }
-               console.log( "dans open "+cds);
-               console.log( observation.query);
+
                if( observation.data && observation.query){
             	   var container = this.$el.querySelector("#ftChartContainer");
             	  
@@ -528,13 +526,23 @@ export default {
 	    		 this.handleCreateChart(event);
 	    		 break;
 	    	 case "grenoble":
-	    		 this.handleDisplayImage(event);
+	    		 this.handleDisplayImageBox(event);
 	    		 break;
 	    	 }
 	     },
-	     handleDisplayImage(event){
-	    	 this.images = event.detail.obs.data;
-	    	 console.log( this.images);
+	     handleResetChart(){
+	    	 if( this.data){
+	    		this.data.data = [];
+	    	 }
+	    	 ftChart.destroyCharts();
+		     this.hasGraph = false;
+		     this.chartTitle = "";
+	    	 this.images = null;
+	     },
+	     handleDisplayImageBox(event){
+	    	 if( event.detail.obs.data && event.detail.obs.data.result){
+	    	 	this.images = event.detail.obs.data;
+	    	 }
 	     },
 	     handleCreateChart(event){
 	    	
@@ -542,13 +550,10 @@ export default {
                  return;
              }
 	    	 var container= this.$el.querySelector("#ftChartContainer");
- 
-            
 	    	 var data0 = event.detail.obs.data;
-	    	 var query = event.detail.obs.query;
-// 	    	 console.log( "ft-sheet handle create chart");
-	    	 console.log( event.detail);
 	    	
+	    	 var query = event.detail.obs.query;
+ 	    	
 	    	 this.hasGraph = ftChart.createChart( container, event.detail.cds,data0, this.code, query);
 	    	if( this.hasGraph){
 	    		this.chartTitle = ftChart.createChartTitle( );
@@ -598,6 +603,8 @@ export default {
         document.addEventListener('displayInfo', this.displayInfoListener);
 		this.findDataListener = this.handleFindData.bind(this) 
         document.addEventListener('findData', this.findDataListener);
+		this.updateObservationsListener = this.handleResetChart.bind(this) 
+        document.addEventListener('updateObservations', this.updateObservationsListener);
 		this.unselectLayerListener = this.hide.bind(this);
 		document.addEventListener('unselectInput', this.unselectLayerListener);
 		
@@ -623,6 +630,10 @@ export default {
          this.displayInfoListener = null;
          document.removeEventListener('findData', this.findDataListener);
          this.findDataListener = null;
+         document.removeEventListener('unselectInput', this.unselectLayerListener);
+         this.unselectLayerListener = null;
+         document.removeEventListener('updateObservations', this.updateObservationsListener);
+         this.updateObservationsListener = null;
          
 	}
 }

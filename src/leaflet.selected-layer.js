@@ -183,7 +183,6 @@ L.SelectedLayer =   L.Evented.extend({
 		}
 	},
 	searchData( obs, query, cds){
-		console.log("dans searchData "+cds);
 		var _cds = cds;
         var _disabledUrl = this.disabledUrl;
 		if(!obs.process){
@@ -227,13 +226,13 @@ L.SelectedLayer =   L.Evented.extend({
 			    			}
 			    			i--;
 			    		}
-			    		for(var i=0;i<links.length;i++){
-			    			 links[i].prov = true;
-			    			obs.links.push(links[i]);
-			    		}
+//			    		for(var i=0;i<links.length;i++){
+//			    			 links[i].prov = true;
+//			    			obs.links.push(links[i]);
+//			    		}
 			    	 }
 			    	if(_cds == "isgi"){
-			    		console.log( "isgi reponse");
+
 			    		//recuperation du lien archive
 			    		var url = obs.data.meta.get("isgi_url");
 			    		
