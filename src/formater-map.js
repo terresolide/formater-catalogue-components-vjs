@@ -272,15 +272,14 @@ module.exports = function( L ){
 		}else{
 			return;
 		}
-	
 		var observations = layer.options.properties.observations;
 		//var count = 0;
 		var nodes = content.querySelectorAll( "input");
 		for( var i = 0; i< nodes.length; i++){
 			if( observations[i].inTemporal){
-				nodes[i].className = nodes[i].className.replace(" ft-empty","");
+				nodes[i].className = nodes[i].className.replace(/\sft\-empty/g,"");
 				//count++;
-			}else{
+			}else if(!nodes[i].className.indexOf("ft-empty")>=0){
 				nodes[i].className = nodes[i].className +" ft-empty";
 			}
 		}
@@ -299,7 +298,6 @@ module.exports = function( L ){
 			})
 			_earthControl.updateObservations( _global_observations, {start:start, end:end});
 			this.updatePopup( _earthControl);
-			this.updatePopup( _selected.layer);
 	}
 	this.displayResults = function( event ){
 		_addSelectArea2LayerGroup( event );
