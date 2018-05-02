@@ -127,16 +127,12 @@ function FtChart(Highcharts){
       	}
     	 // specifique isgi et bcmt!!
     	 var datacode = data0.meta.get("IAGA Code");
-    	 
-    	 console.log( this.code);
-    	 console.log( datacode);
+
      	 if( this.cds == "bcmt"){
      		var dataType = data0.meta.get("Data Type");
      		
      		if(dataType)
      		 datacode += "-"+ dataType.toUpperCase().replace("-", "_");
-     		console.log(datacode);
-     		console.log(this.code);
      		 if(  this.code != datacode ){
 
         		 return false;

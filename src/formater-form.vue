@@ -29,7 +29,7 @@
 	<div class="formater-container">
 	<div id="formater-form" >
 		<formater-search-box header-icon-class="fa fa-bars" :title="$t('data_type')" deployed="true">
-			<formater-select type="associative" name="DataType" :options="jsonDataType()" :defaut="dataType" multiple="true" width="260px"></formater-select>
+			<formater-select type="associative" name="DataType" @input="change" :options="jsonDataType()" :defaut="dataType" multiple="true" width="260px"></formater-select>
 		</formater-search-box>
 		<formater-search-box header-icon-class="fa fa-calendar" :title="$t('time_slot')" deployed="true">	
 			 <formater-temporal-search :lang="lang" :daymin="daymin" @update="change"></formater-temporal-search>
@@ -40,7 +40,7 @@
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
 	    <input type="hidden" v-model="searching" />
 	    <div class= "formater-buttons" >
-	    <input class="formater-search-button" type="button"  @click="search" :disabled="searching || hasChanged == 0" :value="$t('update')"/>
+	    <input class="formater-search-button" type="button"  @click="search" :disabled="searching || hasChanged == 0" :value="searchText"/>
 	    </div>
 	</div>
 	</div>
@@ -90,8 +90,9 @@ export default {
     	   dataType:["geomagnetism", "geodesy"],
            aerisThemeListener:null,
            temporalChangeListener:null,
+           selectChangeListener:null,
            theme:null,
-           searching:true,
+           searching:false,
            hasChanged:0,
            disableSearch: true,
            //searchText: 'update',
@@ -119,10 +120,15 @@ export default {
 	    	this.searching = false;
 
 	    },
-	    status( event){
+	    dataTypeChange(event){
+	    	if( event.detail.name == "DataType"){
+		    	this.hasChanged = 2;
+		    	this.searching = false;
+	    	}
+	    },
+	    temporalChange( event){
 	    	//@todo en considérant la remarque précédente: comme le @update n'est pas déclenché
 	    	// on utilise un evenement global 'temporalChangeEvent'
-	    	console.log( event);
 	    	if( this.hasChanged === 0){
 	    		this.hasChanged = 1;
 	    	}
@@ -192,7 +198,7 @@ export default {
 			  
 			  //@todo evenement différent (detail à paramétrer) 
 			  var e = new CustomEvent("callApiEvent", { detail: {}});
-				document.dispatchEvent(e);
+			  document.dispatchEvent(e);
 
 			  
 			  if(data.box ){
@@ -236,8 +242,9 @@ export default {
 				}
 			}else{
 		
-				this.searching = true;
+				this.searching = false;
 				this.hasChanged = 0;
+				console.log( "ici");
 			
 			}
 		},
@@ -295,9 +302,12 @@ export default {
       this.aerisThemeListener = this.handleTheme.bind(this) 
       document.addEventListener('aerisTheme', this.aerisThemeListener);
       
-      this.temporalChangeListener = this.status.bind( this);
+      this.temporalChangeListener = this.temporalChange.bind( this);
       document.addEventListener('temporalChangeEvent', this.temporalChangeListener);
       // solution pour double dépendances @see https://forum.vuejs.org/t/computed-not-updating-when-data-changes/27797/17
+      
+      this.selectChangeListener = this.dataTypeChange.bind( this);
+      document.addEventListener('selectChangeEvent', this.selectChangeListener);
      
       
  
@@ -313,6 +323,8 @@ export default {
     	 // ce qui pose un problème car ma fonction est exécuté 2 fois!!
     	 window.firstCall = true;
 	    this.defaultRequest();
+	    this.hasChanged = 0;
+	    this.searching = false;
 
   	}
   },
@@ -322,6 +334,9 @@ export default {
       
       document.removeEventListener('temporalChangeEvent', this.temporalChangeListener);
       this.temporalChangeListener = null;
+      
+      document.removeEventListener('selectChangeEvent', this.selectChangeListener);
+      this.selectChangeListener = null;
   }
 }
 

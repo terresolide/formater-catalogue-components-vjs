@@ -126,7 +126,6 @@ L.SelectedLayer =   L.Evented.extend({
 
 		}
 		var node = this.imageLayer.getElement();
-		console.log( node);
 		this.imageLayer.addTo( this.map);
 		node.setAttribute( "title", evt.detail.date);
 		node.setAttribute( "alt", evt.detail.date);
@@ -347,11 +346,9 @@ L.SelectedLayer =   L.Evented.extend({
 //		}
 //	},
  	updateObservation( event){
-		console.log( "dans selected updateObservation");
-		console.log( this.button);
+
  		if( this.button){
  			var obs = this.layer.options.properties.observations[ this.button.dataset.index];
-			console.log( obs);
 			obs.process.status = "NONE";
  			this.layer.options.query = event.detail;
  	       	this.searchData( obs , event.detail, this.button.dataset.cds);
