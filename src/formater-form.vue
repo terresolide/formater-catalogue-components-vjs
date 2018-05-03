@@ -94,7 +94,6 @@ export default {
            theme:null,
            searching:false,
            hasChanged:0,
-           disableSearch: true,
            //searchText: 'update',
           // disableSearch: this.searching || this.hasChanged == 0,
            cds: [{ name:"bcmt", domain:"geomagnetism"},{name:"isgi", domain:"geomagnetism"}, {name:"grenoble", domain:"geodesy"}]
@@ -115,9 +114,11 @@ export default {
 			  return bool;
 		  },*/
 	    change( event){
-			  //@todo depend de la profondeur apparemment l'événement n'est pas déclenché...
-	    	console.log( "change");
-	    	this.searching = false;
+			  //@todo  apparemment l'événement n'est pas déclenché quand clique mais uniquement au chargement...
+	        console.log( event);
+	    	if( event.target == "formater-select"){
+	    		this.hasChanged = 2;
+	    	}
 
 	    },
 	    dataTypeChange(event){
@@ -244,7 +245,7 @@ export default {
 		
 				this.searching = false;
 				this.hasChanged = 0;
-				console.log( "ici");
+				console.log( "ici après chargement");
 			
 			}
 		},
@@ -327,6 +328,7 @@ export default {
 	    this.searching = false;
 
   	}
+     console.log( "formater-form mounted");
   },
   destroyed(){
       document.removeEventListener('aerisTheme', this.aerisThemeListener);

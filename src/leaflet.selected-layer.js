@@ -69,21 +69,20 @@ L.SelectedLayer =   L.Evented.extend({
 		
 	},
 	escape( evt ){
+
 		evt = evt || window.event;
-	    var isEscape = false;
-	    if ("key" in evt) {
-	        isEscape = (evt.key == "Escape" || evt.key == "Esc");
-	    } else {
-	        isEscape = (evt.keyCode == 27);
-	    }
-	    if( this.layer != null){
-	    	this.close();
-	    }else{
-	    	//cas earth-control : earth-control collapse
-	    	this.earthControl._collapse();
-	    	//other only popup to close
-	    	this.map.closePopup();
-	    	
+	    var key = evt.keyCode || evt.which;
+	    var isEscape = ( key == 27 );
+	    if( isEscape){
+		    if( this.layer != null){
+		    	this.close();
+		    }else{
+		    	//cas earth-control : earth-control collapse
+		    	this.earthControl._collapse();
+		    	//other only popup to close
+		    	this.map.closePopup();
+		    	
+		    }
 	    }
 	},
 	displayImage( evt ){

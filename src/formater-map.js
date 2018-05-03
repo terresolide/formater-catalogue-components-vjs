@@ -277,7 +277,7 @@ module.exports = function( L ){
 		var nodes = content.querySelectorAll( "input");
 		for( var i = 0; i< nodes.length; i++){
 			if( observations[i].inTemporal){
-				nodes[i].className = nodes[i].className.replace(/\sft\-empty/g,"");
+				nodes[i].className = nodes[i].className.replace(/(\s)*ft\-empty/g,"");
 				//count++;
 			}else if(!nodes[i].className.indexOf("ft-empty")>=0){
 				nodes[i].className = nodes[i].className +" ft-empty";
@@ -360,8 +360,9 @@ module.exports = function( L ){
 	          		 }
 	          	  }
 	          	  
-	          	  if( layer instanceof L.Polygon)
-	          	  layer.addFramed( feature.properties.style);
+	          	  if( layer instanceof L.Polygon){
+	          		  layer.addFramed( feature.properties.style);
+	          	  }
 	          	/* if( feature.properties.style && feature.properties.style.border == "triangle"){
             		 //create triangles around!
 	          		 console.log(layer);

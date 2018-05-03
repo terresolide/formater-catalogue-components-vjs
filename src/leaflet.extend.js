@@ -16,6 +16,9 @@ L.Map.include({
 });
 
 L.Polygon.include({
+	// problème avec le type de triangles
+	// -> est défini comme un tableau (associatif) 
+	// -> mais est compris comme un object ??
 	triangles:[],
 	framed: false,
 	tooltip:null,
@@ -52,6 +55,9 @@ L.Polygon.include({
 			this.sw = this.getBounds().getSouthWest();
 			this.se = this.getBounds().getSouthEast();
 			var _this = this;
+			if( Object.keys( this.triangles).length > 0){
+				return;
+			}
 			["North", "East", "South", "West"].forEach( function( side ){
 				var path = _this._buildSide( side );
 				var polygon = L.polygon( path, { 
@@ -121,6 +127,18 @@ L.Polygon.include({
 		var latlng = this._map.layerPointToLatLng( point);
 		var path = [latlng0, latlng, latlng1];
 		return path;
+	},
+	onAdd: function(){
+		L.Path.prototype.onAdd.call( this);
+		console.log( typeof this.triangles );
+		if( Object.keys(this.triangles).length < 4){
+			return;
+		}
+		var _this = this;
+		["North", "East", "South", "West"].forEach( function( side ){
+			 _this.triangles[ side].addTo( _this._map);
+		});
+		
 	},
 	/** override onRemove path method **/
 	onRemove: function(){
