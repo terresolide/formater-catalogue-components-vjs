@@ -40,7 +40,8 @@ L.SelectArea =   L.Evented.extend({
 			draggable: true
 		},
 		rectangleOptions:{
-			fillOpacity: 0.2
+			fillOpacity: 0.2,
+			framed:false
 		}
 	},
 	_mode: "hidden",
@@ -61,6 +62,7 @@ L.SelectArea =   L.Evented.extend({
 		this.setOptions( prop.options );
 		this._initListeners();
 		this.on("change", function(){
+			console.log( "change bounds");
             var bounds = this.rectangle.getBounds();
             var bbox = {
                     north: L.modLat( bounds.getNorthEast().lat),
@@ -213,6 +215,7 @@ L.SelectArea =   L.Evented.extend({
 	_createGeometries: function( bounds){
 		var ne = bounds[0];
 		var sw = bounds[1];
+		
 		if(!L.isValidBounds(ne, sw )){
 			//case bounds are invalid because of lng
 			if(Math.abs(ne.lng)> 180){

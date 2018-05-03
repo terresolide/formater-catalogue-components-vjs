@@ -31,7 +31,8 @@ L.Polygon.include({
 	update: function(){
 		//parent update (layer?)
 		 var color = L.Layer.prototype.update.call( this);
-		if( this.framed && this.triangles != "undefined"){
+		 console.log( "update polygon");
+		if( this.framed && Object.keys(this.triangles).length == 0){
 			var _this = this;
 			["North", "East", "South", "West"].forEach( function( side ){
 				console.log( "dans update triangle");
@@ -130,15 +131,18 @@ L.Polygon.include({
 	},
 	onAdd: function(){
 		L.Path.prototype.onAdd.call( this);
-		console.log( typeof this.triangles );
-		if( Object.keys(this.triangles).length < 4){
-			return;
-		}
-		var _this = this;
-		["North", "East", "South", "West"].forEach( function( side ){
-			 _this.triangles[ side].addTo( _this._map);
-		});
+		console.log( this.triangles );
+		if( this.framed){
+			if( Object.keys(this.triangles).length < 4){
+				return;
+			}
+			var _this = this;
+			["North", "East", "South", "West"].forEach( function( side ){
+				if( _this._map)
+				 _this.triangles[ side].addTo( _this._map);
+			});
 		
+		}
 	},
 	/** override onRemove path method **/
 	onRemove: function(){
@@ -146,6 +150,7 @@ L.Polygon.include({
 		if( this.framed){
 			var _this = this;
 			["North", "East", "South", "West"].forEach( function( side ){
+				if( _this._map)
 				_this._map.removeLayer( _this.triangles[ side]);
 			});
 		}
@@ -157,6 +162,7 @@ L.Polygon.include({
 	
 		if( this._map && this.framed){
 			var _this = this;
+			console.log( this);
 			["North", "East", "South", "West"].forEach( function( side ){
 				var path = _this._buildSide( side );
 				_this.triangles[ side].setLatLngs( path);
@@ -215,7 +221,7 @@ L.isValidBbox = function( bbox){
 }
 L.isValidBounds =  function( ne, sw ){
 	if( Math.abs( ne.lat - sw.lat)>=180 
-			|| Math.abs( ne.lng - sw.lng)>=360){
+			|| Math.abs( ne.lng - sw.lng)>=360 || Math.abs( ne.lng)>180 || Math.abs( sw.lng)>180){
 		return false;
 	}else{
 		return true;

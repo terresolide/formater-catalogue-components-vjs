@@ -91,6 +91,7 @@ export default {
            aerisThemeListener:null,
            temporalChangeListener:null,
            selectChangeListener:null,
+           selectAreaChangeListener: null,
            theme:null,
            searching:false,
            hasChanged:0,
@@ -135,6 +136,15 @@ export default {
 	    	}
 	    	this.searching = false;
 
+	    },
+	    selectAreaChange(event){
+	    	console.log(event);
+	    	this.hasChanged = 2;
+	    },
+	    initialize(){
+	    	this.hasChanged = 0;
+	    	this.searching = false;
+	    	throw "machin";
 	    },
 // 	    dependencies(){
 // 	    	console.log("ici");
@@ -243,8 +253,7 @@ export default {
 				}
 			}else{
 		
-				this.searching = false;
-				this.hasChanged = 0;
+				this.initialize();
 				console.log( "ici après chargement");
 			
 			}
@@ -309,6 +318,11 @@ export default {
       
       this.selectChangeListener = this.dataTypeChange.bind( this);
       document.addEventListener('selectChangeEvent', this.selectChangeListener);
+      
+      this.selectAreaChangeListener = this.selectAreaChange.bind(this);
+      document.addEventListener('selectAreaChange', this.selectAreaChangeListener);
+      
+      document.addEventListener('selectAreaDrawEnd', this.selectAreaChangeListener);
      
       
  
@@ -324,8 +338,6 @@ export default {
     	 // ce qui pose un problème car ma fonction est exécuté 2 fois!!
     	 window.firstCall = true;
 	    this.defaultRequest();
-	    this.hasChanged = 0;
-	    this.searching = false;
 
   	}
      console.log( "formater-form mounted");
@@ -339,6 +351,11 @@ export default {
       
       document.removeEventListener('selectChangeEvent', this.selectChangeListener);
       this.selectChangeListener = null;
+      
+      document.removeEventListener('selectAreaChange', this.selectAreaChangeListener);
+      document.removeEventListener('selectAreaDrawEnd', this.selectAreaChangeListener);
+      this.selectAreaChangeListener = null;
+     
   }
 }
 
