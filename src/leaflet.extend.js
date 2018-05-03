@@ -49,7 +49,7 @@ L.Polygon.include({
 			return;
 		}
 		this.tooltip = tooltip;
-		if( this._map){
+		if( this._map != null){
 			this.centerG = this.getCenter();
 			this.nw = this.getBounds().getNorthWest();
 			this.ne = this.getBounds().getNorthEast();
@@ -69,10 +69,14 @@ L.Polygon.include({
 					.addTo(_this._map)
 					.on("mouseover", function( e){
 						 _this.tooltip.setContent( this.options.title);
-						 _this._map.openTooltip( _this.tooltip);
+						 if( _this._map != null){
+							 _this._map.openTooltip( _this.tooltip);
+						 }
 					})
 					.on("mouseout", function(e){
-						_this._map.closeTooltip( _this.tooltip);
+						 if( _this._map != null){
+							 _this._map.closeTooltip( _this.tooltip);
+						 }
 					});
 				
 				_this.triangles[ side] = polygon;
@@ -162,7 +166,7 @@ L.Polygon.include({
 	
 		if( this._map && this.framed){
 			var _this = this;
-			console.log( this);
+
 			["North", "East", "South", "West"].forEach( function( side ){
 				var path = _this._buildSide( side );
 				_this.triangles[ side].setLatLngs( path);

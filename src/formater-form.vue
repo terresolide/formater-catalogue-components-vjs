@@ -144,7 +144,6 @@ export default {
 	    initialize(){
 	    	this.hasChanged = 0;
 	    	this.searching = false;
-	    	throw "machin";
 	    },
 // 	    dependencies(){
 // 	    	console.log("ici");
