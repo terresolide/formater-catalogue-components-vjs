@@ -135,7 +135,6 @@ L.Polygon.include({
 	},
 	onAdd: function(){
 		L.Path.prototype.onAdd.call( this);
-		console.log( this.triangles );
 		if( this.framed){
 			if( Object.keys(this.triangles).length < 4){
 				return;

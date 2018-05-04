@@ -531,6 +531,7 @@ export default {
 	    	 }
 	     },
 	     handleResetChart(){
+	         console.log( "reset chart");
 	    	 if( this.data){
 	    		this.data.data = [];
 	    	 }

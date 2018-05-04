@@ -181,6 +181,7 @@ module.exports = function( L ){
 		 // if( !this.mounted){
 	 		  //formater-map est initialisé deux fois donc pour ne pas avoir de doublon...
 	 			  //@todo comprendre pourquoi format-map est "mounted" 2 fois
+		        
 	  			  document.addEventListener("closeSheet", function(e){
 	  				  console.log( "close sheet event");
 	  					if( _selected.button){
@@ -189,6 +190,10 @@ module.exports = function( L ){
 	  					}
 	  			  });
 	  			  var _this = this;
+	  			  document.addEventListener("selectAreaDrawStart", function(e){
+		        	  _selected.closeAll();
+		        	  _this.map.closePopup();
+		          })
 	  			  document.addEventListener("updateObservations", function(e){
 	  				
 	  					_this.updateObservations(e);
@@ -258,6 +263,7 @@ module.exports = function( L ){
 		this.updateGlobal( event);
 		
 		// update graph of selected observations
+		
 		_selected.update( event);
 	}
 	this.updatePopup =  function( layer){

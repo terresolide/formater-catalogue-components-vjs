@@ -38,9 +38,9 @@
 			<formater-spatial-search :lang="lang"></formater-spatial-search>
 		</formater-search-box>
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
-	    <input type="hidden" v-model="searching" />
+	   
 	    <div class= "formater-buttons" >
-	    <input class="formater-search-button" type="button"  @click="search" :disabled="searching || hasChanged == 0" :value="searchText"/>
+	    <input class="formater-search-button" type="button"  @click="search" :disabled="isDisable" :value="searchText"/>
 	    </div>
 	</div>
 	</div>
@@ -102,9 +102,18 @@ export default {
       }
   },
 
+  computed:{
+	  isDisable: function(){
+		  console.log( "hasChanged = " +this.hasChanged);
+		  console.log(" searching = " + this.searching);
+		  return (this.hasChanged == 0 || this.searching);
+	  }
+  },
+
   methods: {
+	  
 	    reset(e){
-	    	
+	    	this.hasChanged = 2;
 	    },
 // 	    disableSearch(){
 // 	    	return (this.hasChanged == 0 || this.searching)? true : false;
@@ -123,6 +132,7 @@ export default {
 
 	    },
 	    dataTypeChange(event){
+	    	console.log( "datatype change");
 	    	if( event.detail.name == "DataType"){
 		    	this.hasChanged = 2;
 		    	this.searching = false;
@@ -138,7 +148,8 @@ export default {
 
 	    },
 	    selectAreaChange(event){
-	    	console.log(event);
+	        console.log( event);
+	        
 	    	this.hasChanged = 2;
 	    },
 	    initialize(){
@@ -258,6 +269,7 @@ export default {
 			}
 		},
 		update( evt){
+			console.log( "dans update de form");
 			var event = new CustomEvent( "updateObservations", {detail: evt.detail});
 			document.dispatchEvent( event);
 		},
@@ -319,9 +331,9 @@ export default {
       document.addEventListener('selectChangeEvent', this.selectChangeListener);
       
       this.selectAreaChangeListener = this.selectAreaChange.bind(this);
-      document.addEventListener('selectAreaChange', this.selectAreaChangeListener);
+      document.addEventListener('selectAreaDrawStart', this.selectAreaChangeListener);
       
-      document.addEventListener('selectAreaDrawEnd', this.selectAreaChangeListener);
+     // document.addEventListener('selectAreaDrawEnd', this.selectAreaChangeListener);
      
       
  

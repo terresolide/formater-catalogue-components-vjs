@@ -86,7 +86,7 @@ L.SelectedLayer =   L.Evented.extend({
 	    }
 	},
 	displayImage( evt ){
-		console.log( "display image");
+	
 		// close popup under image
 		this.mode = "visualisation";
 		this.map.closePopup();
@@ -98,7 +98,6 @@ L.SelectedLayer =   L.Evented.extend({
 			this.layer.setStyle({fillOpacity:0});
 		}
 		if( ! this.imageLayer){
-			console.log( "create imageLayer");
 			this.imageLayer = L.imageOverlay( 
 					  evt.detail.img, 
 					  imageBounds,
@@ -173,7 +172,20 @@ L.SelectedLayer =   L.Evented.extend({
 		this.layer.unselect();
 		this.layer = null;
 	},
+	closeAll(){
+		if( this.mode == "visualisation"){
+			var evt = new CustomEvent("stopVisualisation");
+			document.dispatchEvent( evt);
+			this.mode = "current";
+		}
+		this.close();
+	},
 	updateObservation( event){
+		if( this.mode == "visualisation"){
+			var evt = new CustomEvent("stopVisualisation");
+			document.dispatchEvent( evt);
+			this.mode = "current";
+		}
 		if( this.button){
 			var obs = this.layer.options.properties.observations[ this.button.dataset.index];
 			this.layer.options.query = event.detail;
@@ -298,8 +310,12 @@ L.SelectedLayer =   L.Evented.extend({
 	},
 	update( e){
 				//this.updatePopup(this.layer);
-				
-				this.updateObservation(e);
+		if( this.mode == "visualisation"){
+			var event = new CustomEvent("stopVisualisation");
+			document.dispatchEvent( event);
+			this.mode = "current";
+		}
+		this.updateObservation(e);
 	},
 //	updatePopup( layer){
 //		
