@@ -105,7 +105,10 @@ module.exports= function ( Highcharts){
     	        var divchart = document.createElement("div");
     	        divchart.classname = "chart";
     	        container.appendChild(divchart);
-    	        
+    	        console.log(value);
+    	        var text = '<div class="bcmt-chart-legend" >'
+    	        	     +'<div style="background:'+Highcharts.getOptions().colors[key]+';" class="bcmt-color-legend"></div>'
+    	        	     + '<span>'+value+'</span><div style="margin-left:8px;">(nT)</div></div>';
     	        var mychart = Highcharts.chart(divchart, {
     	     
     	            chart:{
@@ -113,7 +116,7 @@ module.exports= function ( Highcharts){
     	            marginBottom: (value==="F")? 45 : 15
     	            },
     	            title: {
-    	                text: '<div style="background:#fff;padding:5px;font-size:10px"><div style="background:'+Highcharts.getOptions().colors[key]+';width:10px;height:10px;display:inline-block;margin:0 3px;"></div>'+value+'</div>',
+    	                text: text,
     	                align: 'right',
     	                margin: 10,
     	                useHTML: true,

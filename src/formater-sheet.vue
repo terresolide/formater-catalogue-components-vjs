@@ -785,4 +785,18 @@ export default {
         list-style-type:none;
         padding-left:5px;
     }
+    .formater-sheet-container .bcmt-chart-legend{
+		background:#fff;
+		padding:5px;
+		font-size:10px
+	}
+	.bcmt-color-legend{
+		width:10px;
+		height:10px;
+		display:inline-block;
+		margin:0 3px;
+	}
+	.bcmt-color-legend + div{
+		margin-left:10px;
+	}
 </style>
