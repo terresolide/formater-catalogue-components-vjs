@@ -429,13 +429,15 @@ module.exports = function( L ){
             	  }
               },
               style: function(feature, layer) {
-                 if( typeof feature.properties.style != "undefined"){
-                	
-                	 return  {color:feature.properties.style.fill, fillOpacity:feature.properties.style.fillOpacity, weight: feature.properties.style.strokeWidth};
-                 
+            	
+                 if( typeof feature.properties.style != "undefined" ){
+                	 var style =  {  color: feature.properties.style.fill, fillOpacity:feature.properties.style.fillOpacity, weight: feature.properties.style.strokeWidth};
+                           
+                 }else{
+                 	var style =  {  fillOpacity:0.4, weight: 1};
                  }
                  
-                 
+                 return  style;
               }
           }).on("add", function(){
         	  
@@ -447,9 +449,12 @@ module.exports = function( L ){
         // })
           .addTo( this.map)
           .eachLayer( function(layer){
+        	  layer.updateObservations( query.start, query.end);
+        	  
         	  if( typeof layer.buildFramed != "undefined")
         	  layer.buildFramed( _tooltip);
         	  
+        	 
           });
 		
 		if( count == 0 ){
