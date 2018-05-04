@@ -93,7 +93,7 @@ export default {
            selectChangeListener:null,
            selectAreaChangeListener: null,
            theme:null,
-           searching:false,
+           searching:true,
            hasChanged:0,
            //searchText: 'update',
           // disableSearch: this.searching || this.hasChanged == 0,
@@ -104,8 +104,6 @@ export default {
 
   computed:{
 	  isDisable: function(){
-		  console.log( "hasChanged = " +this.hasChanged);
-		  console.log(" searching = " + this.searching);
 		  return (this.hasChanged == 0 || this.searching);
 	  }
   },
@@ -125,30 +123,29 @@ export default {
 		  },*/
 	    change( event){
 			  //@todo  apparemment l'événement n'est pas déclenché quand clique mais uniquement au chargement...
-	        console.log( event);
+
 	    	if( event.target == "formater-select"){
 	    		this.hasChanged = 2;
 	    	}
 
 	    },
 	    dataTypeChange(event){
-	    	console.log( "datatype change");
 	    	if( event.detail.name == "DataType"){
 		    	this.hasChanged = 2;
-		    	this.searching = false;
+		    	//this.searching = false;
 	    	}
 	    },
 	    temporalChange( event){
+
 	    	//@todo en considérant la remarque précédente: comme le @update n'est pas déclenché
 	    	// on utilise un evenement global 'temporalChangeEvent'
 	    	if( this.hasChanged === 0){
 	    		this.hasChanged = 1;
 	    	}
-	    	this.searching = false;
+	    	//this.searching = false;
 
 	    },
 	    selectAreaChange(event){
-	        console.log( event);
 	        
 	    	this.hasChanged = 2;
 	    },
@@ -269,7 +266,8 @@ export default {
 			}
 		},
 		update( evt){
-			console.log( "dans update de form");
+			this.searching = false;
+			this.hasChanged = 0;
 			var event = new CustomEvent( "updateObservations", {detail: evt.detail});
 			document.dispatchEvent( event);
 		},
@@ -348,10 +346,11 @@ export default {
     	 // mounted est exécuté 2 fois!!
     	 // ce qui pose un problème car ma fonction est exécuté 2 fois!!
     	 window.firstCall = true;
-	    this.defaultRequest();
+	    //this.defaultRequest();
 
+  	}else{
+  		this.defaultRequest();
   	}
-     console.log( "formater-form mounted");
   },
   destroyed(){
       document.removeEventListener('aerisTheme', this.aerisThemeListener);

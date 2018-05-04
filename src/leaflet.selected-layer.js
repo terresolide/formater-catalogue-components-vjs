@@ -173,25 +173,38 @@ L.SelectedLayer =   L.Evented.extend({
 		this.layer = null;
 	},
 	closeAll(){
+		console.log( "close all");
 		if( this.mode == "visualisation"){
 			var evt = new CustomEvent("stopVisualisation");
 			document.dispatchEvent( evt);
 			this.mode = "current";
 		}
 		this.close();
+		this.map.closePopup();
 	},
-	updateObservation( event){
-		if( this.mode == "visualisation"){
-			var evt = new CustomEvent("stopVisualisation");
-			document.dispatchEvent( evt);
-			this.mode = "current";
-		}
-		if( this.button){
-			var obs = this.layer.options.properties.observations[ this.button.dataset.index];
-			this.layer.options.query = event.detail;
-	       	this.searchData( obs , event.detail, this.button.dataset.cds);
-		}
-	},
+//	updateObservation( event){
+//		console.log( "update observation dans selected layer");
+//		if( this.imageLayer){
+//			this.imageLayer.remove();
+//			this.imageLayer = null;
+//			
+//		}
+//		if( typeof this.layer.setStyle == "function"){
+//			this.layer.setStyle({fillOpacity: this.opacity});
+//		}
+//		if( this.mode == "visualisation"){
+//			var evt = new CustomEvent("stopVisualisation");
+//			document.dispatchEvent( evt);
+//			this.mode = "current";
+//			
+//		}
+//		
+//		if( this.button){
+//			var obs = this.layer.options.properties.observations[ this.button.dataset.index];
+//			this.layer.options.query = event.detail;
+//	       	this.searchData( obs , event.detail, this.button.dataset.cds);
+//		}
+//	},
 	searchData( obs, query, cds){
 		var _cds = cds;
         var _disabledUrl = this.disabledUrl;
@@ -310,11 +323,7 @@ L.SelectedLayer =   L.Evented.extend({
 	},
 	update( e){
 				//this.updatePopup(this.layer);
-		if( this.mode == "visualisation"){
-			var event = new CustomEvent("stopVisualisation");
-			document.dispatchEvent( event);
-			this.mode = "current";
-		}
+	
 		this.updateObservation(e);
 	},
 //	updatePopup( layer){
@@ -361,6 +370,20 @@ L.SelectedLayer =   L.Evented.extend({
 //		}
 //	},
  	updateObservation( event){
+		if( this.imageLayer){
+			this.imageLayer.remove();
+			this.imageLayer = null;
+			
+		}
+		if( typeof this.layer.setStyle == "function"){
+			this.layer.setStyle({fillOpacity: this.opacity});
+		}
+		if( this.mode == "visualisation"){
+			var evt = new CustomEvent("stopVisualisation");
+			document.dispatchEvent( evt);
+			this.mode = "current";
+			
+		}
 
  		if( this.button){
  			var obs = this.layer.options.properties.observations[ this.button.dataset.index];

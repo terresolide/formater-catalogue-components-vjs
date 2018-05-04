@@ -31,11 +31,13 @@ L.Polygon.include({
 	update: function(){
 		//parent update (layer?)
 		 var color = L.Layer.prototype.update.call( this);
-		 console.log( "update polygon");
-		if( this.framed && Object.keys(this.triangles).length == 0){
+
+		if( this.framed ){
+			if( Object.keys(this.triangles).length < 4){
+				return;
+			}
 			var _this = this;
 			["North", "East", "South", "West"].forEach( function( side ){
-				console.log( "dans update triangle");
 				_this.triangles[ side].feature.properties.inTemporal = _this.feature.properties.inTemporal;
 				_this.triangles[ side ].update();
 				if( color == "red"){
@@ -64,6 +66,7 @@ L.Polygon.include({
 				var polygon = L.polygon( path, { 
 					title: _this.title,
 					color: _this.options.color,
+					defColor: _this.options.color,
 					fillOpacity:1, 
 					stroke:false})
 					.addTo(_this._map)
@@ -180,7 +183,10 @@ L.Polygon.include({
 			
 		}
 		this.setStyle( { color:"red"});
-		if( this.framed && this.triangles != "undefined"){
+		if( this.framed ){
+			if( Object.keys(this.triangles).length < 4){
+				return;
+			}
 			var _this = this;
 			["North", "East", "South", "West"].forEach( function( side ){
 			
@@ -194,7 +200,10 @@ L.Polygon.include({
 
 			this.setStyle( { color:this.options.defColor});
 		}
-		if( this.framed && this.triangles != "undefined"){
+		if( this.framed ){
+			if( Object.keys(this.triangles).length < 4){
+				return;
+			}
 			var _this = this;
 			["North", "East", "South", "West"].forEach( function( side ){
 			
