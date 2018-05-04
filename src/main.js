@@ -42,7 +42,8 @@ ljs.addAliases({
 	dep: [
 		//icon marker with font awesome CSS
 		//-----------------------------
-	    'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
+		'https://api.poleterresolide.fr/lib/awesome-marker/leaflet.awesome-markers.css',
+	    //'https://rawgit.com/epointal/lf-hiker/master/lib/awesome-marker/leaflet.awesome-markers.css',
 	    //leaflet
 		//------------
 		'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css',
@@ -51,8 +52,8 @@ ljs.addAliases({
 		// composants formater de bases
 		//-----------------------------
 	    //'https://rawgit.com/terresolide/formater-commons-components-vjs/master/dist0/formater-commons-components-vjs.js' ,
-		// "https://api.poleterresolide.fr/webcomponents/formater-commons-components-vjs_0.1.8.js" 
-	    'https://cdn.rawgit.com/terresolide/formater-commons-components-vjs/0.6.0/dist/formater-commons-components-vjs.js' ,
+		 "https://api.poleterresolide.fr/webcomponents/formater-commons-components-vjs_0.6.0.js" 
+	    //'https://cdn.rawgit.com/terresolide/formater-commons-components-vjs/0.6.0/dist/formater-commons-components-vjs.js' ,
 	    //'http://localhost:8082/dist/build.js'   
 	    ]
 })
