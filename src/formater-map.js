@@ -183,7 +183,6 @@ module.exports = function( L ){
 	 			  //@todo comprendre pourquoi format-map est "mounted" 2 fois
 		        
 	  			  document.addEventListener("closeSheet", function(e){
-	  				  console.log( "close sheet event");
 	  					if( _selected.button){
 	  						var event = new MouseEvent("click", {});
 	  						_selected.button.dispatchEvent(event);
@@ -222,7 +221,9 @@ module.exports = function( L ){
 		this.map._container.style.height = Math.round(this.height ) +"px";
 		this.map.invalidateSize()
 	}
-
+	/**
+	 * creer une classe observation ( function en doublon dans earth layer)
+	 */
 	function isInTemporal( obs, start, end){
 		var obsStart = obs.temporalExtents.start;
 		var obsEnd = obs.temporalExtents.end;
@@ -262,7 +263,7 @@ module.exports = function( L ){
 		// update global observations
 		this.updateGlobal( event);
 		
-		// update graph of selected observations
+		// update graph of selected observation
 		
 		_selected.update( event);
 	}
@@ -289,6 +290,7 @@ module.exports = function( L ){
 				nodes[i].className = nodes[i].className +" ft-empty";
 			}
 		}
+		
 	}
 	this.updateGlobal = function( event ){
 			var start = event.detail.start;
@@ -514,6 +516,9 @@ module.exports = function( L ){
 			}
 		}
 	}
+	L.Layer.prototype.setStatus = function( count, total){
+		
+	}
 	L.Layer.prototype.createPopup = function( ){
 		var _layer = this;
 		var node = document.createElement("div");
@@ -622,6 +627,7 @@ module.exports = function( L ){
 			
 		});
 		this.feature.properties.inTemporal = inTemporal;
+		
 		if( this instanceof L.Marker){
 			this.updateIcon();
 		}else if( this instanceof L.Layer){
@@ -630,6 +636,7 @@ module.exports = function( L ){
 		
 	}
 	L.Layer.prototype.update = function(){
+		
 		if( this.feature.properties.inTemporal == 0){
 			var color = "cadetblue";
 		}else{

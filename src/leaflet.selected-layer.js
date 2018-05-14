@@ -375,7 +375,7 @@ L.SelectedLayer =   L.Evented.extend({
 			this.imageLayer = null;
 			
 		}
-		if( typeof this.layer.setStyle == "function"){
+		if( this.layer && typeof this.layer.setStyle == "function"){
 			this.layer.setStyle({fillOpacity: this.opacity});
 		}
 		if( this.mode == "visualisation"){

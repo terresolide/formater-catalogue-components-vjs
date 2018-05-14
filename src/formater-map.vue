@@ -195,9 +195,9 @@ export default {
 	padding:10px;
 
 }
-#formatermap a.leaflet-control-earth-toggle.ft-empty{
+#formatermap .leaflet-control-earth.ft-empty a.leaflet-control-earth-toggle{
 
-	color:rgba(0,0,0,0.6);
+	color:rgba(0,0,0,0.5);
 
 
 }
@@ -229,7 +229,8 @@ export default {
 	border: none;
 	border-radius: 12px;
 }
-#formatermap .leaflet-control-earth.selected .leaflet-control-earth-toggle{
+#formatermap .leaflet-control-earth.selected .leaflet-control-earth-toggle,
+#formatermap .leaflet-control-earth.ft-empty.selected .leaflet-control-earth-toggle{
 	color: rgba(255,0,0,0.6)
 }
 #formatermap .leaflet-control-earth{

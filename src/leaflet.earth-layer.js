@@ -4,7 +4,30 @@
 /* global L */
 
 // A layer control which provides for layer groupings.
+/** @todo créer une class observation function en doublon dans formater-map.js**/
 
+  function isInTemporal( obs, start, end){
+		var obsStart = obs.temporalExtents.start;
+		var obsEnd = obs.temporalExtents.end;
+		if( obsEnd == "now"){
+			obsEnd = moment().format("YYYY-MM-DD");
+		}
+		if( obs.dataLastUpdate && obs.dataLastUpdate < obsEnd){
+			obsEnd = obs.dataLastUpdate;
+		}
+		if( start > obsEnd){
+			obs.inTemporal = false;
+			return false;
+		}
+		if( end < obsStart ){
+			obs.inTemporal = false;
+			return false;
+		}
+		obs.inTemporal = true;
+		return true;
+	}
+  
+ /** Class Earth Layer **/
 L.Control.EarthLayer = L.Control.extend({
   _container: null,
   popup:null,
@@ -104,31 +127,27 @@ L.Control.EarthLayer = L.Control.extend({
 	  this._update();
     
   },
- /* isInTemporal( obs, start, end){
-	  		var obsStart = obs.temporalExtents.start;
-	  		var obsEnd = obs.temporalExtents.end;
-	  		if( obsEnd == "now"){
-	  			obsEnd = moment().format("YYYY-MM-DD");
-	  		}
-	  		if( obs.dataLastUpdate && obs.dataLastUpdate < obsEnd){
-	  			obsEnd = obs.dataLastUpdate;
-	  		}
-	  		if( start > obsEnd){
-	  			obs.inTemporal = false;
-	  			return false;
-	  		}
-	  		if( end < obsStart ){
-	  			obs.inTemporal = false;
-	  			return false;
-	  		}
-	  		obs.inTemporal = true;
-	  		return true;
-	  	},*/
+
   	updateObservations( observations, query){
   		this.options.query.start = query.start;
   		this.options.query.end = query.end;
   		this._observations = observations;
-  		//this._updateButtons();
+  		var inTemporal = 0;
+        var start = query.start;
+        var end = query.end;
+		this._observations.forEach( function( obs){
+			
+			if( obs.process){
+				obs.process.status = "NONE"; // doit rechercher les données
+			}
+			//console.log( obs );
+			if( isInTemporal( obs, start, end)){
+				inTemporal++;
+			}
+			
+		});
+		this.options.properties.inTemporal = inTemporal;
+  		this._updateButton();
   		
   	},
   _toggle: function(){
@@ -138,13 +157,16 @@ L.Control.EarthLayer = L.Control.extend({
 			this._expand();
 		}
   },
-//  _updateButtons: function(){
-//	  var form = this._form;
-//	  this._observations.forEach( function( obs, index){
-//		  var node = form.querySelector('input[data-index="'+ index +'"]');
-//		  console.log( node);
-//	  });
-//  },
+  _updateButton: function(){
+	 
+	  if( this.options.properties.inTemporal == 0){
+	    	this._container.className = this._container.className + " ft-empty";
+	    	
+	    }else{
+	    	this._container.className = this._container.className.replace(' ft-empty', '');
+	    }
+
+  },
   _update: function () {
     if (!this._container) {
       return;
@@ -172,6 +194,7 @@ L.Control.EarthLayer = L.Control.extend({
 		if( !obs.inTemporal){
 			input.setAttribute("class", "ft-empty");
 		}else{
+			input.setAttribute("class", "");
 			count++;
 		}
 		//@todo cds devrait être dans observation en retour ou calculer à partir de obs.formaterDataCenter.code 
@@ -185,11 +208,9 @@ L.Control.EarthLayer = L.Control.extend({
 	
     })
 
-    if( count == 1 ){
-    	this._container.className = this._container.className + " ft-empty";
-    }else{
-    	this._container.className = this._container.className.replace(' ft-empty', '');
-    }
+    this.options.properties.inTemporal = count;
+    this._updateButton();
+    
   },
 
 
@@ -209,7 +230,7 @@ L.Control.EarthLayer = L.Control.extend({
 		view: window
 	});
     var node = this._form.querySelector("input");
-    console.log(node);
+   
 	node.dispatchEvent(evt);
   },
 
