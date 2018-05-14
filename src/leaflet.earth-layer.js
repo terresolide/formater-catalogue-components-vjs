@@ -140,7 +140,7 @@ L.Control.EarthLayer = L.Control.extend({
 			if( obs.process){
 				obs.process.status = "NONE"; // doit rechercher les données
 			}
-			//console.log( obs );
+			obs.data = null;
 			if( isInTemporal( obs, start, end)){
 				inTemporal++;
 			}

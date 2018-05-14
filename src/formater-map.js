@@ -620,7 +620,8 @@ module.exports = function( L ){
 			if( obs.process){
 				obs.process.status = "NONE"; // doit rechercher les données
 			}
-			//console.log( obs );
+			obs.data = null;
+;			//console.log( obs );
 			if( isInTemporal( obs, start, end)){
 				inTemporal++;
 			}
