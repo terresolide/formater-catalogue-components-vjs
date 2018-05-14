@@ -94,7 +94,7 @@
 		  <h3>{{ title }}</h3>
 		  <span class="fa fa-close" @click="close"></span>
 		</header>
-		<main class="formater-sheet-main">
+		<main class="formater-sheet-main" :style="styleMain">
 		<div class="formater-sheet-data-metablock" v-if="data && data.description">
 			<h4 :style="styleTitle">
 			<i class="fa fa-comment-o"></i>
@@ -412,6 +412,9 @@ export default {
 		styleTitle(){
             return 'color:'+this.color+';';
         },
+        styleMain(){
+        	return "max-height:" + this.maxheight+"px";
+        },
         startDate(){
         	if(this.data){
         		return moment(this.data.temporalExtents.start, "YYYY-MM-DD").format("ll");
@@ -710,7 +713,7 @@ export default {
     }
     .formater-sheet-container .formater-sheet-main{
     margin: 0 ;
-    overflow-y:auto;
+    overflow-y:scroll;
     background:#f1f1f1;
    /* max-height:300px;*/
     }
