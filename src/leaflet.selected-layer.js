@@ -218,7 +218,8 @@ L.SelectedLayer =   L.Evented.extend({
 			return;
 		} 
 		obs.process.status = "WAITING";
-		var xhttp = new XMLHttpRequest(); 
+		xhttp = new XMLHttpRequest(); 
+		
 		xhttp.responseType = "json";
 		xhttp.withCredentials = true;
 		xhttp.onreadystatechange = function() {
@@ -312,9 +313,12 @@ L.SelectedLayer =   L.Evented.extend({
 				i++;
 				req += key +"="+obs.api.parameters[key];
 			}
-		//}
-		//console.log( req);
+		xhttp.beforeSend = function(xhr) {
+              
+        }
 		xhttp.open("GET", encodeURI( req ), true);
+		xhttp.setRequestHeader("foo", "bar");
+	    xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 		if( _disabledUrl.indexOf(obs.api.name)<0){
 			xhttp.send();
 		}
