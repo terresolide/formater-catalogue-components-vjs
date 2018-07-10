@@ -92,6 +92,8 @@ L.SelectedLayer =   L.Evented.extend({
 		this.map.closePopup();
 		//closePopup trigger closeSheet
 
+		//@todo bounds à récupérer aussi
+		//==================================
 		 var imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];
 
 		if( this.layer){
@@ -206,6 +208,7 @@ L.SelectedLayer =   L.Evented.extend({
 //		}
 //	},
 	searchData( obs, query, cds){
+	  console.log(cds);
 		var _cds = cds;
         var _disabledUrl = this.disabledUrl;
 		if(!obs.process){
