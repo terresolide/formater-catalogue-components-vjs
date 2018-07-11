@@ -115,7 +115,7 @@
 		  <h4 :style="styleTitle"><i class="fa fa-image"></i>
 		  {{ $t("view_on_map")}}
 		  </h4>
-		  <geotiff-visualizer :images="JSON.stringify(images)"></geotiff-visualizer>
+		  <geotiff-serie-control :images="JSON.stringify(images)" :lang="lang"></geotiff-serie-control>
 		</div>
 			<div class="formater-sheet-data-metablock"  v-if="existDownloadLink()">
                    <h4 class="formater-important">
