@@ -16,9 +16,10 @@ CONTROL GEOTIFF-LAYER -->
 </i18n>
 <template>
 <span class="geotiff-serie-control" >
+ <span class="geotiff-date-tooltip" @mouseout="hideTooltip">{{dateInTooltip}}</span>
  <div>
   <div>
-    <progress  v-show="selected!=null" min="0" max="100" value="10">truc</progress>
+    <progress  v-show="selected!=null" :min="0" :max="last" :value="selected" @mousemove="dateFromPosition" @mouseout="hideTooltip" @click="selectFromProgress">truc</progress>
     <div v-show="!isMinScreen" class="geotiff-eye">
       <a @click="view()" class="geotiff-nav geotiff-play"  ><i class="fa" :class="hidden?'fa-eye-slash':'fa-eye'"></i></a>
     </div>
@@ -81,7 +82,9 @@ export default {
         playing: false,
         hidden:true,
         hasBegin:false,
-        isMinScreen: false
+        isMinScreen: false,
+        imagesLength: 0,
+        dateInTooltip:''
       }
     },
     computed: {
@@ -252,7 +255,31 @@ export default {
     document.dispatchEvent(evt);
     
   },
-
+  indexFromPosition (evt) {
+    var node = this.$el.querySelector('progress')
+    var nodePos = node.getBoundingClientRect()
+    var posX = evt.clientX - nodePos.left
+    this.$el.querySelector('.geotiff-date-tooltip').style.opacity = 1;
+    if(this.last){
+      this.$el.querySelector('.geotiff-date-tooltip').style.left = (evt.clientX - 50) + "px"
+      return Math.round(this.last * posX / nodePos.width)
+    }else{
+      return null
+    }
+  },
+  selectFromProgress (evt) {
+    var index = this.indexFromPosition(evt)
+    this.selected = index
+  },
+  dateFromPosition (evt) {
+    var index = this.indexFromPosition(evt)
+    var date = this.index2strdate(index)
+    this.dateInTooltip = date
+    
+  },
+  hideTooltip () {
+    this.$el.querySelector('.geotiff-date-tooltip').style.opacity = 0;
+  },
   handleReset: function( ) {
     console.log( "handle reset from stop visualisation");
     this.selected = null;
@@ -261,9 +288,7 @@ export default {
     this.keys =[];
     this.playing = false;
     this.hidden = true;
-    this.hasBegin = false;
-  
-   
+    this.hasBegin = false;  
   },
     
     
@@ -283,9 +308,25 @@ export default {
 }
 </script>
 <style>
+.geotiff-serie-control{
+  position: relative;
+  display:block;
+}
 .geotiff-serie-control > div{
   text-align:center;
   width:100%; 
+  background: rgba(0, 0, 0, 0.8);
+}
+.geotiff-date-tooltip{
+  display:block;
+  padding:4px 3px;
+  position:absolute;
+  left:0;
+  top:-20px;
+  font-size:14px;
+  color:white;
+  border-radius:5px;
+  z-index:2000;
   background: rgba(0, 0, 0, 0.8);
 }
 .geotiff-serie-control > div > div{
