@@ -21,9 +21,9 @@ L.SelectedLayer =   L.Evented.extend({
 		this.map = map;
 		L.Util.setOptions(this, options);
 		this.imageListener = this.displayImage.bind( this);
-		document.addEventListener("selectedImage",this.imageListener);
+		document.addEventListener("selectImageSerieEvent",this.imageListener);
 		this.showImageListener = this.showImage.bind( this);
-		document.addEventListener("showImage", this.showImageListener);
+		document.addEventListener("toggleImageSerieEvent", this.showImageListener);
 		this.escapeListener = this.escape.bind(this);
 		document.addEventListener("keydown", this.escapeListener);
 	},
