@@ -94,56 +94,27 @@ L.SelectedLayer =   L.Evented.extend({
 
 		//@todo bounds à récupérer aussi
 		//==================================
-		 var imageBounds = [[18.568748337, -99.529022784], [19.963193897, -98.467355268]];
+		var imageBounds = L.latLngBounds(
+        [evt.detail.bbox.north, evt.detail.bbox.west], 
+        [evt.detail.bbox.south, evt.detail.bbox.east])
 
 		if( this.layer){
 			this.layer.setStyle({fillOpacity:0});
 		}
 		if( ! this.imageLayer){
-			this.imageLayer = L.imageOverlay( 
-					  evt.detail.img, 
-					  imageBounds,
-					  {
-						  crossOrigin:true,
-						  zIndex:2000, 
-						  opacity:0.6, 
-						  interactive:true, 
-						  bubblingMouseEvents:false,
-						  alt: evt.detail.date
-				      });
-			this.imageLayer.on( "click", function( evt){
-				var event = new CustomEvent( "nextImageEvent");
-				document.dispatchEvent( event);
-			});
-			this.imageLayer.on( "dblclick", function( evt){
-				this.removeEventParent(evt);
-			});
-			this.imageLayer.addTo( this.map);
-			
-		
-		}else{
-			this.imageLayer.setUrl( evt.detail.img);
-
+		  this.imageLayer = new L.GeotiffSerieLayer(imageBounds)
+		  this.imageLayer.addTo(this.map)			
 		}
-		var node = this.imageLayer.getElement();
-		this.imageLayer.addTo( this.map);
-		node.setAttribute( "title", evt.detail.date);
-		node.setAttribute( "alt", evt.detail.date);
-	
-		
 		 this.imageLayer.bringToFront();
-		//this.imageLayer.setUrl( evt.detail.img);
 	},
 	stopVisualisation(){
-		if( this.mode == "visualisation"){
-			
-	       	    this.mode = 'current';
-	       	  
+		if(this.mode == "visualisation"){
+	     this.mode = 'current';
 		}
 		
 	},
 	close: function(){
-		if( this.layer == null){
+		if(this.layer == null){
 			return;
 		}
 //		if( this.mode == "visualisation"){

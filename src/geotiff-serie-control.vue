@@ -1,5 +1,6 @@
 <!-- IL S'AGIT DE GEOTIFF-VISUALIZER RENOMMER
-CONTROL GEOTIFF-LAYER -->
+CONTROL GEOTIFF-LAYER 
+ORIGINAL - LA COPIE EST DANS formater-catalogue-component-vjs-->
 <i18n>
 {
   "en":{
@@ -22,7 +23,9 @@ CONTROL GEOTIFF-LAYER -->
     <progress  v-show="selected!=null" :min="0" :max="last" :value="selected" @mousemove="dateFromPosition" @mouseout="hideTooltip" @click="selectFromProgress">truc</progress>
     <div v-show="!isMinScreen" class="geotiff-eye">
       <a @click="view()" class="geotiff-nav geotiff-play"  ><i class="fa" :class="hidden?'fa-eye-slash':'fa-eye'"></i></a>
-    </div>
+      <a  v-if="resetbutton" v-show="selected!=null" @click="reset()" class="geotiff-nav geotiff-play"  ><i class="fa fa-undo"></i></a>
+      <a  v-if="fullscreenbutton" v-show="selected!=null" @click="fullscreen()" class="geotiff-nav geotiff-play"  ><i class="fa" :class="isFullscreen ? 'fa-minus-square-o' : 'fa-expand'"></i></a>
+	 </div>
 
     <div v-show="selected!=null" style="display:inline-block;min-width:300px;">
       <span class="geotiff-nav-content">
@@ -44,7 +47,11 @@ CONTROL GEOTIFF-LAYER -->
 
  
     <div class="geotiff-eye" :class="isMinScreen?'little-control':''" >
-      <a @click="view()" v-show="isMinScreen"  class="geotiff-nav geotiff-play"><i class="fa" :class="hidden?'fa-eye-slash':'fa-eye'"></i></a>
+      <span v-show="isMinScreen">
+        <a @click="view()"  class="geotiff-nav geotiff-play"><i class="fa" :class="hidden?'fa-eye-slash':'fa-eye'"></i></a>
+        <a  v-if="resetbutton" v-show="selected!=null" @click="reset()" class="geotiff-nav geotiff-play"  ><i class="fa fa-undo"></i></a>
+	    <a  v-if="fullscreenbutton" v-show="selected!=null" @click="fullscreen()" class="geotiff-nav geotiff-play"  ><i class="fa" :class="isFullscreen ? 'fa-minus-square-o' : 'fa-expand'"></i></a>
+	  </span>
 	  <div  class="geotiff-file" v-for="(item, key) in list" :data-image="item.png" v-show="keys[selected]==key" >
 	    <a :href="item.tiff" title="Download Geotiff" download class="fa fa-download"> {{ date2str(item.date) }}</a>
 	  </div>
@@ -67,6 +74,14 @@ export default {
      showatstart: {
        type: Boolean,
        default: false
+     },
+     resetbutton: {
+       type: Boolean,
+       default: false
+     },
+     fullscreenbutton: {
+       type: Boolean,
+       default: false
      }
     },
     data () {
@@ -84,7 +99,8 @@ export default {
         hasBegin:false,
         isMinScreen: false,
         imagesLength: 0,
-        dateInTooltip:''
+        dateInTooltip:'',
+        isFullscreen:false
       }
     },
     computed: {
@@ -129,7 +145,7 @@ export default {
   },
   
   created: function () {
-    console.log(this.showAtStart)
+ 
     this.$i18n.locale = this.lang;
     this.nextImageListener = this.next.bind(this) 
     document.addEventListener('nextImageEvent', this.nextImageListener);
@@ -143,7 +159,6 @@ export default {
 //  this.aerisThemeListener = this.handleTheme.bind(this) 
 //    document.addEventListener('aerisTheme', this.aerisThemeListener);
   },
-
   mounted: function(){
     this.$i18n.locale = this.lang
     moment.locale(this.lang)
@@ -205,6 +220,9 @@ export default {
     }
     var evt = new CustomEvent("toggleImageSerieEvent", {detail: { show: this.hidden}});
     document.dispatchEvent(evt);
+    if (this.hidden && !this.selected) {
+      this.goTo(this.first)
+    }
     this.hidden = !this.hidden;
     if(this.hidden){
      this.playing = false;
@@ -258,10 +276,14 @@ export default {
   indexFromPosition (evt) {
     var node = this.$el.querySelector('progress')
     var nodePos = node.getBoundingClientRect()
+    //cursor position
     var posX = evt.clientX - nodePos.left
     this.$el.querySelector('.geotiff-date-tooltip').style.opacity = 1;
     if(this.last){
-      this.$el.querySelector('.geotiff-date-tooltip').style.left = (evt.clientX - 50) + "px"
+      //geotiff-serie-control posistion
+      var posG = this.$el.getBoundingClientRect()
+      //tooltip position
+      this.$el.querySelector('.geotiff-date-tooltip').style.left = (nodePos.left - posG.left + posX - 50) + "px"
       return Math.round(this.last * posX / nodePos.width)
     }else{
       return null
@@ -269,16 +291,24 @@ export default {
   },
   selectFromProgress (evt) {
     var index = this.indexFromPosition(evt)
-    this.selected = index
+    this.goTo(index)
   },
   dateFromPosition (evt) {
     var index = this.indexFromPosition(evt)
     var date = this.index2strdate(index)
-    this.dateInTooltip = date
-    
+    console.log(date)
+    if (!date) {
+      this.$el.querySelector('.geotiff-date-tooltip').style.opacity = 0;
+    } else {
+      this.dateInTooltip = date
+    }
   },
   hideTooltip () {
     this.$el.querySelector('.geotiff-date-tooltip').style.opacity = 0;
+  },
+  reset () {
+    this.playing = false
+    this.goTo(this.first)
   },
   handleReset: function( ) {
     console.log( "handle reset from stop visualisation");
@@ -290,6 +320,11 @@ export default {
     this.hidden = true;
     this.hasBegin = false;  
   },
+  fullscreen: function () {
+    this.isFullscreen = !this.isFullscreen
+    this.$emit('fullscreen', this.isFullscreen)
+   // this.$emit('update:fullscreen', this.isFullscreen)
+  }
     
     
 //      handleTheme: function(theme) {
@@ -326,6 +361,7 @@ export default {
   font-size:14px;
   color:white;
   border-radius:5px;
+  opacity:0;
   z-index:2000;
   background: rgba(0, 0, 0, 0.8);
 }

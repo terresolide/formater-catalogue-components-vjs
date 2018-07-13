@@ -270,6 +270,7 @@ L.selectArea = require("./leaflet.select-area-module.js");
 L.Control.groupedLayers = require("./leaflet.layergroup.js");
 L.AwesomeMarkers = require("./leaflet.awesome-markers.js");
 L.Control.earthLayer = require("./leaflet.earth-layer.js");
+L.GeotiffSerieLayer = require("./leaflet.geotiff-serie-layer.js")
 //L.FramedLayer = require("./leaflet.framed-layer.js");
 
 
