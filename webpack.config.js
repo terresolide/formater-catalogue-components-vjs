@@ -4,6 +4,7 @@ var PACKAGE = require('./package.json');
 var buildVersion = PACKAGE.version;
 var buildName = PACKAGE.name;
 var CleanWebpackPlugin = require('clean-webpack-plugin');
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 var preUrl = PACKAGE.preproduction.url + "/webcomponents/";
 var prodUrl = PACKAGE.production.url + buildName + "/" + buildVersion + "/dist/";
 
@@ -77,11 +78,8 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     new CleanWebpackPlugin(pathsToClean),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
+    new UglifyJsPlugin({
+      sourceMap: true
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
@@ -104,11 +102,8 @@ if (process.env.NODE_ENV === 'preproduction') {
         }
       }),
     //  new CleanWebpackPlugin(["webcomponents/*.*"]),
-      new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true,
-        compress: {
-          warnings: false
-        }
+      new UglifyJsPlugin({
+        sourceMap: true
       }),
       new webpack.LoaderOptionsPlugin({
         minimize: true
