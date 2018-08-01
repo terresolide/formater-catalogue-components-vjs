@@ -291,7 +291,7 @@ L.SelectedLayer =   L.Evented.extend({
               
         }
 		xhttp.open("GET", encodeURI( req ), true);
-	    xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	  //  xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 		if( _disabledUrl.indexOf(obs.api.name)<0){
 			xhttp.send();
 		}

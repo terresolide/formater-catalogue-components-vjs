@@ -1,9 +1,14 @@
 /**
- *  Geotiff serie layer is an interactive ImageOverlay
- *  listen to : selectedImage Event => change url image
- *  listen to : toggleImage Event (actual showImage ) => show/hide overlay
- *  trigger : nextImageEvent when receive click
- *  link to geotiff-serie-control (actual geotiff-visualizer)
+ *  Geotiff serie layer is an interactive ImageOverlay to display imageOverlay serie having the same bounds
+ *  @parameter {L.LatLngBoundsbounds} bbox of the image
+ *  @parameter {Boolean} api true if exist an api to request with latlng localisation when click
+ *  @listen    selectImageSerieEvent => change url image
+ *  @listen    toggleImageSerieEvent => show/hide overlay
+ *  @listen    resetGeotiffViewEvent => map fit bounds overlay
+ *  @listen    modeChangeEvent (mode pass from video to profile)
+ *  @trigger   searchProfileEvent 
+ *  @trigger   nextImageEvent
+ *  @requires  leaflet
  */
 
 L.GeotiffSerieLayer = L.ImageOverlay.extend({
@@ -15,8 +20,16 @@ L.GeotiffSerieLayer = L.ImageOverlay.extend({
     bubblingMouseEvents:false,
   },
   resetGeotiffViewListener: null,
-  initialize (bounds, options) {
+  modeChangeListener: null,
+  mode: 'video',
+  hasApi: null,
+  initialize (bounds, api, options) {
     var url = 'https://api.poleterresolide.fr/images/transparent.png'
+    if (!options){
+        options = {}
+    }
+    this.hasApi = api
+    L.Util.setOptions(this, options);
     L.ImageOverlay.prototype.initialize.call(this, url, bounds, options);
   },
   onAdd (map) {
@@ -28,21 +41,47 @@ L.GeotiffSerieLayer = L.ImageOverlay.extend({
     L.ImageOverlay.prototype.onRemove.call(this);
   },
   initHandler () {
-    this.on( 'click', function( evt){
-      var event = new CustomEvent( 'nextImageEvent');
-      document.dispatchEvent( event);
+    this.click = 0
+    this.on( 'click', function(evt){
+      this.click = this.click + 1
+      var _this = this
+      // to prevent dblclick particulary for searchProfile request
+      setTimeout(function () {_this.click = 0}, 500)
+      if(this.click !== 1){
+        return
+      }
+      switch(this.mode){
+      case 'video':
+        var event = new CustomEvent('nextImageEvent')
+        document.dispatchEvent(event)
+        break
+      case 'profile':
+        if (!_this.hasApi) {
+          return;
+        }
+        var event = new CustomEvent('searchProfileEvent', {detail: evt.latlng})
+        document.dispatchEvent(event)
+        break
+      } 
     });
+    
     this.on( 'dblclick', function( evt){
+      console.log('dblclik')
       this.removeEventParent(evt);
-    });
+    })
     L.DomEvent.on(document, 'selectImageSerieEvent', this._selectImage, this)
     L.DomEvent.on(document, 'toggleImageSerieEvent', this._showImage, this)
     L.DomEvent.on(document, 'resetGeotiffViewEvent', this._resetView, this)
+    L.DomEvent.on(document, 'modeChangeEvent', this._modeChange, this)
   },
   removeListeners () {
     L.DomEvent.off(document, 'selectImageSerieEvent', this._selectImage, this)
     L.DomEvent.off(document, 'toggleImageSerieEvent', this._showImage, this)
     L.DomEvent.off(document, 'resetGeotiffViewEvent', this._resetView, this)
+    L.DomEvent.off(document, 'modeChangeEvent', this._modeChange, this)
+  },
+  _modeChange (evt) {
+    this.mode = evt.detail
   },
   _resetView: function (evt) {
     this._map.fitBounds(this._bounds)
