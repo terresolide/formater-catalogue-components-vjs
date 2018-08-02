@@ -70,6 +70,7 @@ if (process.env.NODE_ENV === 'development') {
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map';
   module.exports.output.publicPath = prodUrl;
+
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
@@ -88,6 +89,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (process.env.NODE_ENV === 'preproduction') {
+
     module.exports.devtool = '#source-map';
     module.exports.output.path =  path.resolve(__dirname, './webcomponents'),
     module.exports.output.publicPath = preUrl;
@@ -101,7 +103,7 @@ if (process.env.NODE_ENV === 'preproduction') {
           NODE_ENV: '"production"'
         }
       }),
-    //  new CleanWebpackPlugin(["webcomponents/*.*"]),
+      new CleanWebpackPlugin(["webcomponents/*.*"]),
       new UglifyJsPlugin({
         sourceMap: true
       }),

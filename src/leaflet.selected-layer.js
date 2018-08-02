@@ -230,10 +230,8 @@ L.SelectedLayer =   L.Evented.extend({
 //			    		}
 			    	 }
 			    	if(_cds == "isgi"){
-
 			    		//recuperation du lien archive
 			    		var url = obs.data.meta.get("isgi_url");
-			    		
 			    		if( url){
 			    			var size = parseFloat(obs.data.meta.get("filesize"));
 			    			var link = {
@@ -244,9 +242,8 @@ L.SelectedLayer =   L.Evented.extend({
 			    			}
 			    			obs.links.push(link);
 			    		}
-			    	}
-			    
-			       obs.query = query;
+			    }
+			    obs.query = query;
 				   var event = new CustomEvent("findData", {detail: { obs: obs, cds: _cds}});
 				    document.dispatchEvent(event);
 	   
@@ -293,9 +290,9 @@ L.SelectedLayer =   L.Evented.extend({
               
         }
 		xhttp.open("GET", encodeURI( req ), true);
-		if(cds === 'isgi'){ 
+	//	if(cds === 'isgi'){ 
 		  xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-	  }
+	 // }
 		if( _disabledUrl.indexOf(obs.api.name)<0){
 			xhttp.send();
 		}
