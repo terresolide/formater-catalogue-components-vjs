@@ -28,13 +28,13 @@
 <template>	
 	<div class="formater-container">
 	<div id="formater-form" >
-		<formater-search-box header-icon-class="fa fa-bars" :title="$t('data_type')" deployed="true">
-			<formater-select type="associative" name="DataType" @input="change" :options="jsonDataType()" :defaut="dataType" multiple="true" width="260px"></formater-select>
+		<formater-search-box header-icon-class="fa fa-bars" :title="$t('data_type')" :deployed="true">
+			<formater-select type="associative" name="DataType" @input="change" :options="jsonDataType()" :defaut="dataType.join(',')" :multiple="true" width="260px"></formater-select>
 		</formater-search-box>
-		<formater-search-box header-icon-class="fa fa-calendar" :title="$t('time_slot')" deployed="true">	
+		<formater-search-box header-icon-class="fa fa-calendar" :title="$t('time_slot')" :deployed="true">	
 			 <formater-temporal-search :lang="lang" :daymin="daymin" @update="change"></formater-temporal-search>
 		</formater-search-box>
-		<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" deployed="false">	
+		<formater-search-box header-icon-class="fa fa-globe" :title="$t('spatial_extents')" :deployed="false">	
 			<formater-spatial-search :lang="lang"></formater-spatial-search>
 		</formater-search-box>
 	    <a id="download" href="#" style="display=none;" download="bcmt_data.zip"></a>
@@ -49,10 +49,15 @@
 
 
 <script>
-
-
+import {FormaterSearchBox, FormaterSelect, FormaterTemporalSearch} from 'formater-commons-components-vjs'
+import FormaterSpatialSearch from './formater-spatial-search.vue'
 export default {
-
+  components: {
+    FormaterSearchBox,
+    FormaterSelect,
+    FormaterTemporalSearch,
+    FormaterSpatialSearch
+  }, 
   props:{
 	  info:{
 	      type:String,
@@ -182,7 +187,7 @@ export default {
 	
 		search(){
 	    	this.searching = true;
-	  
+	        console.log('search')
 		    var e = new CustomEvent("aerisSearchEvent", { detail: {}});
 			document.dispatchEvent(e);
 			if( e.detail.error){
@@ -342,15 +347,15 @@ export default {
      document.dispatchEvent(event);
      
      //call api for the first time
-     if(!window.firstCall){ //@todo pas très propre d'utiliser une globale...
+    // if(!window.firstCall){ //@todo pas très propre d'utiliser une globale...
     	 // mounted est exécuté 2 fois!!
     	 // ce qui pose un problème car ma fonction est exécuté 2 fois!!
-    	 window.firstCall = true;
+    	// window.firstCall = true;
 	    //this.defaultRequest();
 
-  	}else{
+  	//}else{
   		this.defaultRequest();
-  	}
+  	//}
   },
   destroyed(){
       document.removeEventListener('aerisTheme', this.aerisThemeListener);

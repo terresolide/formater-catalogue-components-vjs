@@ -30,10 +30,19 @@
 	</span>
 </template>
 <script>
-
+import AerisNotifier from 'aeris-commons-components-vjs/src/aeris-notification/aeris-notifier.vue'
+import {FormaterLayout} from 'formater-commons-components-vjs'
+import FormaterForm from './formater-form.vue'
+import FormaterMap from './formater-map.vue'
 
  
 export default {
+  components: {
+    FormaterLayout,
+    AerisNotifier,
+    FormaterForm,
+    FormaterMap
+  },
     props:{
         lang: {
             type:String,
@@ -48,7 +57,7 @@ export default {
         this.$i18n.locale = this.lang;
     },
     mounted(){
-    	
+    	console.log('formater catalogue mounted')
     }
 }
 </script>

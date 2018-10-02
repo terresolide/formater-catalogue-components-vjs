@@ -6,7 +6,7 @@ var Highcharts = require("highcharts");
 
 var Bcmt = require("./bcmt-chart.js");
 var bcmt = new Bcmt(Highcharts);
-var Isgi = require("../../isgi-component-vjs/src/isgi-indice-module.js");
+var Isgi = require("isgi-component-vjs/src/isgi-indice-module.js");
 var isgi = new Isgi(Highcharts);
 
 

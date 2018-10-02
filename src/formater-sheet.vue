@@ -388,7 +388,11 @@ Array.prototype.existType = function( type){
 }
 
 var ftChart = require("./formater-chart.js");
+import {GeotiffSerieControl} from 'formater-geotiff-serie-vjs'
 export default {
+    components: {
+      GeotiffSerieControl
+    },
 	props: {
 		 lang: {
 	          type: String,

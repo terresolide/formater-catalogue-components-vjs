@@ -103,7 +103,9 @@ module.exports = function( L ){
 	this.handleReset = function(){
 		var _this = this;
 		var layers = this.layers;
-		_layerControl.reset();
+		if (_layerControl) {
+		  _layerControl.reset();
+		}
 		layers.forEach( function(layer){
 			//_layerControl.removeLayer(layer);
 			if( _this.map.hasLayer( layer)){

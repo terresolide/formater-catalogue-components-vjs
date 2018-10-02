@@ -22,10 +22,13 @@
 
 var L = require('./leaflet.extend.js');
 import FtMap from "./formater-map.js";
+import FormaterSheet from './formater-sheet.vue'
 var ftMap = new FtMap(L);
 
 export default {
-
+  components: {
+    FormaterSheet
+  },
   props:{
 	  
       lang: {
