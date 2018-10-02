@@ -22,26 +22,29 @@
 <template>
 <span class="formater-spatial-search">
 	<div class="box-toolbar">
-		<button class="spatial-reset-button" :title="$t('reset')" @click="handleReset"><i class="fa fa-remove"></i></button>
-		<button class="spatial-edit-button" :title="$t('draw')" @click="handleDraw"><i class="fa fa-pencil-square-o"></i></button>
+	   <button class="spatial-edit-button" :title="$t('draw')" @click="handleDraw"><i class="fa fa-pencil-square-o"></i></button>
+	   <button class="spatial-reset-button" :title="$t('reset')" @click="handleReset"><i class="fa fa-remove"></i></button>
 	</div>
 	<div class="formater-spatial-search-content">
-		<div class="formater-input-group">
+		<div class="formater-input-group cardinal-center">
 			<span class="right">{{$t('north_symbol')}}</span>
 			<input    v-model="north" :pattern="patternLatitude" @click="handleChange"></input>
 		</div>
-		<div class="formater-input-group">
-			<span class="right">{{$t('east_symbol')}}</span>
-			<input   v-model="east" :pattern="patternLongitude" @click="handleChange"></input>
-		</div>
-		<div class="formater-input-group">
-			<span class="right">{{$t('south_symbol')}}</span>
-			<input  v-model="south" :pattern="patternLatitude" @click="handleChange"></input>
-		</div>
-		<div class="formater-input-group">
+		<div class="formater-input-group cardinal-left">
 			<span class="right">{{$t('west_symbol')}}</span>
 			<input   v-model="west" :pattern="patternLongitude" @click="handleChange"></input>
 		</div>
+		<div class="formater-input-group cardinal-right">
+			
+			<input   v-model="east" :pattern="patternLongitude" @click="handleChange"></input>
+			<span class="left">{{$t('east_symbol')}}</span>
+		</div>
+		
+		<div class="formater-input-group cardinal-center">
+			<span class="right">{{$t('south_symbol')}}</span>
+			<input  v-model="south" :pattern="patternLatitude" @click="handleChange"></input>
+		</div>
+		
 	</div>
 
 </span>
@@ -190,21 +193,55 @@ export default {
     flex-flow: row nowrap;
     align-items: center;
     margin: 5px 0;
-    width: 100%;
+    width: 48%;
     height: 25px;
     line-height: 25px;
     overflow: hidden;
 }
+.formater-spatial-search .formater-input-group input{
+  min-width: 80px;
+  width: 80%;
+  text-align:center;
+}
+.formater-spatial-search .formater-input-group.cardinal-left{
+   float:left;
+}
+.formater-spatial-search .formater-input-group.cardinal-right{
+   float:right;
+}
+.formater-spatial-search .formater-input-group.cardinal-left input{
+   text-align:left;
+ }
+.formater-spatial-search .formater-input-group.cardinal-right input{
+   text-align:right;
+ }
+.formater-spatial-search .formater-input-group.cardinal-center{
+   margin:auto;
+   clear:both;
+}
 .formater-spatial-search .formater-input-group .right {
-  min-width: 40px;
+  min-width: 25px;
   border-right: 1px solid #fff;
   box-sizing: border-box;
   display: block;
   height: 100%;
   text-align: center;
 }
+.formater-spatial-search .formater-input-group .left {
+  min-width: 25px;
+  border-left: 1px solid #fff;
+  box-sizing: border-box;
+  display: block;
+  height: 100%;
+  text-align: center;
+}
+.formater-spatial-search .box-toolbar {
+   text-align: right;
+   display:block;
+   margin: 0 0 10px 0;
+}
 .formater-spatial-search .box-toolbar button{
-	margin-right:3px;
+	margin-left:3px;
 	min-width:15px;
 }
 </style>
