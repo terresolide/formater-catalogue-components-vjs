@@ -200,8 +200,10 @@ export default {
 }
 .formater-spatial-search .formater-input-group input{
   min-width: 80px;
-  width: 80%;
+  max-width: 90px;
   text-align:center;
+  padding: 0 3px;
+  margin: 0 3px;
 }
 .formater-spatial-search .formater-input-group.cardinal-left{
    float:left;
@@ -214,6 +216,7 @@ export default {
  }
 .formater-spatial-search .formater-input-group.cardinal-right input{
    text-align:right;
+   
  }
 .formater-spatial-search .formater-input-group.cardinal-center{
    margin:auto;
