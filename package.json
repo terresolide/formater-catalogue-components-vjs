@@ -1,6 +1,6 @@
 {
   "name": "formater-catalogue-components-vjs",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "webcomponent for ForM@Ter catalogue",
   "preproduction": {
     "url": "https://api.poleterresolide.fr/"
