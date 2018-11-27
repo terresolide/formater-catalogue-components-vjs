@@ -56,6 +56,16 @@ module.exports = {
 //          name: '[name].[ext]?[hash]'
 //        }
 //      }
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [{
+            loader: 'url-loader',
+            options: {
+                limit: 10000,
+                name: 'assets/fonts/[name].[hash:7].[ext]'
+            }
+        }]
+      }
     ]
   },
   resolve: {

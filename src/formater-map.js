@@ -115,10 +115,12 @@ module.exports = function( L ){
 		
 		this.layers = [];
 		_global_observations = [];
-		_earthControl.reset();
+		if (_earthControl) {
+		  _earthControl.reset();
+		}
 		_bounds = [];
 		
-	  }
+	}
 	
 	function getDataUri(url, callback) {
 	    var image = new Image();

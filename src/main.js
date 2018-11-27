@@ -80,7 +80,6 @@ ljs.load('dep', function() {
             window.registredAerisElements.push(name)
         }
     }
-    window.ftTools = ftTools
     var componentUsed = [];
     var componentUsed = new Array() // new Array('formater-select','formater-layout', 'aeris-datepicker', 'aeris-notifier');
    // var componentUsed = new Array( 'aeris-datepicker');
