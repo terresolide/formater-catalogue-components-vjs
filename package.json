@@ -24,7 +24,8 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "formater-commons-components-vjs": "github:terresolide/formater-commons-components-vjs#0.13.2",
+    "aeris-commons-components-vjs": "github:aeris-data/aeris-commons-components-vjs",
+    "formater-commons-components-vjs": "github:terresolide/formater-commons-components-vjs",
     "formater-geotiff-serie-vjs": "github:terresolide/formater-geotiff-serie-vjs#0.5.1",
     "highcharts": "^6.2.0",
     "isgi-component-vjs": "github:terresolide/isgi-component-vjs#0.5.2",
