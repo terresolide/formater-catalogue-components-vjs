@@ -27,7 +27,7 @@
     "aeris-commons-components-vjs": "github:aeris-data/aeris-commons-components-vjs",
     "formater-commons-components-vjs": "github:terresolide/formater-commons-components-vjs",
     "formater-geotiff-serie-vjs": "github:terresolide/formater-geotiff-serie-vjs#0.5.1",
-    "highcharts": "^6.2.0",
+    "highcharts": "^8.2.0",
     "isgi-component-vjs": "github:terresolide/isgi-component-vjs#0.5.2",
     "leaflet": "^1.3.4",
     "plotty": "^0.2.0",
